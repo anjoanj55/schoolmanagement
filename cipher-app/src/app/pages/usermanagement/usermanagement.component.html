@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - EduPro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #1a202c;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .header h1 {
+            font-size: 2.25rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 32px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .nav-tab {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            color: #4a5568;
+            font-size: 0.875rem;
+        }
+
+        .nav-tab:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-tab.active {
+            background: #3182ce;
+            color: white;
+            border-color: #3182ce;
+            box-shadow: 0 2px 4px rgba(49, 130, 206, 0.2);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .management-table {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .table-header {
+            background: #f8fafc;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .search-input {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.875rem;
+            width: 200px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3182ce;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 16px 24px;
+            text-align: left;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            color: #1a202c;
+            font-size: 0.875rem;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background: #3182ce;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-danger {
+            background: #e53e3e;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: #2c5aa0;
+        }
+
+        .btn-secondary:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        .btn-danger:hover {
+            background: #c53030;
+        }
+
+        .floating-action {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: #3182ce;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(49, 130, 206, 0.3);
+            transition: all 0.2s ease;
+            z-index: 1000;
+        }
+
+        .floating-action:hover {
+            transform: scale(1.05);
+            background: #2c5aa0;
+            box-shadow: 0 6px 20px rgba(49, 130, 206, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: #4a5568;
+        }
+
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .modal-body label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #1a202c;
+        }
+
+        .modal-body input, .modal-body select {
+            padding: 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+
+        .modal-body input:focus, .modal-body select:focus {
+            outline: none;
+            border-color: #3182ce;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .nav-tabs {
+                justify-content: flex-start;
+            }
+
+            th, td {
+                padding: 12px 16px;
+            }
+
+            .search-input {
+                width: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 20px;
+            }
+
+            .table-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 16px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .management-table {
+            animation: fadeInUp 0.4s ease forwards;
+        }
+    </style>
+</head>
+<body *ngIf="useres">
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>User Management</h1>
+            <p>Manage users, roles, groups, and feature permissions</p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" (click)="switchTab('users')">Users & Roles</button>
+            <!-- <button class="nav-tab" (click)="switchTab('roles')">Roles</button> -->
+            <button class="nav-tab" (click)="switchTab('features')">Features</button>
+        </div>
+        <!-- Users Tab -->
+        <div id="users" class="tab-content active">
+            <div class="management-table">
+                <div class="table-header">
+                    <div class="table-title">Users</div>
+                    <input type="text" class="search-input" placeholder="Search users..."  [(ngModel)]="searchTerm"  (input)="filterUsers()">
+                </div>
+                <table id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Group</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of filteredUsers">
+                            <td>{{user.FirstName}}</td>
+                            <td>{{user.Email}}</td>
+                            <td>{{user.RoleName}}</td>
+                            <td>{{user.RoleName}}</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;" (click)="openUserPopup(user)">Edit</button>
+                                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.75rem;" onclick="deleteUser('Sarah Johnson')">Delete</button>
+                            </td>
+                        </tr>
+                     
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Roles Tab -->
+        <div id="roles" class="tab-content">
+            <div class="management-table">
+                <div class="table-header">
+                    <div class="table-title">Roles</div>
+                    <input type="text" class="search-input" placeholder="Search roles..." onkeyup="filterTable('rolesTable', this.value)">
+                </div>
+                <table id="rolesTable">
+                    <thead>
+                        <tr>
+                            <th>Role</th>
+                            <th>Modules</th>
+                            <th>Features</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of userdata">
+                            <td>{{user.FirstName}}</td>
+                            <td>{{user.Email}}</td>
+                            <td>{{user.RoleName}}</td>
+                            <td>{{user.RoleName}}</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;" (click)="openUserPopup(user)">Edit</button>
+                                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.75rem;" onclick="deleteUser('Sarah Johnson')">Delete</button>
+                            </td>
+                        </tr>
+                     
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Groups Tab -->
+        <div id="groups" class="tab-content">
+            <div class="management-table">
+                <div class="table-header">
+                    <div class="table-title">Groups</div>
+                    <input type="text" class="search-input" placeholder="Search groups..." onkeyup="filterTable('groupsTable', this.value)">
+                </div>
+                <table id="groupsTable">
+                    <thead>
+                        <tr>
+                            <th>Group</th>
+                            <th>Modules</th>
+                            <th>Members</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Leadership</td>
+                            <td>Performance, Attendance, Exams</td>
+                            <td>Sarah Johnson</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;" onclick="openGroupModal('edit', 'Leadership', ['Performance', 'Attendance', 'Exams'], ['Sarah Johnson'])">Edit</button>
+                                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.75rem;" onclick="deleteGroup('Leadership')">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Faculty</td>
+                            <td>Performance, Time Table</td>
+                            <td>Michael Chen</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;" onclick="openGroupModal('edit', 'Faculty', ['Performance', 'Time Table'], ['Michael Chen'])">Edit</button>
+                                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.75rem;" onclick="deleteGroup('Faculty')">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Students</td>
+                            <td>Performance, Online Classes</td>
+                            <td>Emily Davis</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;" onclick="openGroupModal('edit', 'Students', ['Performance', 'Online Classes'], ['Emily Davis'])">Edit</button>
+                                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.75rem;" onclick="deleteGroup('Students')">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Features Tab -->
+        <div id="features" class="tab-content">
+            <div class="management-table">
+                <div class="table-header">
+                    <div class="table-title">Features</div>
+               
+
+                </div>
+                <table id="featuresTable">
+                    <thead>
+                        <tr>
+                            <th>Feature ID</th>
+                            <th>Description</th>
+                            <th>Assigned To</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of filteredUsers">
+                            <td>{{user.FirstName}}</td>
+                            <td>{{user.Email}}</td>
+                            <td>{{user.RoleName}}</td>
+                            <td>{{user.RoleName}}</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;" (click)="openUserPopup(user)">Edit</button>
+                                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.75rem;" onclick="deleteUser('Sarah Johnson')">Delete</button>
+                            </td>
+                        </tr>
+                     
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="floating-action" onclick="openModal()">+</button>
+
+        <!-- User Modal -->
+        <div id="userModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="userModalTitle">Add User</div>
+                    <button class="modal-close" onclick="closeModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <label for="userName">Name</label>
+                    <input type="text" id="userName" placeholder="Enter name">
+                    <label for="userEmail">Email</label>
+                    <input type="email" id="userEmail" placeholder="Enter email">
+                    <label for="userRole">Role</label>
+                    <select id="userRole">
+                        <option value="Admin">Admin</option>
+                        <option value="Teacher">Teacher</option>
+                        <option value="Student">Student</option>
+                        <option value="Parent">Parent</option>
+                    </select>
+                    <label for="userGroup">Group</label>
+                    <select id="userGroup">
+                        <option value="Leadership">Leadership</option>
+                        <option value="Faculty">Faculty</option>
+                        <option value="Students">Students</option>
+                        <option value="Parents">Parents</option>
+                    </select>
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button class="btn btn-primary" onclick="saveUser()">Save</button>
+                        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Role Modal -->
+        <div id="roleModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="roleModalTitle">Add Role</div>
+                    <button class="modal-close" onclick="closeModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <label for="roleName">Role Name</label>
+                    <input type="text" id="roleName" placeholder="Enter role name">
+                    <label>Module Access</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="module" value="Performance"> Performance</label>
+                        <label><input type="checkbox" name="module" value="Time Table"> Time Table</label>
+                        <label><input type="checkbox" name="module" value="Online Classes"> Online Classes</label>
+                        <label><input type="checkbox" name="module" value="Attendance"> Attendance</label>
+                        <label><input type="checkbox" name="module" value="Exams"> Exams</label>
+                    </div>
+                    <label>Feature Access</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="feature" value="F101"> F101 - View Reports</label>
+                        <label><input type="checkbox" name="feature" value="F102"> F102 - Edit Reports</label>
+                        <label><input type="checkbox" name="feature" value="F103"> F103 - Manage Users</label>
+                        <label><input type="checkbox" name="feature" value="F104"> F104 - Assign Tasks</label>
+                        <label><input type="checkbox" name="feature" value="F105"> F105 - View Grades</label>
+                        <label><input type="checkbox" name="feature" value="F106"> F106 - Parent Portal</label>
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button class="btn btn-primary" onclick="saveRole()">Save</button>
+                        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Group Modal -->
+        <div id="groupModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="groupModalTitle">Add Group</div>
+                    <button class="modal-close" onclick="closeModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <label for="groupName">Group Name</label>
+                    <input type="text" id="groupName" placeholder="Enter group name">
+                    <label>Module Access</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="module" value="Performance"> Performance</label>
+                        <label><input type="checkbox" name="module" value="Time Table"> Time Table</label>
+                        <label><input type="checkbox" name="module" value="Online Classes"> Online Classes</label>
+                        <label><input type="checkbox" name="module" value="Attendance"> Attendance</label>
+                        <label><input type="checkbox" name="module" value="Exams"> Exams</label>
+                    </div>
+                    <label>Members</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="member" value="Sarah Johnson"> Sarah Johnson</label>
+                        <label><input type="checkbox" name="member" value="Michael Chen"> Michael Chen</label>
+                        <label><input type="checkbox" name="member" value="Emily Davis"> Emily Davis</label>
+                        <label><input type="checkbox" name="member" value="James Wilson"> James Wilson</label>
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button class="btn btn-primary" onclick="saveGroup()">Save</button>
+                        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature Modal -->
+        <div id="featureModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="featureModalTitle">Add Feature</div>
+                    <button class="modal-close" onclick="closeModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <label for="featureId">Feature ID</label>
+                    <input type="text" id="featureId" placeholder="Enter feature ID">
+                    <label for="featureDesc">Description</label>
+                    <input type="text" id="featureDesc" placeholder="Enter description">
+                    <label>Assigned To</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="assigned" value="Sarah Johnson"> Sarah Johnson</label>
+                        <label><input type="checkbox" name="assigned" value="Michael Chen"> Michael Chen</label>
+                        <label><input type="checkbox" name="assigned" value="Emily Davis"> Emily Davis</label>
+                        <label><input type="checkbox" name="assigned" value="James Wilson"> James Wilson</label>
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button class="btn btn-primary" onclick="saveFeature()">Save</button>
+                        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<body *ngIf="features">
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>User Management</h1>
+            <p>Manage users, roles, groups, and feature permissions</p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab" (click)="switchTab('users')">Users & Roles</button>
+            <!-- <button class="nav-tab" (click)="switchTab('roles')">Roles</button> -->
+            <button class="nav-tab active" (click)="switchTab('features')">Features</button>
+        </div>
+
+        <!-- Users Tab -->
+        <div id="users" class="tab-content active">
+            <div class="management-table">
+                <div class="table-header">
+                    <div class="table-title">Users</div>
+                    <input type="text" class="search-input" placeholder="Search users..." [(ngModel)]="searchfeature">
+                </div>
+                <table id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>RoleName</th>
+                            <!-- <th>featuresID's</th> -->
+                            <th>features</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of feutredata">
+                            <td>{{user.RoleName}}</td>
+                            <!-- <td>{{user.ModuleIDs}}</td> -->
+                            <td>{{user.Features}}</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;" (click)="openfeaturePopup(user)">Edit</button>
+                                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.75rem;" onclick="deleteUser('Sarah Johnson')">Delete</button>
+                            </td>
+                        </tr>
+                    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Roles Tab -->
+        <div id="roles" class="tab-content">
+            <div class="management-table">
+                <div class="table-header">
+                    <div class="table-title">Roles</div>
+                    <input type="text" class="search-input" placeholder="Search roles..." onkeyup="filterTable('rolesTable', this.value)">
+                </div>
+                <table id="rolesTable">
+                    <thead>
+                        <tr>
+                            <th>Role</th>
+                            <th>Modules</th>
+                            <th>Features</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Admin</td>
+                            <td>Performance, Attendance, Exams</td>
+                            <td>F101, F102, F103</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;" onclick="openRoleModal('edit', 'Admin', ['Performance', 'Attendance', 'Exams'], ['F101', 'F102', 'F103'])">Edit</button>
+                                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.75rem;" onclick="deleteRole('Admin')">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Teacher</td>
+                            <td>Performance, Time Table</td>
+                            <td>F101, F104</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;" onclick="openRoleModal('edit', 'Teacher', ['Performance', 'Time Table'], ['F101', 'F104'])">Edit</button>
+                                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.75rem;" onclick="deleteRole('Teacher')">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Student</td>
+                            <td>Performance, Online Classes</td>
+                            <td>F105</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;" onclick="openRoleModal('edit', 'Student', ['Performance', 'Online Classes'], ['F105'])">Edit</button>
+                                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.75rem;" onclick="deleteRole('Student')">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Groups Tab -->
+        <div id="groups" class="tab-content">
+            <div class="management-table">
+                <div class="table-header">
+                    <div class="table-title">Groups</div>
+                    <input type="text" class="search-input" placeholder="Search groups..." onkeyup="filterTable('groupsTable', this.value)">
+                </div>
+                <table id="groupsTable">
+                    <thead>
+                        <tr>
+                            <th>Group</th>
+                            <th>Modules</th>
+                            <th>Members</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of userdata">
+                            <td>{{user.FirstName}}</td>
+                            <td>{{user.Email}}</td>
+                            <td>{{user.RoleName}}</td>
+                            <td>{{user.RoleName}}</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;" (click)="openfeaturePopup(user)">Edit</button>
+                                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.75rem;" onclick="deleteUser('Sarah Johnson')">Delete</button>
+                            </td>
+                        </tr>
+                     
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Features Tab -->
+        <div id="features" class="tab-content">
+            <div class="management-table">
+                <div class="table-header">
+                    <div class="table-title">Features</div>
+                    <input type="text" class="search-input" placeholder="Search features..." onkeyup="filterTable('featuresTable', this.value)">
+                </div>
+                <table id="featuresTable">
+                    <thead>
+                        <tr>
+                            <th>Feature ID</th>
+                            <th>Description</th>
+                            <th>Assigned To</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of userdata">
+                            <td>{{user.FirstName}}</td>
+                            <td>{{user.Email}}</td>
+                            <td>{{user.RoleName}}</td>
+                            <td>{{user.RoleName}}</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;" (click)="openfeaturePopup(user)">Edit</button>
+                                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.75rem;" onclick="deleteUser('Sarah Johnson')">Delete</button>
+                            </td>
+                        </tr>
+                     
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="floating-action" onclick="openModal()">+</button>
+
+        <!-- User Modal -->
+        <div id="userModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="userModalTitle">Add User</div>
+                    <button class="modal-close" onclick="closeModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <label for="userName">Name</label>
+                    <input type="text" id="userName" placeholder="Enter name">
+                    <label for="userEmail">Email</label>
+                    <input type="email" id="userEmail" placeholder="Enter email">
+                    <label for="userRole">Role</label>
+                    <select id="userRole">
+                        <option value="Admin">Admin</option>
+                        <option value="Teacher">Teacher</option>
+                        <option value="Student">Student</option>
+                        <option value="Parent">Parent</option>
+                    </select>
+                    <label for="userGroup">Group</label>
+                    <select id="userGroup">
+                        <option value="Leadership">Leadership</option>
+                        <option value="Faculty">Faculty</option>
+                        <option value="Students">Students</option>
+                        <option value="Parents">Parents</option>
+                    </select>
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button class="btn btn-primary" onclick="saveUser()">Save</button>
+                        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Role Modal -->
+        <div id="roleModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="roleModalTitle">Add Role</div>
+                    <button class="modal-close" onclick="closeModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <label for="roleName">Role Name</label>
+                    <input type="text" id="roleName" placeholder="Enter role name">
+                    <label>Module Access</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="module" value="Performance"> Performance</label>
+                        <label><input type="checkbox" name="module" value="Time Table"> Time Table</label>
+                        <label><input type="checkbox" name="module" value="Online Classes"> Online Classes</label>
+                        <label><input type="checkbox" name="module" value="Attendance"> Attendance</label>
+                        <label><input type="checkbox" name="module" value="Exams"> Exams</label>
+                    </div>
+                    <label>Feature Access</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="feature" value="F101"> F101 - View Reports</label>
+                        <label><input type="checkbox" name="feature" value="F102"> F102 - Edit Reports</label>
+                        <label><input type="checkbox" name="feature" value="F103"> F103 - Manage Users</label>
+                        <label><input type="checkbox" name="feature" value="F104"> F104 - Assign Tasks</label>
+                        <label><input type="checkbox" name="feature" value="F105"> F105 - View Grades</label>
+                        <label><input type="checkbox" name="feature" value="F106"> F106 - Parent Portal</label>
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button class="btn btn-primary" onclick="saveRole()">Save</button>
+                        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Group Modal -->
+        <div id="groupModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="groupModalTitle">Add Group</div>
+                    <button class="modal-close" onclick="closeModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <label for="groupName">Group Name</label>
+                    <input type="text" id="groupName" placeholder="Enter group name">
+                    <label>Module Access</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="module" value="Performance"> Performance</label>
+                        <label><input type="checkbox" name="module" value="Time Table"> Time Table</label>
+                        <label><input type="checkbox" name="module" value="Online Classes"> Online Classes</label>
+                        <label><input type="checkbox" name="module" value="Attendance"> Attendance</label>
+                        <label><input type="checkbox" name="module" value="Exams"> Exams</label>
+                    </div>
+                    <label>Members</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="member" value="Sarah Johnson"> Sarah Johnson</label>
+                        <label><input type="checkbox" name="member" value="Michael Chen"> Michael Chen</label>
+                        <label><input type="checkbox" name="member" value="Emily Davis"> Emily Davis</label>
+                        <label><input type="checkbox" name="member" value="James Wilson"> James Wilson</label>
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button class="btn btn-primary" onclick="saveGroup()">Save</button>
+                        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature Modal -->
+        <div id="featureModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="featureModalTitle">Add Feature</div>
+                    <button class="modal-close" onclick="closeModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <label for="featureId">Feature ID</label>
+                    <input type="text" id="featureId" placeholder="Enter feature ID">
+                    <label for="featureDesc">Description</label>
+                    <input type="text" id="featureDesc" placeholder="Enter description">
+                    <label>Assigned To</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="assigned" value="Sarah Johnson"> Sarah Johnson</label>
+                        <label><input type="checkbox" name="assigned" value="Michael Chen"> Michael Chen</label>
+                        <label><input type="checkbox" name="assigned" value="Emily Davis"> Emily Davis</label>
+                        <label><input type="checkbox" name="assigned" value="James Wilson"> James Wilson</label>
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button class="btn btn-primary" onclick="saveFeature()">Save</button>
+                        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

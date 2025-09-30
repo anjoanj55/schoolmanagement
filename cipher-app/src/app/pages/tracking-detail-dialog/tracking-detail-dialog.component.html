@@ -1,0 +1,134 @@
+<div class="detail-profile-dialog">
+  <!-- Dialog Header -->
+  <div class="dialog-header">
+    <h2 mat-dialog-title>
+      <mat-icon>my_location</mat-icon>
+      Tracking Details
+    </h2>
+    <button mat-icon-button (click)="onClose()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+ 
+  <mat-divider></mat-divider>
+ 
+  <!-- Dialog Content -->
+  <div mat-dialog-content class="dialog-content">
+ 
+    <!-- Loading Spinner -->
+    <div *ngIf="isLoading" class="loading-container">
+      <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+      <p>Loading person details...</p>
+    </div>
+ 
+    <!-- Error State -->
+    <div *ngIf="error && !isLoading" class="error-container">
+      <mat-icon color="warn">error</mat-icon>
+      <p>{{ error }}</p>
+      <button mat-raised-button color="primary" (click)="onRefresh()">
+        <mat-icon>refresh</mat-icon>
+        Retry
+      </button>
+    </div>
+ 
+    <!-- Person Details -->
+    <div *ngIf="personDetail && !isLoading && !error" class="person-details">
+ 
+      <!-- Profile Photo and Basic Info -->
+      <mat-card class="profile-card">
+        <mat-card-content>
+          <div class="profile-header">
+            <div class="profile-photo">
+              <div class="photo-avatar">
+                <!-- If API photo exists -->
+                <img *ngIf="personDetail.Photo"
+                     [src]="personDetail.Photo"
+                     alt="Profile Photo"
+                     class="profile-photo-img" />
+ 
+                <!-- If no API photo, choose male/female default -->
+                <img *ngIf="!personDetail.Photo && personDetail.Gender === 'Male'"
+                     src="https://waternstorage.blob.core.windows.net/smartschool/male-avatar.jpg?sv=2023-01-03&spr=https%2Chttp&st=2025-08-22T06%3A18%3A12Z&se=2027-08-31T06%3A18%3A00Z&sr=b&sp=r&sig=YPOjwhZN7EgMm1S5yiqNWQUfU8ONC5SraC2nZKfO4A0%3D"
+                     alt="Default Male Photo"
+                     class="profile-photo-img" />
+ 
+                <img *ngIf="!personDetail.Photo && personDetail.Gender === 'Female'"
+                     src="https://waternstorage.blob.core.windows.net/smartschool/female-avatar.jpg?sv=2023-01-03&spr=https%2Chttp&st=2025-08-22T06%3A18%3A40Z&se=2027-08-31T06%3A18%3A00Z&sr=b&sp=r&sig=3Gqz1v5bSyCUU45Dcs76eAASxoSZxzm%2F2G2nfCPKBzk%3D"
+                     alt="Default Female Photo"
+                     class="profile-photo-img" />
+              </div>
+            </div>
+            <div class="profile-basic-info">
+              <h3>{{ personDetail['First Name'] }} {{ personDetail['Last Name'] }}</h3>
+              <p class="category-badge">{{ data.category }}</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+ 
+      <mat-divider></mat-divider>
+ 
+      <!-- Personal Information -->
+      <mat-card class="details-card">
+        <mat-card-header>
+          <mat-card-title>Personal Information</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="info-grid">
+            <div class="info-item">
+              <strong>Gender:</strong>
+              <span>{{ personDetail.Gender || 'Not Available' }}</span>
+            </div>
+            <!-- <div class="info-item">
+              <strong>Age:</strong>
+              <span>{{ personDetail.Age || 'Not Available' }}</span>
+            </div> -->
+          </div>
+        </mat-card-content>
+      </mat-card>
+ 
+      <!-- Tracking Information Table -->
+      <mat-card class="details-card">
+        <mat-card-header>
+          <mat-card-title>Tracking Information</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <!-- Show table when there are tracking records -->
+          <div *ngIf="personDetails && personDetails.length > 0">
+            <table class="tracking-table mat-elevation-z2">
+              <thead>
+                <tr>
+                  <th>Last Found Time</th>
+                  <th>Location Name</th>
+                  <th>Zone Name</th>
+                  <th>Camera Name</th>
+                  <th>Emotion</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let person of personDetails; let i = index">
+                  <td>{{ person['Person Found DateTime'] | date:'medium' }}</td>
+                  <td>{{ person['Location Name'] || 'N/A' }}</td>
+                  <td>{{ person['Zone Name'] || 'N/A' }}</td>
+                  <td>{{ person['Camera Name'] || 'N/A' }}</td>
+                  <td>{{ person['Person Found Emotion'] || 'N/A' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Show message when no tracking records -->
+          <div *ngIf="!personDetails || personDetails.length === 0" class="no-data-message">
+            <mat-icon>info</mat-icon>
+            <p>No tracking records found for this person.</p>
+          </div>
+        </mat-card-content>
+      </mat-card> 
+    </div>
+  </div>
+  
+  <!-- Modal Footer -->
+  <!-- <div class="modal-footer sticky-footer">
+    <button mat-button class="close-btn" (click)="onClose()">Close</button>
+  </div> -->
+</div>

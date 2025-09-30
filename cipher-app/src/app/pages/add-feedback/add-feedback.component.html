@@ -1,0 +1,54 @@
+<div class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">Add Feedback</h2>
+    </div>
+
+    <div class="modal-body">
+      <!-- Driver Dropdown -->
+      <label for="driver">Driver</label>
+      <select id="driver" [(ngModel)]="selectedDriverId" name="driver" required>
+        <option value="" disabled selected>-- Select Driver --</option>
+        <option *ngFor="let d of drivers" [value]="d.id">
+          {{ d.name }}
+        </option>
+      </select>
+
+      <!-- Star Rating -->
+      <label>Rating</label>
+      <div class="stars">
+        <span
+          *ngFor="let star of [1,2,3,4,5]"
+          (click)="setRating(star)"
+          (mouseover)="hoverRating = star"
+          (mouseleave)="hoverRating = 0"
+          [class.filled]="star <= (hoverRating || rating)"
+          style="cursor: pointer; font-size: 24px; user-select: none;"
+        >
+          ★
+        </span>
+      </div>
+
+      <!-- Comment Box -->
+      <label for="comment">Comment</label>
+      <textarea
+        id="comment"
+        [(ngModel)]="comment"
+        name="comment"
+        rows="4"
+        placeholder="Write your feedback..."
+      ></textarea>
+    </div>
+
+<div class="modal-footer">
+  <button
+    (click)="submitFeedback()"
+    class="submit-btn">
+    Submit
+  </button>
+
+  <button mat-button (click)="closeDialog()" class="close-btn">
+    Close
+  </button>
+</div>
+</div>

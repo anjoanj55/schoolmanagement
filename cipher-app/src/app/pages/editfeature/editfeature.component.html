@@ -1,0 +1,35 @@
+
+ <div id="userEditPopup" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Edit Feature</div>
+                <button class="modal-close" (click)="closeDialog()">×</button>
+            </div>
+            <div class="modal-body">             
+                <label for="userEditName">Name</label>
+                <input type="text" id="userEditName" placeholder="Enter name" [(ngModel)]="Name">
+                <label>Modules and Features</label>
+        <div class="multi-select-dropdown">
+  <div class="dropdown-header" (click)="toggleDropdown()">
+    <!-- {{ selectedRoles.length ? selectedRoles.join(', ') : 'Select' }} -->
+       {{  'Select' }}
+    <span class="arrow">&#9662;</span>
+  </div>
+     <div class="dropdown-list" *ngIf="dropdownOpen">
+    <label *ngFor="let role of rolesList">
+      <input type="checkbox"
+             [value]="role"
+             (change)="onRoleChange($event)"
+             [checked]="selectedRoles.includes(role)">
+      {{ role }}
+    </label>
+              </div>
+               </div>
+               
+                <div style="display: flex; gap: 12px; margin-top: 16px;">
+                    <button class="btn btn-primary" (click)="updateUserRole()">Save</button>
+                    <button class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>

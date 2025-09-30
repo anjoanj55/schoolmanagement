@@ -1,0 +1,67 @@
+.exam-item {
+  padding: 6px 0;                /* inner spacing */
+  border-bottom: 1px solid #615f5f; /* line separator */
+  margin-bottom: 6px;            /* extra gap between exams */
+}
+
+.exam-item:last-child {
+  border-bottom: none;           /* remove line from last exam in cell */
+  margin-bottom: 0;
+}
+
+.subject-name {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.subject-info {
+  font-size: 0.9em;
+  color: #555;
+  line-height: 1.4;
+}
+.search-container {
+  position: relative;
+  display: inline-block;
+}
+
+.search-bar {
+  padding-right: 30px; /* space for the clear button */
+  width: 450px;
+  height: 36px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding-left: 10px;
+  font-size: 14px;
+}
+
+.clear-btn {
+  position: absolute;
+  right: 8px;
+  top: 30%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #888;
+}
+
+.clear-btn:hover {
+  color: #000;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #schedule-section, #schedule-section * {
+    visibility: visible;
+  }
+  #schedule-section {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+

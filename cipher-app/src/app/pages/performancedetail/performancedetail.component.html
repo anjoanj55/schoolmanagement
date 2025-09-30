@@ -1,0 +1,33 @@
+<div class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">History Details</h2>
+      <!-- <button mat-button (click)="closeDialog()">×</button> -->
+    </div>
+
+    <div class="modal-body">
+      <label>Student</label>
+      <input type="text" [value]="data.first_name + ' ' + data.last_name" readonly>
+
+      <label>Subject</label>
+      <input type="text" [value]="data.subject_name" readonly>
+
+      <label>Score</label>
+      <input type="text" [value]="data.MarksObtained + '%'" readonly>
+
+      <label>Status</label>
+      <input type="text" [value]="data.Remarks" readonly>
+
+      
+      <label>Date</label>
+      <input type="text" [value]="data.Date | date:'dd-MM-yyyy'" readonly>
+    </div>
+
+    <div class="modal-footer">
+      <button mat-button (click)="closeDialog()"
+              style="background:#1976d2; color:#fff; padding:8px 18px; border-radius:6px; font-size:14px; min-width: 80px;">
+        Close
+      </button>
+    </div>
+  </div>
+</div>

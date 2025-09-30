@@ -1,0 +1,8 @@
+/* You can add global styles to this file, and also import other style files */
+.custom-dialog-container .mat-mdc-dialog-surface {
+  display: block !important;       /* allow natural flow */
+  
+  overflow-y: auto !important;     /* enable scrolling */
+  flex-grow: unset !important;     /* undo flex grow */
+  flex-shrink: unset !important;   /* undo flex shrink */
+}

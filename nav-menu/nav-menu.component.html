@@ -1,0 +1,492 @@
+<mat-toolbar class="mat-elevation-z5 toolbar-separator" style="background-color:white; height: 7%; color: white">
+    <mat-toolbar-row style="margin-top:3px">
+        <button mat-icon-button (click)="toggleMenu()">
+            <mat-icon style="color: #214252">menu</mat-icon>
+        </button>
+        <img src="https://ik.imagekit.io/eixwi79uz/finallogo_CDDz10zmPe?updatedAt=1752664878029" style="width:10%" />
+        <label [hidden]="this.status === onlineStatusCheck.OFFLINE"
+            style="color:#50C878;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;margin-left:1%;font-weight:400">Online</label>
+        <label [hidden]="this.status === onlineStatusCheck.ONLINE"
+            style="color: #EE4B2B; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin-left: 1%; font-weight: 400 ">Offline</label>
+        <span style="flex:auto"></span>
+        <div style="margin-right: 15px;margin-top:15px;" id="google_translate_wrapper">
+            <app-google-translate></app-google-translate>
+        </div>
+        <div class="icon" style="float: right; align-content: center;">
+            <button mat-mini-fab [matMenuTriggerFor]="menu" style="color: #0a68ae; background-color:lightgray;">
+                <mat-icon style="text-align: center;font-size:x-large;font-family:system-ui;">{{a}}</mat-icon>
+            </button>
+            <mat-menu #menu style="background-color: white; color: gray; height: fit-content ">
+                <label style="color: #0a68ae; padding: 10px; "> {{ loginuser}}</label>
+                <button mat-menu-item style="background-color: white; color: gray; border: none; height: fit-content"
+                    [routerLink]="'/admin'">
+                    Admin Portal
+                </button>
+                <button mat-menu-item
+                    style="background-color: white; color: firebrick; border: none; height: fit-content"
+                    (click)="logoutuser()">
+                    Logout
+                </button>
+            </mat-menu>
+        </div>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<div class="main-container">
+    <mat-sidenav-container class="sidenav-container">
+        <mat-sidenav #sidenav class="app-sidenav"
+            [ngClass]="{'collapsed-sidenav': isCollapsed, 'expanded-sidenav': !isCollapsed}"
+            [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile">
+            <div class="sidenav-content">
+                <mat-nav-list class="nav-list">
+                    <mat-expansion-panel class="nav-panel hospital-management-panel" hideToggle [ngClass]="{ 'panel-highlight': isChildRouteActive(['overview', 'Clinical', 'Operational', 'Financial', 'Staff', 'Patient']) }"
+                        (opened)="panelOpened(hospitalManagementPanel)" #hospitalManagementPanel [expanded]="true">
+                        <mat-expansion-panel-header class="panel-header">
+                            <mat-panel-title class="panel-title">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon">local_hospital</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Hospital Management</span>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['overview']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Overview' : ''">dashboard</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Overview</span>
+                                </div>
+                            </a>
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['Clinical']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Clinical Records' : ''">local_pharmacy</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Clinical</span>
+                                </div>
+                            </a>
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['Operational']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Operational' : ''">business_center</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Operational</span>
+                                </div>
+                            </a>
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['Financial']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Financial' : ''">attach_money</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Financial</span>
+                                </div>
+                            </a>
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['Staff']" class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon" [matTooltip]="isCollapsed ? 'Staff' : ''">groups
+                                    </mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Staff</span>
+                                </div>
+                            </a>
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['Patient']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Patient' : ''">personal_injury</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Patient</span>
+                                </div>
+                            </a>
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="nav-panel operation-theater-panel" hideToggle [ngClass]="{ 'panel-highlightoperation': isChildRouteActive(['Reports', 'RVAAuditing', 'Performance']) }"
+                        (opened)="panelOpened(operationTheaterPanel)" #operationTheaterPanel>
+                        <mat-expansion-panel-header class="panel-header">
+                            <mat-panel-title class="panel-title">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon">medical_services</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Operation Theater</span>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['Reports']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Theater Report' : ''">insights</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Theater Report</span>
+                                </div>
+                            </a>
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['RVAAuditing']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'RVA Auditing' : ''">fact_check</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">RVA Auditing</span>
+                                </div>
+                            </a>
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['Performance']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Hospital Performance' : ''">analytics</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Hospital Performance</span>
+                                </div>
+                            </a>
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="nav-panel patient-monitoring-panel" hideToggle [ngClass]="{ 'panel-highlightop': isChildRouteActive([]) }"
+                        (opened)="panelOpened(patientMonitoringPanel)" #patientMonitoringPanel>
+                        <mat-expansion-panel-header class="panel-header">
+                            <mat-panel-title class="panel-title">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon">monitor_heart</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">OT Patient Monitoring</span>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="nav-panel hospital-3d-panel" hideToggle [ngClass]="{ 'panel-highlight3d': isChildRouteActive(['3Dmap']) }"
+                        (opened)="panelOpened(hospital3DPanel)" #hospital3DPanel>
+                        <mat-expansion-panel-header class="panel-header">
+                            <mat-panel-title class="panel-title">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon">view_in_ar</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Hospital 3D View</span>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['3Dmap']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Hospital Performance' : ''">analytics</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">3D Overview</span>
+                                </div>
+                            </a>
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="nav-panel video-analysis-panel" hideToggle [ngClass]="{ 'panel-highlightVideo': isChildRouteActive(['Video','Analytics1','Analytics2','Analytics3']) }"
+                        (opened)="panelOpened(videoAnalysisPanel)" #videoAnalysisPanel>
+                        <mat-expansion-panel-header class="panel-header">
+                            <mat-panel-title class="panel-title">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon">analytics</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Video Analytics</span>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['Video']" class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Hospital Performance' : ''">analytics</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Analytics Overview</span>
+                                </div>
+                            </a>
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['Analytics1']" class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Hospital Performance' : ''">photo_camera</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Camera Details</span>
+                                </div>
+                            </a>
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['Analytics2']" class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Hospital Performance' : ''">event_note</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Event Analytics</span>
+                                </div>
+                            </a>
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['Analytics3']" class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Hospital Performance' : ''">groups</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Occupancy</span>
+                                </div>
+                            </a>
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="nav-panel video-analysis-panel1" hideToggle [ngClass]="{ 'panel-highlightMedical': isChildRouteActive(['Clockreport', 'MidwiferyReport', 'CRNAReport', 'DynamicityReport', 'StudentBasedReport', 'deltalogicReport', 'StudentReport', 'AdvancedReport', 'AreasReport', 'SiteReport', 'QuestionnaireReport', 'FlipReport', 'ClinicalHours']) }"
+                        (opened)="panelOpened(medicalStudentsPanel)" #medicalStudentsPanel>
+                        <mat-expansion-panel-header class="panel-header">
+                            <mat-panel-title class="panel-title">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon">school</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Medical Students</span>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['Clockreport']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Clock Hour SLP Report' : ''">schedule</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Clock Hour SLP report</span>
+                                </div>
+                            </a>
+
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['MidwiferyReport']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Midwifery Report' : ''">pregnant_woman</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Midwifery-Admin Report</span>
+                                </div>
+                            </a>
+
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['CRNAReport']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'CRNA Report' : ''">medical_services</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">CRNA Report</span>
+                                </div>
+                            </a>
+
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['DynamicityReport']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Dynamicity Report' : ''">trending_up</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Time-off report</span>
+                                </div>
+                            </a>
+
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['StudentBasedReport']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Student Based Report UTH' : ''">school</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">PatientLog Report</span>
+                                </div>
+                            </a>
+                             
+
+                             <a mat-list-item routerLinkActive="active-item" [routerLink]="['deltalogicReport']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Questionnaire Report' : ''">article</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">CRNA Report deltalogic</span>
+                                </div>
+                            </a>
+
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['StudentReport']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Student Report' : ''">people</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Student Report</span>
+                                </div>
+                            </a>
+
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['AdvancedReport']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Advanced Student Report' : ''">insights</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Advanced Student Report</span>
+                                </div>
+                            </a>
+
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['AreasReport']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Professional Interest' : ''">psychology</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Professional interest</span>
+                                </div>
+                            </a>
+
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['SiteReport']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Site without Contract' : ''">location_off</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Site without Contract</span>
+                                </div>
+                            </a>
+
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['QuestionnaireReport']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Questionnaire Report' : ''">assignment</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Questionnaire Report</span>
+                                </div>
+                            </a>
+
+                             <a mat-list-item routerLinkActive="active-item" [routerLink]="['FlipReport']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Questionnaire Report' : ''">flip</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Flip view for preceptor</span>
+                                </div>
+                            </a>
+
+                             <a mat-list-item routerLinkActive="active-item" [routerLink]="['ClinicalHours']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Questionnaire Report' : ''">hourglass_empty</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">FNP Clinical Hours Report</span>
+                                </div>
+                            </a>
+
+                        </div>
+
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="nav-panel video-analysis-panel2" hideToggle [ngClass]="{ 'panel-highlight': isChildRouteActive(['MedicalstaffReport1','MedicalstaffReport2']) }"
+                        (opened)="panelOpened(medicalStaffPanel)" #medicalStaffPanel>
+                        <mat-expansion-panel-header class="panel-header">
+                            <mat-panel-title class="panel-title">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon">badge</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Medical staff</span>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['MedicalstaffReport1']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Questionnaire Report' : ''">admin_panel_settings</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Staff Overview</span>
+                                </div>
+                            </a>
+                            <a mat-list-item routerLinkActive="active-item" [routerLink]="['MedicalstaffReport2']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Questionnaire Report' : ''">admin_panel_settings</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Performance</span>
+                                </div>
+                            </a>
+
+
+                        </div>
+                    </mat-expansion-panel>
+
+                    <!-- <mat-expansion-panel class="nav-panel video-analysis-panel3" hideToggle [ngClass]="{ 'panel-highlight': isChildRouteActive([]) }"
+                        (opened)="panelOpened(adminCentrePanel)" #adminCentrePanel>
+                        <mat-expansion-panel-header class="panel-header">
+                            <mat-panel-title class="panel-title">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon">admin_panel_settings</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Admin Centre</span>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+                        </div>
+                    </mat-expansion-panel> -->
+                      <mat-expansion-panel class="nav-panel admin-panel" hideToggle [ngClass]="{ 'panel-highlightadmin': isChildRouteActive(['admin']) }"
+                        (opened)="panelOpened(adminCentrePanel)" #adminCentrePanel>
+                        <mat-expansion-panel-header class="panel-header">
+                            <mat-panel-title class="panel-title">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon">admin_panel_settings</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Admin</span>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+                             <a mat-list-item routerLinkActive="active-item" [routerLink]="['admin']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Questionnaire Report' : ''">admin_panel_settings</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">Admin Centre</span>
+                                </div>
+                            </a>
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="nav-panel video-analysis-panel4" hideToggle [ngClass]="{ 'panel-highlightAI': isChildRouteActive(['Productivity']) }"
+                        (opened)="panelOpened(aiVideosPanel)" #aiVideosPanel>
+                        <mat-expansion-panel-header class="panel-header">
+                            <mat-panel-title class="panel-title">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon">videocam</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">AI Videos</span>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+                             <a mat-list-item routerLinkActive="active-item" [routerLink]="['Productivity']"
+                                class="nav-item">
+                                <div class="nav-item-content">
+                                    <mat-icon class="nav-icon"
+                                        [matTooltip]="isCollapsed ? 'Questionnaire Report' : ''">videocam</mat-icon>
+                                    <span *ngIf="!isCollapsed" class="nav-label">AI Videos</span>
+                                </div>
+                            </a>
+                        </div>
+                    </mat-expansion-panel>
+
+                </mat-nav-list>
+            </div>
+        </mat-sidenav>
+
+        <mat-sidenav-content class="main-content">
+            <div class="content-wrapper">
+                <router-outlet></router-outlet>
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
+
+<div class="chat-bubble-wrapper">
+    <button mat-fab class="chat-bubble" (click)="toggleChatPopup()">
+        <mat-icon>smart_toy</mat-icon>
+        <span class="status-dot"></span>
+    </button>
+</div>
+
+<div class="chat-popup-card" *ngIf="isChatOpen">
+    <div class="chat-popup-header">
+        <div>
+            <h3>AI Assistant</h3>
+            <p>Ask your hospital-related queries</p>
+        </div>
+        <button mat-icon-button (click)="toggleChatPopup()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <div class="chat-popup-body">
+        <div *ngFor="let message of chatMessages" [class]="message.user ? 'chat-message user' : 'chat-message ai'">
+            <div class="msg">{{ message.text }}</div>
+        </div>
+        <div *ngIf="isLoadingBotResponse" class="chat-message ai">
+            <div class="msg loading-dots">
+                <span>.</span><span>.</span><span>.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-popup-input">
+        <textarea [(ngModel)]="userInput" placeholder="Type your message..." rows="1"
+            (keydown.enter)="sendMessage($event)">
+        </textarea>
+        <button mat-icon-button color="primary" (click)="sendMessage($event)" [disabled]="isLoadingBotResponse">
+            <mat-icon>send</mat-icon>
+        </button>
+    </div>
+</div>

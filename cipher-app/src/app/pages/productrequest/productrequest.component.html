@@ -1,0 +1,27 @@
+<div class="modal">
+  <div class="modal-content">
+    <!-- Modal header -->
+    <div class="modal-header">
+      <h2 class="modal-title">Create Item Request</h2>
+      <button class="modal-close" (click)="closeDialog()">×</button>
+    </div>
+
+    <!-- Modal body -->
+    <form [formGroup]="subjectForm" class="modal-body">  <!-- Add formGroup binding here -->
+      <label for="Item_Name">Item Name</label>
+      <input id="Item_Name" type="text" formControlName="Item_Name" placeholder="Enter ItemName">
+
+      <label for="Category">Category</label>
+      <input id="Category" type="text" formControlName="Category" placeholder="Enter Category">
+
+      <label for="Quantity">Quantity</label>
+      <input id="Quantity" type="text" formControlName="Quantity" placeholder="Enter Quantity">
+    </form>
+    <!-- Modal buttons -->
+    <div class="modal-footer" style="display: flex; gap: 10px; margin-top: 15px;">
+      <button class="btn btn-primary" type="button" (click)="onSubmit()">Save</button>
+      <button class="btn btn-secondary" type="reset" (click)="subjectForm.reset()">Reset</button>
+      <button class="btn btn-secondary" type="button" (click)="closeDialog()">Close</button>
+    </div>
+  </div>
+</div>

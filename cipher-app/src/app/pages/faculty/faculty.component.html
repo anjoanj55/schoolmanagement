@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Management - EduPro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #1a202c;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .header h1 {
+            font-size: 2.25rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .nav-tab {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            color: #4a5568;
+            font-size: 0.875rem;
+        }
+
+        .nav-tab:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-tab.active {
+            background: #3182ce;
+            color: white;
+            border-color: #3182ce;
+            box-shadow: 0 2px 4px rgba(49, 130, 206, 0.2);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .main-content {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sidebar-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #3182ce;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .upload-area {
+            border: 2px dashed #e2e8f0;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .upload-area:hover {
+            border-color: #3182ce;
+            background: rgba(49, 130, 206, 0.05);
+        }
+
+        .marks-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        .marks-table th, .marks-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .marks-table th {
+            background: #f7fafc;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .announcements-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .announcement-item {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .announcement-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .announcement-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .announcement-date {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-bottom: 12px;
+        }
+
+        .announcement-content {
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background: #3182ce;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: #2c5aa0;
+        }
+
+        .btn-secondary:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-number {
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: #3182ce;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .floating-action {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: #3182ce;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(49, 130, 206, 0.3);
+            transition: all 0.2s ease;
+            z-index: 1000;
+        }
+
+        .floating-action:hover {
+            transform: scale(1.05);
+            background: #2c5aa0;
+            box-shadow: 0 6px 20px rgba(49, 130, 206, 0.4);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .nav-tabs {
+                justify-content: flex-start;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 20px;
+            }
+
+            .main-content, .sidebar-card {
+                padding: 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .main-content {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+    </style>
+</head>
+<body *ngIf="uploadQuestion">
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Class Management</h1>
+            <p>Tools for teachers to manage assessments, marks, announcements, and parent communications</p>
+        </div>
+
+        <!-- Statistics Overview -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Question Papers Uploaded</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">120</div>
+                <div class="stat-label">Students Graded</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Announcements Posted</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Alerts Sent</div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" (click)="switchTab('uploadQuestion')">Upload Question Paper</button>
+            <button class="nav-tab" (click)="switchTab('uploadMarks')">Upload Marks</button>
+            <button class="nav-tab" (click)="switchTab('announcements')">Class Announcements</button>
+            <!-- <button class="nav-tab" (click)="switchTab('alertParents')">Alert Parents</button> -->
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 24px;">Upload Question Paper</h2>
+                
+                <form>
+                     <div class="form-group">
+                        <label class="form-label">Class name</label>
+                          <select class="form-select">
+    <option>Standard 1</option>
+    <option>Standard 2</option>
+    <option>Standard 3</option>
+    <option>Standard 4</option>
+    <option>Standard 5</option>
+    <option>Standard 6</option>
+    <option>Standard 7</option>
+    <option>Standard 8</option>
+    <option>Standard 9</option>
+    <option>Standard 10</option>
+    <option>11 th Grade</option> 
+    <option>12 th Grade</option>
+</select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Select Subject</label>
+                        <select class="form-select">
+                            <option>Mathematics</option>
+                            <option>English Literature</option>
+                            <option>Physics</option>
+                            <option>Art & Design</option>
+                            <option>Computer Science AP</option>
+                            <option>Music Theory</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Exam Date</label>
+                        <input type="date" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Upload File</label>
+                        <div class="upload-area">
+                            <p style="font-size: 1rem; color: #64748b; margin-bottom: 8px;">Drag & drop or click to upload</p>
+                            <input type="file" style="display: none;">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary">Upload</button>
+                </form>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Quick Actions -->
+                <div class="sidebar-card">
+                    <h3 style="margin-bottom: 20px; color: #1a202c;">Quick Actions</h3>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button class="btn btn-primary">Upload Paper</button>
+                        <button class="btn btn-secondary">View Uploaded Papers</button>
+                        <button class="btn btn-secondary">Generate Report</button>
+                          <button class="btn btn-secondary">Ask AI for questions</button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="sidebar-card">
+                    <h3 style="margin-bottom: 20px; color: #1a202c;">Recent Uploads</h3>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <div style="font-size: 0.9rem; color: #64748b;">Math Paper - Aug 10</div>
+                        <div style="font-size: 0.9rem; color: #64748b;">Physics Quiz - Aug 8</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="floating-action" onclick="uploadNew()">+</button>
+</body>
+<body *ngIf="uploadMarks">
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Class Management</h1>
+            <p>Tools for teachers to manage assessments, marks, announcements, and parent communications</p>
+        </div>
+
+        <!-- Statistics Overview -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Question Papers Uploaded</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">120</div>
+                <div class="stat-label">Students Graded</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Announcements Posted</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Alerts Sent</div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab" (click)="switchTab('uploadQuestion')">Upload Question Paper</button>
+            <button class="nav-tab active" (click)="switchTab('uploadMarks')">Upload Marks</button>
+            <button class="nav-tab" (click)="switchTab('announcements')">Class Announcements</button>
+            <!-- <button class="nav-tab" (click)="switchTab('alertParents')">Alert Parents</button> -->
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 24px;">Upload Marks for Students</h2>
+                 <div class="form-group">
+                        <label class="form-label">Class name</label>
+                         <select class="form-select">
+    <option>Pre-K</option>
+    <option>Kindergarten</option>
+    <option>Standard 1</option>
+    <option>Standard 2</option>
+    <option>Standard 3</option>
+    <option>Standard 4</option>
+    <option>Standard 5</option>
+    <option>Standard 6</option>
+    <option>Standard 7</option>
+    <option>Standard 8</option>
+    <option>Standard 9</option>
+    <option>Standard 10</option>
+    <option>11 th Grade</option> 
+    <option>12 th Grade</option>
+</select>
+                    </div>
+                <select class="form-select" style="margin-bottom: 24px;">
+                    <option>Select Subject/Exam</option>
+                    <option>Mathematics Midterm</option>
+                    <option>English Literature Quiz</option>
+                </select>
+                
+                <table class="marks-table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Marks</th>
+                            <th>Comments</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>John Doe</td>
+                            <td><input type="number" class="form-input" style="width: 80px;"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><button class="btn btn-secondary">Save</button></td>
+                        </tr>
+                        <tr>
+                            <td>Jane Smith</td>
+                            <td><input type="number" class="form-input" style="width: 80px;"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><button class="btn btn-secondary">Save</button></td>
+                        </tr>
+                        <tr>
+                            <td>Michael Brown</td>
+                            <td><input type="number" class="form-input" style="width: 80px;"></td>
+                            <td><input type="text" class="form-input"></td>
+                            <td><button class="btn btn-secondary">Save</button></td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+                <button class="btn btn-primary" style="margin-top: 20px;">Submit All Marks</button>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Quick Actions -->
+                <div class="sidebar-card">
+                    <h3 style="margin-bottom: 20px; color: #1a202c;">Quick Actions</h3>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button class="btn btn-primary">Upload Bulk Marks</button>
+                        <button class="btn btn-secondary">Export Grades</button>
+                        <button class="btn btn-secondary">Generate Report</button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="sidebar-card">
+                    <h3 style="margin-bottom: 20px; color: #1a202c;">Recent Grades</h3>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <div style="font-size: 0.9rem; color: #64748b;">Math Midterm - Updated</div>
+                        <div style="font-size: 0.9rem; color: #64748b;">Physics Quiz - Graded</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="floating-action" onclick="addNewMark()">+</button>
+</body>
+<body *ngIf="announcements">
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Class Management</h1>
+            <p>Tools for teachers to manage assessments, marks, announcements, and parent communications</p>
+        </div>
+
+        <!-- Statistics Overview -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Question Papers Uploaded</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">120</div>
+                <div class="stat-label">Students Graded</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Announcements Posted</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Alerts Sent</div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab" (click)="switchTab('uploadQuestion')">Upload Question Paper</button>
+            <button class="nav-tab" (click)="switchTab('uploadMarks')">Upload Marks</button>
+            <button class="nav-tab active" (click)="switchTab('announcements')">Class Announcements</button>
+            <!-- <button class="nav-tab" (click)="switchTab('alertParents')">Alert Parents</button> -->
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 24px;">Class Announcements</h2>
+                
+                <form>
+                     <div class="form-group">
+                        <label class="form-label">Class name</label>
+                      <select class="form-select">
+    <option>Pre-K</option>
+    <option>Kindergarten</option>
+    <option>Standard 1</option>
+    <option>Standard 2</option>
+    <option>Standard 3</option>
+    <option>Standard 4</option>
+    <option>Standard 5</option>
+    <option>Standard 6</option>
+    <option>Standard 7</option>
+    <option>Standard 8</option>
+    <option>Standard 9</option>
+    <option>Standard 10</option>
+    <option>11 th Grade</option> 
+    <option>12 th Grade</option>
+</select>
+Would you like this 
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-input" placeholder="Enter announcement title">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Content</label>
+                        <textarea class="form-textarea" placeholder="Enter announcement details"></textarea>
+                    </div>
+                    <button class="btn btn-primary">Post Announcement</button>
+                </form>
+                
+                <div class="announcements-list">
+                    <div class="announcement-item">
+                        <h3 class="announcement-title">Upcoming Math Test</h3>
+                        <div class="announcement-date">Aug 10, 2025</div>
+                        <p class="announcement-content">Please prepare for the midterm exam on chapters 1-5.</p>
+                    </div>
+                    <div class="announcement-item">
+                        <h3 class="announcement-title">School Holiday</h3>
+                        <div class="announcement-date">Aug 8, 2025</div>
+                        <p class="announcement-content">No classes on Friday due to national holiday.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Quick Actions -->
+                <div class="sidebar-card">
+                    <h3 style="margin-bottom: 20px; color: #1a202c;">Quick Actions</h3>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button class="btn btn-primary">Post New</button>
+                        <button class="btn btn-secondary">View Archive</button>
+                        <button class="btn btn-secondary">Export</button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="sidebar-card">
+                    <h3 style="margin-bottom: 20px; color: #1a202c;">Recent Posts</h3>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <div style="font-size: 0.9rem; color: #64748b;">Math Test - Posted</div>
+                        <div style="font-size: 0.9rem; color: #64748b;">Holiday - Updated</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="floating-action" onclick="newAnnouncement()">+</button>
+</body>
+<!-- <body *ngIf="alertParents">
+    <div class="container">
+        
+        <div class="header">
+            <h1>Class Management</h1>
+            <p>Tools for teachers to manage assessments, marks, announcements, and parent communications</p>
+        </div>
+
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Question Papers Uploaded</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">120</div>
+                <div class="stat-label">Students Graded</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Announcements Posted</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Alerts Sent</div>
+            </div>
+        </div>
+
+        
+        <div class="nav-tabs">
+            <button class="nav-tab" (click)="switchTab('uploadQuestion')">Upload Question Paper</button>
+            <button class="nav-tab" (click)="switchTab('uploadMarks')">Upload Marks</button>
+            <button class="nav-tab" (click)="switchTab('announcements')">Class Announcements</button>
+            <button class="nav-tab active" (click)="switchTab('alertParents')">Alert Parents</button>
+        </div>
+
+        
+        <div class="content-grid">
+           
+            <div class="main-content">
+                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 24px;">Alert Parents</h2>
+                
+                <form>
+                    <div class="form-group">
+                        <label class="form-label">Select Students</label>
+                        <select class="form-select" multiple>
+                            <option>John Doe</option>
+                            <option>Jane Smith</option>
+                            <option>Michael Brown</option>
+                            <option>Emily Davis</option>
+                            <option>David Wilson</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Subject</label>
+                        <input type="text" class="form-input" placeholder="Enter alert subject">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-textarea" placeholder="Enter message to parents"></textarea>
+                    </div>
+                    <button class="btn btn-primary">Send Alert</button>
+                </form>
+            </div>
+
+            
+            <div class="sidebar">
+               
+                <div class="sidebar-card">
+                    <h3 style="margin-bottom: 20px; color: #1a202c;">Quick Actions</h3>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button class="btn btn-primary">Send Alert</button>
+                        <button class="btn btn-secondary">View Sent Alerts</button>
+                        <button class="btn btn-secondary">Generate Report</button>
+                    </div>
+                </div>
+
+                
+                <div class="sidebar-card">
+                    <h3 style="margin-bottom: 20px; color: #1a202c;">Recent Alerts</h3>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <div style="font-size: 0.9rem; color: #64748b;">Low Attendance - Sent</div>
+                        <div style="font-size: 0.9rem; color: #64748b;">Grade Update - Sent</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <button class="floating-action" onclick="newAlert()">+</button>
+</body> -->
+</html>

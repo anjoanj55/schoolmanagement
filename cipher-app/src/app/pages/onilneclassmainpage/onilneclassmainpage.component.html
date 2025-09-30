@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Classes Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #1a202c;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.25rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3182ce, #63b3ed);
+            border-radius: 0 0 8px 8px;
+        }
+
+        .stat-number {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #3182ce;
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .stat-change {
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .stat-change.positive {
+            color: #38a169;
+        }
+
+        .stat-change.negative {
+            color: #e53e3e;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .class-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .class-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .class-thumbnail {
+            width: 100%;
+            height: 160px;
+            background: #f8fafc;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .class-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .class-content {
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .class-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .class-instructor {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .class-time {
+            font-size: 0.8125rem;
+            color: #4a5568;
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            align-self: flex-start;
+        }
+
+        .status-live { background: #c6f6d5; color: #22543d; }
+        .status-scheduled { background: #fef5e7; color: #744210; }
+        .status-recorded { background: #d6e4ff; color: #1a3c87; }
+
+        .class-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 8px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-card:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 12px;
+        }
+
+        .action-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .insight-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 0.875rem;
+            color: #4a5568;
+        }
+
+        .insight-item {
+            background: #edf2f7;
+            border-radius: 6px;
+            padding: 10px;
+            border-left: 3px solid #3182ce;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8125rem;
+        }
+
+        .btn-primary {
+            background: #3182ce;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-primary:hover {
+            background: #2b6cb0;
+        }
+
+        .btn-secondary:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        .search-input {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.875rem;
+            width: 220px;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3182ce;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+        }
+
+        .floating-action {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(45deg, #3182ce, #63b3ed);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.125rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(49, 130, 206, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .floating-action:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 24px rgba(49, 130, 206, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.875rem;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .class-grid {
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            }
+
+            .search-input {
+                width: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 16px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .class-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .class-actions {
+                flex-direction: column;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .class-card, .sidebar-card {
+            animation: slideIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Online Classes Dashboard</h1>
+            <p>Explore and join live or recorded classes</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">15</div>
+                <div class="stat-label">Live Classes</div>
+                <div class="stat-change positive">+3 today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">50</div>
+                <div class="stat-label">Scheduled Classes</div>
+                <div class="stat-change positive">+10 this week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">120</div>
+                <div class="stat-label">Recorded Classes</div>
+                <div class="stat-change positive">+20 this month</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">85%</div>
+                <div class="stat-label">Student Engagement</div>
+                <div class="stat-change positive">+5% this week</div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="main-content">
+                <input type="text" class="search-input" placeholder="Search classes..." onkeyup="filterClasses(this.value)">
+                <div class="class-grid">
+                    <div class="class-card">
+                        <div class="class-thumbnail">
+                            <img src="https://via.placeholder.com/280x160?text=Mathematics" alt="Mathematics Thumbnail">
+                        </div>
+                        <div class="class-content">
+                            <div class="class-title">Chemistry</div>
+                            <div class="class-instructor">Dr. John Smith</div>
+                            <div class="class-time">Today, 2:00 PM</div>
+                            <span class="status-badge status-live">Live</span>
+                            <div class="class-actions">
+                                <button class="btn btn-primary">Join Now</button>
+                                <button class="btn btn-secondary">Details</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="class-card">
+                        <div class="class-thumbnail">
+                            <img src="https://via.placeholder.com/280x160?text=Physics" alt="Physics Thumbnail">
+                        </div>
+                        <div class="class-content">
+                            <div class="class-title">Physics Fundamentals</div>
+                            <div class="class-instructor">Prof. Jane Doe</div>
+                            <div class="class-time">Tomorrow, 10:00 AM</div>
+                            <span class="status-badge status-scheduled">Scheduled</span>
+                            <div class="class-actions">
+                                <button class="btn btn-primary">Register</button>
+                                <button class="btn btn-secondary">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="class-card">
+                        <div class="class-thumbnail">
+                            <img src="https://via.placeholder.com/280x160?text=Programming" alt="Programming Thumbnail">
+                        </div>
+                        <div class="class-content">
+                            <div class="class-title">Python Programming</div>
+                            <div class="class-instructor">Mr. Alex Brown</div>
+                            <div class="class-time">Jul 30, 2025</div>
+                            <span class="status-badge status-recorded">Recorded</span>
+                            <div class="class-actions">
+                                <button class="btn btn-primary">Watch Now</button>
+                                <button class="btn btn-secondary">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="class-card">
+                        <div class="class-thumbnail">
+                            <img src="https://via.placeholder.com/280x160?text=Literature" alt="Literature Thumbnail">
+                        </div>
+                        <div class="class-content">
+                            <div class="class-title">Modern Literature</div>
+                            <div class="class-instructor">Dr. Sarah Lee</div>
+                            <div class="class-time">Today, 4:00 PM</div>
+                            <span class="status-badge status-live">Live</span>
+                            <div class="class-actions">
+                                <button class="btn btn-primary">Join Now</button>
+                                <button class="btn btn-secondary">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-title">Quick Actions</div>
+                    <div class="action-list">
+                        <button class="btn btn-primary">Join Live Class</button>
+                        <button class="btn btn-secondary">Schedule Class</button>
+                        <button class="btn btn-secondary">View Recordings</button>
+                        <button class="btn btn-secondary">Manage Classes</button>
+                    </div>
+                </div>
+                <div class="sidebar-card">
+                    <div class="sidebar-title">Class Insights</div>
+                    <div class="insight-list">
+                        <div class="insight-item">Mathematics classes have 90% attendance.</div>
+                        <div class="insight-item">Python Programming has highest views.</div>
+                        <div class="insight-item">Live classes peak at 2 PM daily.</div>
+                        <div class="insight-item">80% of students prefer recorded sessions.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="floating-action">+</button>
+    </div>
+
+    <script>
+        function filterClasses(query) {
+            const cards = document.querySelectorAll('.class-card');
+            cards.forEach(card => {
+                const title = card.querySelector('.class-title').textContent.toLowerCase();
+                const instructor = card.querySelector('.class-instructor').textContent.toLowerCase();
+                const status = card.querySelector('.status-badge').textContent.toLowerCase();
+                const match = title.includes(query.toLowerCase()) || 
+                            instructor.includes(query.toLowerCase()) || 
+                            status.includes(query.toLowerCase());
+                card.style.display = match ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<div class="modal">
+  <div class="modal-content">
+    <!-- Modal header -->
+    <div class="modal-header">
+      <h2 class="modal-title">Create Alert</h2>
+      <button class="modal-close">×</button>
+    </div>
+
+    <!-- Modal body -->
+    <form  class="modal-body">  <!-- Add formGroup binding here -->
+      <label for="Item_Name">Name</label>
+      <input id="Item_Name" type="text" formControlName="Item_Name" placeholder="Search Name">
+
+      <label for="Category">Alert Message</label>
+      <input id="Category" type="text" formControlName="Category" placeholder="Enter Message">
+    </form>
+    <!-- Modal buttons -->
+    <div class="modal-footer" style="display: flex; gap: 10px; margin-top: 15px;">
+      <button class="btn btn-primary" type="button">Send</button>
+      <button class="btn btn-secondary" type="reset" >Reset</button>
+      <button class="btn btn-secondary" type="button">Close</button>
+    </div>
+  </div>
+</div>

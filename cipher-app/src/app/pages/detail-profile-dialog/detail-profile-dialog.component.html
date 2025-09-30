@@ -1,0 +1,219 @@
+<div class="detail-profile-dialog">
+  <!-- Dialog Header -->
+  <div class="dialog-header">
+    <h2 mat-dialog-title>
+      <mat-icon>person</mat-icon>
+      Person Details
+    </h2>
+    <button mat-icon-button (click)="onClose()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+ 
+  <mat-divider></mat-divider>
+ 
+  <!-- Dialog Content -->
+  <div mat-dialog-content class="dialog-content">
+ 
+    <!-- Loading Spinner -->
+    <div *ngIf="isLoading" class="loading-container">
+      <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+      <p>Loading person details...</p>
+    </div>
+ 
+    <!-- Error State -->
+    <div *ngIf="error && !isLoading" class="error-container">
+      <mat-icon color="warn">error</mat-icon>
+      <p>{{ error }}</p>
+      <button mat-raised-button color="primary" (click)="onRefresh()">
+        <mat-icon>refresh</mat-icon>
+        Retry
+      </button>
+    </div>
+ 
+    <!-- Person Details -->
+    <div *ngIf="personDetail && !isLoading && !error" class="person-details">
+ 
+      <!-- Profile Photo and Basic Info -->
+      <mat-card class="profile-card">
+        <mat-card-content>
+          <div class="profile-header">
+            <div class="profile-photo">
+              <div class="photo-avatar">
+                <!-- If API photo exists -->
+                <img *ngIf="personDetail.Photo"
+                     [src]="personDetail.Photo"
+                     alt="Profile Photo"
+                     class="profile-photo-img" />
+ 
+                <!-- If no API photo, choose male/female default -->
+                <img *ngIf="!personDetail.Photo && personDetail.Gender === 'Male'"
+                     src="https://waternstorage.blob.core.windows.net/smartschool/male-avatar.jpg?sv=2023-01-03&spr=https%2Chttp&st=2025-08-22T06%3A18%3A12Z&se=2027-08-31T06%3A18%3A00Z&sr=b&sp=r&sig=YPOjwhZN7EgMm1S5yiqNWQUfU8ONC5SraC2nZKfO4A0%3D"
+                     alt="Default Male Photo"
+                     class="profile-photo-img" />
+ 
+                <img *ngIf="!personDetail.Photo && personDetail.Gender === 'Female'"
+                     src="https://waternstorage.blob.core.windows.net/smartschool/female-avatar.jpg?sv=2023-01-03&spr=https%2Chttp&st=2025-08-22T06%3A18%3A40Z&se=2027-08-31T06%3A18%3A00Z&sr=b&sp=r&sig=3Gqz1v5bSyCUU45Dcs76eAASxoSZxzm%2F2G2nfCPKBzk%3D"
+                     alt="Default Female Photo"
+                     class="profile-photo-img" />
+              </div>
+            </div>
+            <div class="profile-basic-info">
+              <h3>{{ personDetail['First Name'] }} {{ personDetail['Last Name'] }}</h3>
+              <p class="category-badge">{{ data.category }}</p>
+              <p class="person-id" *ngIf="personDetail['Roll Number']">Roll No: {{ personDetail['Roll Number'] }}</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+ 
+      <mat-divider></mat-divider>
+ 
+      <!-- Personal Information -->
+      <mat-card class="details-card">
+        <mat-card-header>
+          <mat-card-title>Personal Information</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="info-grid">
+            <div class="info-item">
+              <strong>Gender:</strong>
+              <span>{{ personDetail.Gender || 'Not Available' }}</span>
+            </div>
+            <div class="info-item">
+              <strong>Age:</strong>
+              <span>{{ personDetail.Age || 'Not Available' }}</span>
+            </div>
+            <div class="info-item" *ngIf="personDetail.DOB">
+              <strong>Date of Birth:</strong>
+              <span>{{ formatDate(personDetail.DOB) }}</span>
+            </div>
+            <div class="info-item" *ngIf="personDetail['Blood Group']">
+              <strong>Blood Group:</strong>
+              <span>{{ personDetail['Blood Group'] }}</span>
+            </div>
+            <div class="info-item" *ngIf="personDetail['Phone No.']">
+              <strong>Phone:</strong>
+              <span>{{ personDetail['Phone No.'] }}</span>
+            </div>
+            <div class="info-item" *ngIf="personDetail.Email">
+              <strong>Email:</strong>
+              <span>{{ personDetail.Email }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+ 
+      <!-- Address and Location Information -->
+      <mat-card class="details-card" *ngIf="personDetail.Address || personDetail.State || personDetail.Nationality">
+        <mat-card-header>
+          <mat-card-title>Address Information</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="info-item" *ngIf="personDetail.Address">
+            <strong>Address:</strong>
+            <span>{{ personDetail.Address }}</span>
+          </div>
+          <div class="info-item" *ngIf="personDetail.State">
+            <strong>State:</strong>
+            <span>{{ personDetail.State }}</span>
+          </div>
+          <div class="info-item" *ngIf="personDetail.Nationality">
+            <strong>Nationality:</strong>
+            <span>{{ personDetail.Nationality }}</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+ 
+      <!-- Conditional Sections Based on Category -->
+     
+      <!-- Academic Information (for Student) -->
+      <mat-card class="details-card" *ngIf="data.category === 'Student'">
+        <mat-card-header>
+          <mat-card-title>Academic Information</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="personDetail.Class">
+              <strong>Class:</strong>
+              <span>{{ personDetail.Class }}</span>
+            </div>
+            <div class="info-item" *ngIf="personDetail.Section">
+              <strong>Section:</strong>
+              <span>{{ personDetail.Section }}</span>
+            </div>
+            <div class="info-item" *ngIf="personDetail['Admission Date']">
+              <strong>Admission Date:</strong>
+              <span>{{ formatDate(personDetail['Admission Date']) }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+ 
+      <!-- Teaching Information (for Teacher) -->
+      <mat-card class="details-card" *ngIf="data.category === 'Teacher'">
+        <mat-card-header>
+          <mat-card-title>Teaching Information</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="personDetail['Department']">
+              <strong>Department:</strong>
+              <span>{{ personDetail['Department'] }}</span>
+            </div>
+            <div class="info-item" *ngIf="personDetail['Subject']">
+              <strong>Subject:</strong>
+              <span>{{ personDetail['Subject'] }}</span>
+            </div>
+            <div class="info-item" *ngIf="personDetail['Joining Date']">
+              <strong>Joining Date:</strong>
+              <span>{{ formatDate(personDetail['Joining Date']) }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+ 
+      <!-- Staff Information (for Staff) -->
+      <mat-card class="details-card" *ngIf="data.category === 'Staff'">
+        <mat-card-header>
+          <mat-card-title>Staff Information</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="personDetail['Role']">
+              <strong>Role:</strong>
+              <span>{{ personDetail['Role'] }}</span>
+            </div>
+            <div class="info-item" *ngIf="personDetail['Department']">
+              <strong>Department:</strong>
+              <span>{{ personDetail['Department'] }}</span>
+            </div>
+            <div class="info-item" *ngIf="personDetail['Joining Date']">
+              <strong>Joining Date:</strong>
+              <span>{{ formatDate(personDetail['Joining Date']) }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+ 
+    </div>
+  </div>
+ 
+  <mat-divider></mat-divider>
+ 
+  <!-- Dialog Actions -->
+  <!-- <div mat-dialog-actions class="dialog-actions">
+    <button mat-raised-button color="primary" (click)="onRefresh()" [disabled]="isLoading">
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button>
+    <button mat-raised-button (click)="onClose()">
+      Close
+    </button>
+  </div>-->
+</div>
+  
+  <div>
+    <div class="modal-footer sticky-footer">
+    <button mat-button class="close-btn" (click)="onClose()">Close</button>
+  </div>

@@ -1,0 +1,106 @@
+<h2 mat-dialog-title 
+    style="font-size: 22px; font-weight: 600; margin: 0 0 20px 0; color: #2c3e50; text-align:center;">
+  Driver Details
+</h2>
+
+<mat-dialog-content 
+    style="font-size: 15px; line-height: 1.6; color: #444; padding: 0 20px; max-height: none; overflow: hidden;">
+  
+  <div style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Driver Name</label>
+      <input type="text" value="{{ data.Name }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Email</label>
+      <input type="text" value="{{ data.email }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Driver Age</label>
+      <input type="text" value="{{ data.age }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Date of Birth</label>
+      <input type="text" value="{{ data.DOB }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Gender</label>
+      <input type="text" value="{{ data.Gender }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Driver ID</label>
+      <input type="text" value="{{ data.DriverID }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Experience</label>
+      <input type="text" value="{{ data.Experience }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Joining Date</label>
+      <input type="text" value="{{ data.JoiningDate }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">License Number</label>
+      <input type="text" value="{{ data.license_number }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">License Expiry</label>
+      <input type="text" value="{{ data.license_expiry }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Avg Rating</label>
+      <input type="text" value="{{ data.Rating }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Address</label>
+      <input type="text" value="{{ data.address }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">State</label>
+      <input type="text" value="{{ data.State }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Nationality</label>
+      <input type="text" value="{{ data.Nationality }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" 
+    style="margin-top: 20px; padding: 10px; text-align: right; border-top: 1px solid #eee;">
+  <button mat-button mat-dialog-close 
+          style="background:#1976d2; color:#fff; padding:8px 18px; border-radius:6px; font-size:14px; min-width: 80px;">
+    Close
+  </button>
+</mat-dialog-actions>
+
+

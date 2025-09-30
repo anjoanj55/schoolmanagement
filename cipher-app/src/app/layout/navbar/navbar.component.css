@@ -1,0 +1,313 @@
+/* Sidebar container */
+.sidenav {
+  background: #fff;
+  width: 330px;
+  border-right: 1px solid #e0e0e0;
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.05);
+  padding-top: 1px;
+  transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow-x: hidden;
+}
+ 
+mat-sidenav {
+  position: fixed !important;   /* Keeps sidebar fixed */
+}
+
+
+ 
+ 
+/* Collapsed sidebar with icons only */
+.collapsed-sidenav {
+  width: 0px !important;
+}
+ 
+/* Expanded sidebar */
+.expanded-sidenav {
+  width: 330px !important;
+}
+ 
+/* Sidebar header */
+.sidenav-header {
+  background-color: #032742;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+ 
+/* Logo container */
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+ 
+/* Nav list container */
+mat-nav-list {
+  padding: 0;
+}
+ 
+ 
+ 
+.nav-label,
+.submenu-item .nav-label {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 15px;    /* or whatever you use for Dashboard */
+  font-weight: 600;   /* to match Dashboard's bold look */
+  color: #222;        /* or use your sidebar main color */
+  letter-spacing: 0.001em;
+}
+ 
+/* Pull the font-weight/font-size from Dashboard if needed */
+.nav-item,
+.submenu-item {
+  font-size: 16px;
+  font-weight: 600;
+}
+ 
+/* Each nav panel container */
+.nav-panel {
+  margin: 8px 16px;
+  border-radius: 15px;
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  margin: 1px 0;
+}
+ 
+mat-nav-list {
+  padding: 8px;      /* Reduce default nav-list padding */
+}
+ 
+/* Expansion panel header */
+.panel-header {
+  padding: 0 16px;
+  border-radius: 12px 12px 0 0;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+}
+ 
+/* Nav item wrapper inside header and menu items */
+.nav-item-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+ 
+/* Icons for nav items */
+.nav-icon {
+  color: #5c6bc0;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  padding-right: 16px;
+  border-right: 1.5px solid #ccc;
+  transition: color 0.3s ease;
+}
+ 
+.report-icon {
+  color: #16a34a !important; /* Tailwind emerald-700, or use #10b981, #4caf50, etc. */
+}
+/* Icon color per section for clarity (customize as needed) */
+.dashboard-icon { color: #10b981; }
+.video-icon { color: #1976d2; }
+.student-icon { color: #eab308; }
+.faculty-icon { color: #f43f5e; }
+.transport-icon { color: #8b5cf6; }
+.school3d-icon { color: #38bdf8; }
+.attendance-icon { color: #16a34a; }
+.hostel-icon { color: #92400e; }
+.online-icon { color: #f97316; }
+.customer-icon { color: #0284c7; }
+.admin-icon { color: #e11d48; }
+.rfid-icon { color: #16a34a; }
+.history-icon { color: #fbbf24; }
+.driver-icon { color: #2563eb; }
+.feedback-icon { color: #a21caf; }
+ 
+/* Individual navigation items */
+.nav-item {
+  margin: 4px 16px;
+  padding: 8px 1px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #424242;
+  font-weight: 500;
+}
+ 
+/* Hover state for nav items */
+.nav-item:hover {
+  background-color: #667eea;
+  transform: translateX(4px);
+  color: white;
+}
+ 
+/* Change icon and label color on hover */
+.nav-item:hover .nav-icon,
+.nav-item:hover .nav-label {
+  color: white;
+}
+ 
+/* Active nav item styling */
+.nav-item.active-item {
+  background-color: #667eea;
+  color: white;
+  font-weight: 700;
+}
+ 
+.nav-item.active-item .nav-icon,
+.nav-item.active-item .nav-label {
+  color: white;
+}
+ 
+/* Nav label */
+.nav-label {
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+ 
+/* Hide nav labels when sidebar collapsed */
+.collapsed-sidenav .nav-label {
+  display: none;
+}
+ 
+/* Scrollbar styling for sidenav content */
+.sidenav::-webkit-scrollbar {
+  width: 6px;
+}
+ 
+.sidenav::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+ 
+.sidenav::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+ 
+.sidenav::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+ 
+/* Panel content styling */
+.panel-content {
+  padding: 8px 0;
+}
+ 
+/* Style the mat-expansion-panel border and margin */
+mat-expansion-panel {
+  border-top: 1px solid #ccc;
+  margin-top: 12px;
+  padding-top: 4px;
+  background: transparent;
+  box-shadow: none;
+}
+ 
+mat-expansion-panel:not(:last-child) {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 12px;
+}
+ 
+/* Responsive behaviour */
+@media (max-width: 1200px) {
+  .expanded-sidenav {
+    width: 280px !important;
+  }
+ 
+  .collapsed-sidenav {
+    width: 0 !important;
+  }
+}
+ 
+@media (max-width: 600px) {
+  .sidenav-header {
+    font-size: 18px;
+  }
+}
+ 
+/* Smooth transitions for collapse/expand */
+.sidenav,
+.collapsed-sidenav,
+.expanded-sidenav {
+  transition: width 0.3s ease;
+}
+
+
+
+
+
+/* Main content area */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #f9fafb; /* Soft background */
+}
+ 
+/* Top toolbar */
+.top-toolbar {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  height: 64px;
+  background: white; /* Modern gradient */
+  color: black;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+ 
+.top-toolbar .title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-left: 8px;
+}
+ 
+.sidebar-toggle mat-icon {
+  font-size: 26px;
+}
+ 
+/* Spacer pushes user menu to right */
+.spacer {
+  flex: 1 1 auto;
+}
+ 
+/* Chat Button */
+.chat-button {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2000;
+  background-color: #0a68ae;
+  color: white;
+  width: 56px;
+  height: 56px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+
+/* Content body */
+.content-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+ 
+/* User menu styles */
+mat-menu button mat-icon {
+  color: #4f46e5;
+}
+ 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .top-toolbar .title {
+    font-size: 1rem;
+  }
+}

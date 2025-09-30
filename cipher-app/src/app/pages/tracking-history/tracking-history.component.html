@@ -1,0 +1,73 @@
+<div class="container">
+
+    <div class="insight-item">
+    <h2>Tracking History</h2>
+</div>
+
+  <div *ngIf="loading">Loading...</div>
+
+  <table mat-table [dataSource]="historyData" class="insight-item1 " *ngIf="!loading">
+
+    <!-- Name -->
+    <ng-container matColumnDef="Name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.Name }}</td>
+    </ng-container>
+
+    <!-- Start Date -->
+    <ng-container matColumnDef="Start Date">
+    <th mat-header-cell *matHeaderCellDef> Start Date </th>
+    <td mat-cell *matCellDef="let element">
+     {{ element['Start Date'] | date:'dd-MM-yyyy' }}
+    </td>
+    </ng-container>
+
+    <!-- End Date -->
+    <ng-container matColumnDef="End Date">
+      <th mat-header-cell *matHeaderCellDef> End Date </th>
+      <td mat-cell *matCellDef="let element">
+        {{ element['End Date'] | date:'dd-MM-yyyy' }}
+      </td>
+    </ng-container>
+
+    <!-- Person Found DateTime -->
+    <ng-container matColumnDef="Person Found DateTime">
+      <th mat-header-cell *matHeaderCellDef> Last Found Time </th>
+      <td mat-cell *matCellDef="let element">
+        {{ element['Person Found DateTime'] | date:'dd-MM-yyyy HH:mm:ss' }}
+      </td>
+    </ng-container>
+    <!-- Location Name -->
+    <ng-container matColumnDef="Location Name">
+      <th mat-header-cell *matHeaderCellDef>Location Name</th>
+      <td mat-cell *matCellDef="let element">{{ element['Location Name'] }}</td>
+    </ng-container>
+
+    <!-- Zone Name -->
+    <ng-container matColumnDef="Zone Name">
+      <th mat-header-cell *matHeaderCellDef>Zone Name</th>
+      <td mat-cell *matCellDef="let element">{{ element['Zone Name'] }}</td>
+    </ng-container>
+
+    <!-- Camera Name -->
+    <ng-container matColumnDef="Camera Name">
+      <th mat-header-cell *matHeaderCellDef>Camera Name</th>
+      <td mat-cell *matCellDef="let element">{{ element['Camera Name'] }}</td>
+    </ng-container>
+
+    <!-- Person Found Emotion -->
+    <ng-container matColumnDef="Person Found Emotion">
+      <th mat-header-cell *matHeaderCellDef>Person Found Emotion</th>
+      <td mat-cell *matCellDef="let element">{{ element['Person Found Emotion'] }}</td>
+    </ng-container>
+
+    <!-- Header + Row -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+
+  <div class="modal-footer sticky-footer">
+    <button mat-button class="close-btn" (click)="closeDialog()">Close</button>
+  </div>
+

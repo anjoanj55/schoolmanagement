@@ -1,0 +1,190 @@
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+.container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }        
+/* Header Styling */
+.header {
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  margin-bottom: 12px;
+  text-align: left; /* or left if you prefer */
+  letter-spacing: 1px;
+  color: #000000; /* Accent color */
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 40px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.header h1 {
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: 8px;
+  letter-spacing: -0.025em;
+}
+
+.header p {
+  color: #64748b;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Filters Row: container for filter boxes and Start Tracking button */
+.filters-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  width: 73vw;      /* 75% of viewport width */
+  max-width: 75vw;
+  margin-bottom: 1px;
+  gap: 5px;
+  box-sizing: border-box;
+}
+
+/* Each direct child in filters-row takes equal space */
+.filters-row > * {
+  flex: 1 1 0;
+  min-width: 0;
+  /* Equal width for filter boxes and button wrapper */
+}
+
+/* Angular Material form-field inside filters-row */
+.filters-row .mat-form-field {
+  flex: 1 1 0px;
+  min-width: 0;
+  max-width: 100%;
+  font-size: 1.25rem;
+  height: 80px;           /* Controls filter box height */
+  justify-content: center;
+}
+
+/* Input text inside mat-form-field */
+.mat-form-field-infix {
+  font-size: 1.25rem;     /* Larger input text */
+}
+
+/* Button wrapper in filters row */
+.start-tracking-btn-wrapper {
+  display: flex;
+  align-items: stretch;    /* Makes button same height as filter boxes */
+  justify-content: center;
+  
+}
+
+/* Start Tracking button styling */
+.start-tracking-btn-wrapper button {
+  width: 100%;
+  height: 72%;            /* Full height like filter boxes */
+  font-size: 1.25rem;
+  color: #ffffff;
+  background-color: rgb(48, 136, 236);
+}
+
+.History-btn-wrapper {
+  display: flex;
+  align-items: stretch;    /* Makes button same height as filter boxes */
+  justify-content: center;
+  
+}
+
+.History-btn-wrapper button {
+  width: 100%;
+  height: 72%;            /* Full height like filter boxes */
+  font-size: 1.25rem;
+  color: #ffffff;
+  background-color: rgb(48, 136, 236);
+}
+
+/* Typography and content structure for main and grids */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* Content grid layout */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+/* Media query overrides for smaller screens */
+@media (max-width: 900px) {
+  .filters-row {
+    flex-direction: column;
+    gap: 16px;
+    width: 100vw;          /* Adjust width to full on smaller screens */
+    max-width: 100vw;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Typography list for insights */
+.insight-list {
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 0.875rem;
+  color: #4a5568;
+}
+
+/* Individual insight items */
+.insight-item {
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 12px;
+  border-left: 4px solid #3182ce;
+}
+
+/* Clickable box style for detail buttons */
+.click-box {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #1976d2;      /* Angular Material Primary Blue */
+  color: white;
+  font-weight: 600;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 2px 4px rgba(25, 118, 210, 0.4);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.click-box:hover,
+.click-box:focus {
+  background-color: #1565c0;         /* Darker blue on hover/focus */
+  box-shadow: 0 4px 8px rgba(21, 101, 192, 0.6);
+  outline: none;
+}
+
+/* Table styling */
+.full-width-table {
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.08);
+}
+
+.suffix-icons {
+  display: flex;
+  align-items: center;
+  gap: 4px; /* space between X and calendar */
+}

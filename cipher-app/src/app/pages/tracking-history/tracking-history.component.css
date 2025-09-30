@@ -1,0 +1,85 @@
+.container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }        
+/* Header Styling */
+.header {
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  margin-bottom: 12px;
+  text-align: left; /* or left if you prefer */
+  letter-spacing: 1px;
+  color: #000000; /* Accent color */
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 40px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.header h1 {
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: 8px;
+  letter-spacing: -0.025em;
+}
+
+.header p {
+  color: #64748b;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.insight-item {
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 12px;
+  border-left: 4px solid #3182ce;
+  margin-bottom: 32px;
+}
+
+.insight-item1 {
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 12px;
+  border-top: 4px solid #3182ce;
+  margin-bottom: 32px;
+}
+
+.table-container {
+  max-height: 400px;   /* make table scrollable */
+  overflow-y: auto;
+}
+
+.modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Footer stays pinned at bottom while scrolling */
+.sticky-footer {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  border-top: 1px solid #ccc;
+  padding: 12px;
+  text-align: right;
+  z-index: 10;   /* keep above table content */
+}
+
+.close-btn {
+  background: #1976d2;
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  min-width: 80px;
+  cursor: pointer;
+}

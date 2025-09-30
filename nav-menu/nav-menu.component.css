@@ -1,0 +1,635 @@
+/* General Layout & Structure */
+:host {
+  display: block;
+  height: 100vh;
+}
+
+.main-toolbar {
+  height: 64px;
+  background-color: #fff;
+  color: #032742e5;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.toolbar-content {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 16px;
+}
+
+.app-logo {
+  height: 40px;
+  width: auto;
+  margin-left: 8px;
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+.main-container {
+  margin-top: 1px;
+  height: calc(100vh - 64px);
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.app-sidenav {
+  background: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.05);
+  transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow-x: hidden;
+}
+
+.collapsed-sidenav {
+  width: 72px; /* Width for icons only */
+}
+
+.expanded-sidenav {
+  width: 330px; 
+}
+
+.sidenav-content {
+  height: 100%;
+  padding: 16px 0;
+}
+
+/* Status Chip */
+.status-chip {
+  display: flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.8em;
+  font-weight: 500;
+  margin-left: 16px;
+}
+
+.status-chip .status-icon {
+  font-size: 16px;
+  margin-right: 4px;
+}
+
+.status-chip.online {
+  background-color: #50C878;
+  color: #fff;
+}
+
+.status-chip.offline {
+  background-color: #EE4B2B;
+  color: #fff;
+}
+
+/* User Menu */
+.user-avatar-btn {
+  background-color: lightgray;
+  color: #0a68ae;
+}
+
+.user-icon {
+  font-size: x-large;
+}
+
+.user-menu-panel {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  min-width: 200px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background: #f5f5f5;
+  color: #424242;
+  gap: 12px;
+}
+
+.username {
+  font-weight: 500;
+}
+
+.mat-menu-item {
+  color: #424242;
+  gap: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.mat-menu-item mat-icon {
+  color: #0a68ae;
+}
+
+.mat-menu-item:hover {
+  background-color: #f1f1f1;
+}
+
+/* Sidebar Navigation Styles */
+.nav-list {
+  padding: 0;
+}
+
+.nav-panel {
+  margin: 8px 16px;
+  border-radius: 12px;
+  background: #fafafa;
+  box-shadow: none;
+  border: 1px solid #e0e0e0;
+}
+
+.panel-header {
+  padding: 0 16px;
+  border-radius: 12px 12px 0 0;
+  transition: all 0.2s ease;
+}
+
+.panel-title {
+  width: 100%;
+}
+
+.nav-item-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.nav-icon {
+
+  color: #5c6bc0;
+
+  font-size: 24px;
+
+  width: 24px;
+
+  height: 24px;
+
+  margin-right: 2px;
+
+  padding-right: 31px;
+
+  border-right: 1.5px solid #ccc;
+
+}
+
+.video-analysis-panel1 .nav-item:hover,
+.video-analysis-panel1 .nav-item.active-item {
+  background: #bbd621;
+}
+ 
+.video-analysis-panel2 .nav-item:hover,
+.video-analysis-panel2 .nav-item.active-item {
+  background: #22ffbd;
+}
+ 
+.video-analysis-panel3 .nav-item:hover,
+.video-analysis-panel3 .nav-item.active-item {
+  background: #d322ff;
+}
+ 
+.video-analysis-panel4 .nav-item:hover,
+.video-analysis-panel4 .nav-item.active-item {
+  background: #ff2222;
+}
+/*---------------------*/
+
+
+
+.admin-panel .nav-icon {
+  color: #d322ff; /* Deep Orange */
+}
+
+.panel-highlightadmin {
+  background-color: rgba(247, 54, 208, 0.219); /* light blue highlight */
+  border-left: 4px solid #d322ff;
+  border-radius: 12px;
+}
+
+
+.panel-highlight {
+  background-color: rgba(39, 240, 173, 0.26); /* light blue highlight */
+  border-left: 4px solid #00796B;
+  border-radius: 12px;
+}
+.panel-highlightMedical {
+  background-color: rgba(186, 240, 39, 0.192); /* light blue highlight */
+  border-left: 4px solid #bbd621;
+  border-radius: 12px;
+}
+.panel-highlightoperation {
+  background-color: rgba(39, 133, 240, 0.192); /* light blue highlight */
+  border-left: 4px solid #1976D2;
+  border-radius: 12px;
+}
+.panel-highlight3d {
+  background-color: rgba(176, 39, 240, 0.219); /* light blue highlight */
+  border-left: 4px solid #673AB7;
+  border-radius: 12px;
+}
+.panel-highlightVideo {
+  background-color: rgba(240, 119, 39, 0.219); /* light blue highlight */
+  border-left: 4px solid #FF5722;
+  border-radius: 12px;
+}
+
+.panel-highlightAI {
+  background-color: rgba(247, 54, 54, 0.219); /* light blue highlight */
+  border-left: 4px solid #fd1616;
+  border-radius: 12px;
+}
+
+
+.loading-dots {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align to the left like other AI messages */
+  padding: 8px 12px; /* Match message padding */
+  border-radius: 20px; /* Match message border-radius */
+  background-color: #e0e0e0; /* Or your AI message background color */
+  width: fit-content; /* Adjust width to content */
+}
+
+.loading-dots span {
+  display: inline-block;
+  animation: dot-bounce 1s infinite ease-in-out both;
+  font-weight: bold;
+  font-size: 1.2em;
+  margin: 0 1px; /* Small spacing between dots */
+}
+
+.loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+.loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+.loading-dots span:nth-child(3) { animation-delay: 0s; }
+
+@keyframes dot-bounce {
+  0%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px); /* Adjust bounce height */
+  }
+}
+
+/* Optional: Disable send button while loading */
+.chat-popup-input button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+
+.nav-label {
+
+  font-weight: 500;
+
+  color: #424242;
+
+  transition: all 0.2s ease;
+
+}
+
+
+
+.panel-content {
+  padding: 8px 0;
+}
+
+/* Individual Navigation Items */
+.nav-item {
+  margin: 4px 16px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  padding: 8px 16px;
+}
+
+.nav-item:hover {
+  background: #667eea;
+  transform: translateX(4px);
+}
+
+.nav-item:hover .nav-icon,
+.nav-item:hover .nav-label {
+  color: white;
+}
+
+.nav-item.active-item {
+  background: #667eea;
+  color: white;
+}
+
+.nav-item.active-item .nav-icon,
+.nav-item.active-item .nav-label {
+  color: white;
+}
+
+/* Scrollbar Styling for sidenav */
+.sidenav-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidenav-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.sidenav-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.sidenav-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* --- Icon Colors by Section --- */
+
+/* Hospital Management Section Icons */
+.hospital-management-panel .nav-icon {
+  color: #00796B; /* Teal */
+}
+
+/* Operation Theater Section Icons */
+.operation-theater-panel .nav-icon {
+  color: #1976D2; /* Blue */
+}
+
+/* Patient Monitoring Section Icons */
+.patient-monitoring-panel .nav-icon {
+  color: #4CAF50; /* Green */
+}
+
+/* Hospital 3D View Section Icons */
+.hospital-3d-panel .nav-icon {
+  color: #673AB7; /* Deep Purple */
+}
+
+/* Video Analysis Section Icons */
+.video-analysis-panel .nav-icon {
+  color: #FF5722; /* Deep Orange */
+}
+.video-analysis-panel1 .nav-icon {
+  color: #bbd621; /* Deep Orange */
+}
+.video-analysis-panel2 .nav-icon {
+  color: #22ffbd; /* Deep Orange */
+}
+.video-analysis-panel3 .nav-icon {
+  color: #d322ff; /* Deep Orange */
+}
+.video-analysis-panel4 .nav-icon {
+  color: #ff2222; /* Deep Orange */
+}
+
+/* * Optional: Ensure the hover color matches the new icon colors.
+ * This is important for the nested navigation items.
+ */
+.hospital-management-panel .nav-item:hover,
+.hospital-management-panel .nav-item.active-item {
+  background: #00796B;
+}
+
+.operation-theater-panel .nav-item:hover,
+.operation-theater-panel .nav-item.active-item {
+  background: #1976D2;
+}
+
+.patient-monitoring-panel .nav-item:hover,
+.patient-monitoring-panel .nav-item.active-item {
+  background: #4CAF50;
+}
+
+.hospital-3d-panel .nav-item:hover,
+.hospital-3d-panel .nav-item.active-item {
+  background: #673AB7;
+}
+
+.video-analysis-panel .nav-item:hover,
+.video-analysis-panel .nav-item.active-item {
+  background: #FF5722;
+}
+/* Main content area */
+.main-content {
+  background-color: #f8f9fa;
+  min-height: 100%;
+}
+
+.content-wrapper {
+  padding: 6px;
+  box-sizing: border-box;
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .app-sidenav {
+    width: 280px; /* On smaller screens, the sidenav will be full-size when opened */
+  }
+
+  .collapsed-sidenav {
+    width: 0; /* Hidden by default on small screens */
+  }
+
+  .expanded-sidenav {
+    width: 280px;
+  }
+}
+
+@media (max-width: 600px) {
+  .app-logo {
+    height: 32px;
+  }
+}
+
+/* Your existing styles remain the same until the chat section */
+
+/* Chat Bubble */
+.chat-bubble-wrapper {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+}
+
+.chat-bubble {
+  background-color: #0a68ae;
+  color: white;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  animation: pulse 2s infinite;
+  will-change: transform, box-shadow;
+  transition: transform 0.3s ease;
+  overflow: visible; /* Ensure rings show outside the button */
+}
+
+/* 🟢 Status dot */
+.status-dot {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 10px;
+  height: 10px;
+  background-color: #4caf50;
+  border: 2px solid white;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+/* 💫 Main bubble pulse */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(115, 178, 226, 0.7);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 12px rgba(10, 104, 174, 0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(10, 104, 174, 0.7);
+  }
+}
+
+/* 💥 Ring effects using ::before and ::after */
+.chat-bubble::before,
+.chat-bubble::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgba(10, 104, 174, 0.3);
+  animation: ripple 2s infinite;
+  z-index: 0;
+}
+
+.chat-bubble::after {
+  animation-delay: 1s; /* offset for staggered rings */
+}
+
+/* 🌊 Ripple ring animation */
+@keyframes ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 0;
+  }
+}
+
+
+/* Chat Popup */
+.chat-popup-card {
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  width: 320px;
+  max-height: 500px;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  z-index: 1000;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.chat-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  background-color: #0a68ae;
+  color: white;
+}
+
+.chat-popup-header h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.chat-popup-header p {
+  margin: 0;
+  font-size: 12px;
+  color: #d6e7f4;
+}
+
+.chat-popup-body {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  background: #f4f7fa;
+}
+
+.chat-message {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.chat-message.user {
+  justify-content: flex-end;
+}
+
+.chat-message.ai {
+  justify-content: flex-start;
+}
+
+.chat-message .msg {
+  background-color: #0a68ae;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 12px;
+  max-width: 75%;
+}
+
+.chat-message.user .msg {
+  background-color: #e0f7fa;
+  color: #000;
+}
+
+.chat-popup-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  background: #fff;
+}
+
+.chat-popup-input textarea {
+  flex: 1;
+  border: none;
+  resize: none;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  background-color: #f1f1f1;
+  margin-right: 8px;
+}
+
+/* Horizontal Separator Between Each Panel */
+mat-expansion-panel {
+  border-top: 1px solid #ccc;
+  margin-top: 12px;
+  padding-top: 4px;
+}
+
+mat-expansion-panel:not(:last-child) {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 12px;
+}

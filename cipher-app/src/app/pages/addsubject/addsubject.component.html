@@ -1,0 +1,146 @@
+<!-- <div class="modal">
+  <div class="modal-content" [formGroup]="subjectForm">
+  
+    <div class="modal-header">
+      <h2 class="modal-title">Add New Subject</h2>
+      <button class="modal-close" (click)="closeDialog()">×</button>
+    </div>
+
+    
+    <div class="modal-body">
+      <label for="subject_name">Subject Name</label>
+      <input id="subject_name" type="text" formControlName="subject_name" placeholder="Enter subject name">
+
+      <label for="subject_code">Subject Code</label>
+      <input id="subject_code" type="text" formControlName="subject_code" placeholder="Enter subject code">
+
+      <label for="description">Description</label>
+      <textarea id="description" rows="3" formControlName="description" placeholder="Enter description"></textarea>
+
+      <label for="class_name">Class Name</label>
+      <select id="class_name" formControlName="class_name" class="simple-dropdown">
+        <option value="">All Classes</option>
+        <option *ngFor="let cls of classes" [value]="cls">{{ cls }}</option>
+      </select>
+
+      <label for="subject_type">Subject Type</label>
+      <select id="subject_type" formControlName="subject_type" class="simple-dropdown">
+        <option value="">Select Subject Type</option>
+        <option *ngFor="let type of subjectTypes" [value]="type">{{ type }}</option>
+      </select>
+
+      <label for="teacher">Teacher</label>
+      <input id="teacher" type="text" formControlName="teacher" placeholder="Enter teacher name">
+
+      <label for="day">Day</label>
+      <select id="day" formControlName="day" class="simple-dropdown">
+        <option value="">Select Day</option>
+        <option *ngFor="let d of days" [value]="d">{{ d }}</option>
+      </select>
+
+      <label for="period_no">Period No</label>
+      <select id="period_no" formControlName="period_no" class="simple-dropdown">
+        <option value="">Select Period</option>
+        <option *ngFor="let p of periods" [value]="p">{{ p }}</option>
+      </select>
+    </div>
+
+    
+    <div class="modal-footer" style="display: flex; gap: 10px; margin-top: 15px;">
+      <button class="btn btn-primary" type="button" (click)="onSubmit()" [disabled]="subjectForm.invalid">Save Subject</button>
+      <button class="btn btn-secondary" type="reset" (click)="subjectForm.reset()">Reset</button>
+      <button class="btn btn-secondary" type="button" (click)="closeDialog()">Close</button>
+    </div>
+  </div>
+</div> -->
+
+<div class="modal">
+  <div class="modal-content" [formGroup]="subjectForm">
+    <!-- Modal header -->
+    <div class="modal-header">
+      <h2 class="modal-title">{{ isEditMode ? 'Edit Subject' : 'Add New Subject' }}</h2>
+      <button class="modal-close" (click)="closeDialog()">×</button>
+    </div>
+
+    <!-- Modal body -->
+    <div class="modal-body">
+      <!-- Subject Name (always editable) -->
+      <label for="subject_name">Subject Name</label>
+      <input id="subject_name" type="text" formControlName="subject_name" placeholder="Enter subject name" />
+
+      <!-- Subject Code (always editable) -->
+      <label for="subject_code">Subject Code</label>
+      <input id="subject_code" type="text" formControlName="subject_code" placeholder="Enter subject code" />
+
+      <!-- Description (readonly in edit mode) -->
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        rows="3"
+        formControlName="description"
+        placeholder="Enter description"
+        [readonly]="isEditMode"
+      ></textarea>
+
+      <!-- Class Name -->
+      <label for="class_name">Class Name</label>
+      <ng-container *ngIf="!isEditMode; else classNameText">
+        <select id="class_name" formControlName="class_name" class="simple-dropdown">
+          <option value="">All Classes</option>
+          <option *ngFor="let cls of classes" [value]="cls">{{ cls }}</option>
+        </select>
+      </ng-container>
+      <ng-template #classNameText>
+        <input type="text" [value]="subjectForm.get('class_name')?.value" readonly />
+      </ng-template>
+
+      <!-- Subject Type (hidden in edit mode) -->
+      <ng-container *ngIf="!isEditMode">
+        <label for="subject_type">Subject Type</label>
+        <select id="subject_type" formControlName="subject_type" class="simple-dropdown">
+          <option value="">Select Subject Type</option>
+          <option *ngFor="let type of subjectTypes" [value]="type">{{ type }}</option>
+        </select>
+      </ng-container>
+
+      <!-- Teacher (always editable) -->
+      <label for="teacher">Teacher</label>
+      <input id="teacher" type="text" formControlName="teacher" placeholder="Enter teacher name" />
+
+      <!-- Day (hidden in edit mode) -->
+      <ng-container *ngIf="!isEditMode">
+        <label for="day">Day</label>
+        <select id="day" formControlName="day" class="simple-dropdown">
+          <option value="">Select Day</option>
+          <option *ngFor="let d of days" [value]="d">{{ d }}</option>
+        </select>
+      </ng-container>
+
+      <!-- Period No (hidden in edit mode) -->
+      <ng-container *ngIf="!isEditMode">
+        <label for="period_no">Period No</label>
+        <select id="period_no" formControlName="period_no" class="simple-dropdown">
+          <option value="">Select Period</option>
+          <option *ngFor="let p of periods" [value]="p">{{ p }}</option>
+        </select>
+      </ng-container>
+    </div>
+
+    <!-- Modal buttons -->
+    <div class="modal-footer" style="display: flex; gap: 10px; margin-top: 15px;">
+      <!-- Save button only shows in Add mode -->
+      <button *ngIf="!isEditMode" class="btn btn-primary" type="button" (click)="onSubmit()" [disabled]="subjectForm.invalid">
+        Save Subject
+      </button>
+
+      <!-- Update button only shows in Edit mode -->
+      <button *ngIf="isEditMode" class="btn btn-success" type="button" (click)="onUpdate()" [disabled]="subjectForm.invalid">
+        Update Subject
+      </button>
+
+      <!-- <button class="btn btn-secondary" type="reset" (click)="subjectForm.reset()">Reset</button> -->
+      <button class="btn btn-secondary" type="button" (click)="closeDialog()">Close</button>
+    </div>
+  </div>
+</div>
+

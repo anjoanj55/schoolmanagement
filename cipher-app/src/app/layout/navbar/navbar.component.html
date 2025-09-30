@@ -1,0 +1,578 @@
+<mat-sidenav-container class="sidenav-container">
+  <!-- Sidebar navigation -->
+  <mat-sidenav #sidenav
+               class="sidenav"
+               mode="side"
+               [(opened)]="isSidebarOpen"
+               [ngClass]="{'collapsed-sidenav': isCollapsed, 'expanded-sidenav': !isCollapsed}">
+    <mat-toolbar class="sidenav-header">
+      <div class="logo-container">
+  <img src="https://ik.imagekit.io/eixwi79uz/hildas.jpg?updatedAt=1755843028060" 
+       alt="Logo" width="40" height="40" 
+       style="border-radius: 50%; object-fit: cover;margin-right: 10px;">
+  <span class="cipher-title"> St Hilda's School</span>     
+</div>
+    </mat-toolbar>
+  
+    <mat-nav-list>
+      <!-- Dashboard -->
+<mat-expansion-panel class="nav-panel" hideToggle *ngIf="dashboard">
+  <mat-expansion-panel-header class="panel-header">
+    <mat-panel-title>
+      <div class="nav-item-content">
+        <mat-icon class="nav-icon dashboard-icon">dashboard</mat-icon>
+        <span *ngIf="!isCollapsed" class="nav-label">Dashboards</span>
+      </div>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <mat-expansion-panel class="nav-panel" *ngIf="studentreport" hideToggle>
+  <mat-expansion-panel-header class="panel-header">
+    <mat-panel-title>
+      <div class="nav-item-content">
+        <mat-icon class="nav-icon video-icon">dashboard</mat-icon>
+        <span *ngIf="!isCollapsed" class="nav-label">Student Dashboards</span>
+      </div>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+<a mat-list-item *ngIf="studentreport"
+     routerLink="/home/Studentprofile"
+     routerLinkActive="active-item"
+     class="nav-item submenu-item">
+  <mat-icon class="nav-icon report-icon">school</mat-icon>
+  <span *ngIf="!isCollapsed" class="nav-label">Student Profile</span>
+</a>
+<a mat-list-item *ngIf="studentreport"
+     routerLink="/home/Academic"
+     routerLinkActive="active-item"
+     class="nav-item submenu-item">
+  <mat-icon class="nav-icon report-icon">bar_chart </mat-icon>
+  <span *ngIf="!isCollapsed" class="nav-label">Academic Performance</span>
+</a>
+<a mat-list-item *ngIf="studentreport"
+     routerLink="/home/AiReport"
+     routerLinkActive="active-item"
+     class="nav-item submenu-item">
+  <mat-icon class="nav-icon report-icon">bar_chart </mat-icon>
+  <span *ngIf="!isCollapsed" class="nav-label">Ai Academic Report</span>
+</a>
+<a mat-list-item *ngIf="studentreport"
+     routerLink="/home/ResultAnalysis"
+     routerLinkActive="active-item"
+     class="nav-item submenu-item">
+  <mat-icon class="nav-icon report-icon">bar_chart </mat-icon>
+  <span *ngIf="!isCollapsed" class="nav-label">Result Analysis</span>
+</a>
+</mat-expansion-panel>
+<mat-expansion-panel class="nav-panel" *ngIf="teachereport" hideToggle>
+<mat-expansion-panel-header class="panel-header">
+          <mat-panel-title>
+            <div class="nav-item-content">
+              <mat-icon class="nav-icon video-icon">pie_chart</mat-icon>
+              <span *ngIf="!isCollapsed" class="nav-label">Teacher Dashboard</span>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+<a mat-list-item routerLink="/home/TeacherReport" *ngIf="teachereport " routerLinkActive="active-item"
+     
+     class="nav-item submenu-item">
+  <mat-icon class="nav-icon report-icon">person</mat-icon>
+  <span *ngIf="!isCollapsed" class="nav-label">Teacher Reports</span>
+</a>
+
+<a mat-list-item routerLink="/home/ClassOverview" *ngIf="teachereport " routerLinkActive="active-item"
+     
+     class="nav-item submenu-item">
+  <mat-icon class="nav-icon report-icon">person</mat-icon>
+  <span *ngIf="!isCollapsed" class="nav-label">Class Overview </span>
+</a>
+<a mat-list-item routerLink="/home/Monitoring" *ngIf="teachereport " routerLinkActive="active-item"
+     
+     class="nav-item submenu-item">
+  <mat-icon class="nav-icon report-icon">person</mat-icon>
+  <span *ngIf="!isCollapsed" class="nav-label">Teacher Monitoring </span>
+</a>
+
+<a mat-list-item *ngIf="teachereport"
+     routerLink="/home/Attendance"
+     routerLinkActive="active-item"
+     class="nav-item submenu-item">
+  <mat-icon class="nav-icon report-icon">event_available</mat-icon>
+  <span *ngIf="!isCollapsed" class="nav-label">Attendance Report</span>
+</a>
+</mat-expansion-panel> 
+
+<mat-expansion-panel class="nav-panel" *ngIf="financereport" hideToggle>
+        <mat-expansion-panel-header class="panel-header">
+          <mat-panel-title>
+            <div class="nav-item-content">
+              <mat-icon class="nav-icon video-icon">attach_money</mat-icon>
+              <span *ngIf="!isCollapsed" class="nav-label">Finance Dashboard</span>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+ 
+        <a mat-list-item routerLink="/home/Financedashboard" *ngIf="financereport" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon report-icon">attach_money</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Dashboard Varsity finance</span>
+        </a>
+        <a mat-list-item routerLink="/home/Payroll" *ngIf="financereport" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon report-icon">attach_money</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Payroll Dashboard</span>
+        </a>
+        <a mat-list-item routerLink="/home/Studentreport" *ngIf="financereport" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon report-icon">account_balance</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Varsity School Branch</span>
+        </a>
+        <a mat-list-item routerLink="/home/Profitandloss" *ngIf="financereport" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon report-icon">trending_up</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Profit and loss</span>
+        </a>
+        <a mat-list-item routerLink="/home/Aireports" *ngIf="financereport" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon report-icon">bubble_chart</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Ai Report</span>
+        </a>
+      </mat-expansion-panel>
+
+
+<mat-expansion-panel class="nav-panel" *ngIf="parentseport" hideToggle>
+        <mat-expansion-panel-header class="panel-header">
+          <mat-panel-title>
+            <div class="nav-item-content">
+              <mat-icon class="nav-icon video-icon">group</mat-icon>
+              <span *ngIf="!isCollapsed" class="nav-label">Parents Reports</span>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>      
+<a mat-list-item routerLink="/home/AcademicProgress" *ngIf="parentseport" routerLinkActive="active-item"
+     
+     class="nav-item submenu-item">
+  <mat-icon class="nav-icon report-icon">group</mat-icon>
+  <span *ngIf="!isCollapsed" class="nav-label">Academic Progress Report</span>
+</a>
+</mat-expansion-panel>
+<a mat-list-item routerLink="/home/SyllabusProgress" *ngIf="parentseport" routerLinkActive="active-item"
+    
+     class="nav-item submenu-item">
+  <mat-icon class="nav-icon report-icon">assignment</mat-icon>
+  <span *ngIf="!isCollapsed" class="nav-label">Syllabus Progress Tracker</span>
+</a>
+
+<a mat-list-item routerLink="/home/HostelInventoryDashboard" *ngIf="parentseport" routerLinkActive="active-item"
+    
+     class="nav-item submenu-item">
+  <mat-icon class="nav-icon report-icon">assignment</mat-icon>
+  <span *ngIf="!isCollapsed" class="nav-label">Hostel Inventory</span>
+</a>
+
+<a mat-list-item routerLink="/home/KitchenInventoryDashboard" *ngIf="parentseport" routerLinkActive="active-item"
+    
+     class="nav-item submenu-item">
+  <mat-icon class="nav-icon report-icon">assignment</mat-icon>
+  <span *ngIf="!isCollapsed" class="nav-label">Kitchen Inventory</span>
+</a>
+
+
+<!-- <a mat-list-item *ngIf="Transporteport"
+    
+     class="nav-item submenu-item">
+  <mat-icon class="nav-icon report-icon">directions_bus</mat-icon>
+  <span *ngIf="!isCollapsed" class="nav-label">Transport Reports</span>
+</a> -->
+
+<!-- <a mat-list-item *ngIf="Adminreport"
+     
+     class="nav-item submenu-item">
+  <mat-icon class="nav-icon report-icon">admin_panel_settings</mat-icon>
+  <span *ngIf="!isCollapsed" class="nav-label">Admin Reports</span>
+</a> -->
+
+ 
+
+</mat-expansion-panel>
+      <!-- Video Tracking -->
+      <mat-expansion-panel class="nav-panel" *ngIf="videotracking" hideToggle>
+        <mat-expansion-panel-header class="panel-header">
+          <mat-panel-title>
+            <div class="nav-item-content">
+              <mat-icon class="nav-icon video-icon">videocam</mat-icon>
+              <span *ngIf="!isCollapsed" class="nav-label">Video Tracking</span>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <a mat-list-item routerLink="/home/TrackPersonComponent" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">smart_toy</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Track a Person</span>
+        </a>
+        <a mat-list-item routerLink="/home/rulebuilder" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">smart_toy</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">AI Tracking Configuration</span>
+        </a>
+        <a mat-list-item routerLink="/home/workflow" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">psychology</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Profile Predictions AI</span>
+        </a>
+        <a mat-list-item routerLink="/home/Aiassesment" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">auto_awesome</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Assessment by AI</span>
+        </a>
+        <!-- <a mat-list-item routerLink="/home/useractivity" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">memory</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Recommendations by AI</span>
+        </a> -->
+      </mat-expansion-panel>
+ <!-- <mat-expansion-panel class="nav-panel" [expanded]="false" hideToggle [disabled]="true">
+<mat-expansion-panel-header  routerLink="/home/TrackPersonComponent"
+      class="panel-header">
+<mat-panel-title>
+<div class="nav-item-content">
+<mat-icon class="nav-icon Track-icon">person</mat-icon>
+<span *ngIf="!isCollapsed" class="nav-label">Track a Person</span>
+</div>
+</mat-panel-title>
+</mat-expansion-panel-header>
+</mat-expansion-panel> -->
+ 
+      <!-- Student -->
+      <mat-expansion-panel class="nav-panel" *ngIf="studentmenu" hideToggle>
+        <mat-expansion-panel-header class="panel-header">
+          <mat-panel-title>
+            <div class="nav-item-content">
+              <mat-icon class="nav-icon student-icon">group</mat-icon>
+              <span *ngIf="!isCollapsed" class="nav-label">Student</span>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+      <a mat-list-item *ngIf="studentProfile"
+     routerLink="/home/Studentprofile"
+     routerLinkActive="active-item"
+     class="nav-item submenu-item">
+  <mat-icon class="nav-icon ">assignment</mat-icon>
+  <span *ngIf="!isCollapsed" class="nav-label">Student Profile</span>
+       </a>
+        <a mat-list-item routerLink="/home/StudentCurriculum" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">school</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Curriculum</span>
+        </a>
+        <a mat-list-item routerLink="/home/StudentPerformance" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">emoji_people</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Performance</span>
+        </a>
+        <a mat-list-item routerLink="/home/StudentTimeTable" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">meeting_room</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Time Table</span>
+        </a>
+        <a mat-list-item routerLink="/home/StudentOnlineClass" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">live_tv</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Online Classes</span>
+        </a>
+        <a mat-list-item routerLink="/home/Attendance" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">assignment_ind</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Attendance</span>
+        </a>
+        <a mat-list-item routerLink="/home/StudentExamDates" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">assignment_ind</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Exam and Dates</span>
+        </a>
+      </mat-expansion-panel>
+ 
+      <!-- Faculty -->
+      <mat-expansion-panel class="nav-panel" *ngIf="Facultymenu" hideToggle>
+        <mat-expansion-panel-header class="panel-header">
+          <mat-panel-title>
+            <div class="nav-item-content">
+              <mat-icon class="nav-icon faculty-icon">how_to_reg</mat-icon>
+              <span *ngIf="!isCollapsed" class="nav-label">Faculty</span>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+ 
+        <a mat-list-item routerLink="/home/Faculty" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">school</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Upload Question Paper</span>
+        </a>
+         <a mat-list-item routerLink="/home/Curriculumfaculty" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">school</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Curriculum</span>
+        </a>
+
+         <a mat-list-item routerLink="/home/Curriculumfaculty" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">chat</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Chat With Parents</span>
+        </a>
+
+        <!-- <a mat-list-item routerLink="/home/Faculty" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">emoji_people</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Upload Marks</span>
+        </a>
+        <a mat-list-item routerLink="/home/Faculty" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">meeting_room</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Class Announcements</span>
+        </a> -->
+        <!-- <a mat-list-item routerLink="/home/useractivity" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">live_tv</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Student Reports</span>
+        </a>
+        <a mat-list-item routerLink="/home/useractivity" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">assignment_ind</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Class Reports</span>
+        </a> -->
+        <!-- <a mat-list-item routerLink="/home/Faculty" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">assignment_ind</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Alert Parents</span>
+        </a> -->
+      </mat-expansion-panel>
+   <!-- Parent -->
+    
+      <mat-expansion-panel class="nav-panel" *ngIf="Parentmenu"  hideToggle>
+  <mat-expansion-panel-header class="panel-header">
+    <mat-panel-title>
+      <div class="nav-item-content">
+        <mat-icon class="nav-icon customer-icon">supervisor_account</mat-icon>
+        <span *ngIf="!isCollapsed" class="nav-label">Parents</span>
+      </div>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+   <a mat-list-item  routerLink="/home/Parents" routerLinkActive="active-item" class="nav-item">
+                   <mat-icon class="nav-icon feedback-icon">live_tv</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Fee Payments</span>
+        </a>
+
+    <a mat-list-item  routerLink="/home/Parents" routerLinkActive="active-item" class="nav-item">
+                   <mat-icon class="nav-icon feedback-icon">chat</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Chat with Faculty</span>
+        </a>
+
+</mat-expansion-panel>
+
+<!-- Accounts -->
+      <mat-expansion-panel class="nav-panel" *ngIf="Parentmenu"  hideToggle>
+  <mat-expansion-panel-header class="panel-header">
+    <mat-panel-title>
+      <div class="nav-item-content">
+        <mat-icon class="nav-icon customer-icon">supervisor_account</mat-icon>
+        <span *ngIf="!isCollapsed" class="nav-label">Accounts</span>
+      </div>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+   <a mat-list-item>
+                   <mat-icon class="nav-icon feedback-icon">paid</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Fee Module</span>
+        </a>
+
+    <a mat-list-item>
+                   <mat-icon class="nav-icon feedback-icon">school</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Admission Module</span>
+        </a>
+        
+</mat-expansion-panel>
+  
+      <!-- Transportation -->
+      <mat-expansion-panel class="nav-panel" *ngIf="transportmenu" hideToggle>
+        <mat-expansion-panel-header class="panel-header">
+          <mat-panel-title>
+            <div class="nav-item-content">
+              <mat-icon class="nav-icon transport-icon">commute</mat-icon>
+              <span *ngIf="!isCollapsed" class="nav-label">Transportation</span>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+ 
+        <a mat-list-item routerLink="/home/Transportation" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon rfid-icon">local_shipping</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">RFID Tags Data</span>
+        </a>
+        <a mat-list-item routerLink="/home/Transportation" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon history-icon">location_on</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">History of Routes</span>
+        </a>
+        <a mat-list-item routerLink="/home/Transportation" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon driver-icon">directions_bus</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Driver Information</span>
+        </a>
+        <a mat-list-item routerLink="/home/Transportation" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon feedback-icon">live_tv</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Feedback and Rating</span>
+        </a>
+        <a mat-list-item>
+          <mat-icon class="nav-icon">local_parking</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Parking Management</span>
+        </a>
+
+      </mat-expansion-panel>
+ 
+      <!-- School 3D View -->
+      <mat-expansion-panel class="nav-panel" *ngIf="dimensioniewmenu" hideToggle>
+        <mat-expansion-panel-header class="panel-header">
+          <mat-panel-title>
+            <div class="nav-item-content">
+              <mat-icon class="nav-icon school3d-icon">category</mat-icon>
+              <span *ngIf="!isCollapsed" class="nav-label">School 3D View</span>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+ 
+        <a mat-list-item  class="nav-item">
+          <mat-icon class="nav-icon">grid_view</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">3D Overview</span>
+        </a>
+      </mat-expansion-panel>
+ 
+<!-- Attendance Analysis -->
+
+<!-- Hostel Inventory -->
+<mat-expansion-panel class="nav-panel"  *ngIf="stockmenu" hideToggle>
+  <mat-expansion-panel-header class="panel-header">
+    <mat-panel-title>
+      <div class="nav-item-content">
+        <mat-icon class="nav-icon hostel-icon">inventory_2</mat-icon>
+        <span *ngIf="!isCollapsed" class="nav-label">Residential</span>
+      </div>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <a mat-list-item  routerLink="/home/Stockpage" routerLinkActive="active-item" class="nav-item">
+                     <mat-icon class="nav-icon">grid_view</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Inventory list</span>
+        </a>
+        
+      <a mat-list-item>
+                     <mat-icon class="nav-icon">kitchen</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Kitchen Management</span>
+        </a>
+      <a mat-list-item>
+                     <mat-icon class="nav-icon">local_laundry_service</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Laundry Management</span>
+        </a>
+      <a mat-list-item>
+                     <mat-icon class="nav-icon">food_bank</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Mess Management</span>
+        </a>
+        
+</mat-expansion-panel>
+ 
+ 
+<!-- Online Classes -->
+   <mat-expansion-panel class="nav-panel" *ngIf="onlineclassmenu" hideToggle>
+        <mat-expansion-panel-header class="panel-header">
+          <mat-panel-title>
+            <div class="nav-item-content">
+              <mat-icon class="nav-icon school3d-icon">category</mat-icon>
+              <span *ngIf="!isCollapsed" class="nav-label">Online Classes</span>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+ 
+        <a mat-list-item routerLink="/home/Onilneclassmainpage" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">grid_view</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Classes</span>
+        </a>
+      </mat-expansion-panel>
+<!-- Customer Management -->
+      <!-- Admin Center -->
+      <mat-expansion-panel class="nav-panel" *ngIf="adminmenu" hideToggle>
+        <mat-expansion-panel-header class="panel-header">
+          <mat-panel-title>
+            <div class="nav-item-content">
+              <mat-icon class="nav-icon admin-icon">admin_panel_settings</mat-icon>
+              <span *ngIf="!isCollapsed" class="nav-label">Admin Center</span>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <a mat-list-item routerLink="/home/Usermanagement" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">person</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">User Management</span>
+        </a>
+        <!-- <a mat-list-item routerLink="/home/Usermanagement" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">group</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Group Management</span>
+        </a>
+        <a mat-list-item routerLink="/home/Usermanagement" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">security</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Role Management</span>
+        </a> -->
+         <!-- <a mat-list-item routerLink="/home/Usermanagement" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">security</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Admin Console</span>
+        </a>
+       <a mat-list-item routerLink="/home/Usermanagement" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">history</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Admin Activities</span>
+        </a> -->
+        <a mat-list-item routerLink="/home/Admin" routerLinkActive="active-item" class="nav-item">
+          <mat-icon class="nav-icon">school</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Curriculum</span>
+        </a>
+      </mat-expansion-panel>
+
+  <!-- Online Entrance -->
+
+        <mat-expansion-panel class="nav-panel" *ngIf="Parentmenu"  hideToggle>
+  <mat-expansion-panel-header class="panel-header">
+    <mat-panel-title>
+      <div class="nav-item-content">
+        <mat-icon class="nav-icon customer-icon">input_circle</mat-icon>
+        <span *ngIf="!isCollapsed" class="nav-label">Online Entrance</span>
+      </div>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+   <a mat-list-item>
+                   <mat-icon class="nav-icon feedback-icon">list</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Uploading Question Paper</span>
+        </a>
+</mat-expansion-panel>
+
+    </mat-nav-list>
+  </mat-sidenav>
+ 
+  <!-- Main content -->
+  <mat-sidenav-content class="main-content">
+  <!-- Top Toolbar -->
+  <mat-toolbar class="top-toolbar" color="primary">
+    <!-- Sidebar Toggle Button -->
+    <!-- <button mat-icon-button (click)="toggleSidebar()" aria-label="Toggle sidebar" class="sidebar-toggle">
+      <mat-icon>{{ isCollapsed ? 'menu_open' : 'menu' }}</mat-icon>
+    </button> -->
+ 
+    <!-- Page Title -->
+    <span class="title">{{ currentPage }}</span>
+ 
+    <!-- Spacer -->
+    <span class="spacer"></span>
+ 
+    <!-- User Menu -->
+    <button mat-icon-button [matMenuTriggerFor]="userOptionsMenu" aria-label="User Menu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #userOptionsMenu="matMenu">
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+ 
+  <!-- Main Content Area -->
+  <div class="content-body">
+    <router-outlet></router-outlet>
+  </div>
+  
+    <!-- AI Agent Chat -->
+    <ng-container *ngIf="chatVisible">
+      <app-ai-agent></app-ai-agent>
+    </ng-container>
+
+    <!-- FAB Chat -->
+    <button mat-fab
+            color="primary"
+            (click)="toggleChat()"
+            class="chat-button"
+            aria-label="Open AI Assistant">
+      <mat-icon>chat</mat-icon>
+    </button>
+</mat-sidenav-content>
+</mat-sidenav-container>
+
+
+
+

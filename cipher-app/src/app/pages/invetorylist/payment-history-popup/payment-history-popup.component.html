@@ -1,0 +1,30 @@
+<div class=".payment-table-container">
+  <h2 mat-dialog-title>Payment History</h2>
+</div>
+
+<table class="payment-table">
+  <thead>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Fee Type</th>
+      <th>Due Amount</th>
+      <th>Paid Amount</th>
+      <th>Payment Date</th>
+      <th>Due Date</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of feehistory">
+      <td>{{ item.first_name }}</td>
+      <td>{{ item.last_name }}</td>
+      <td>{{ item.fee_type }}</td>
+      <td>${{ item.DueAmount }}</td>
+      <td>${{ item.PaidAmount }}</td>
+      <td>{{ item.PaymentDate }}</td>
+      <td>{{ item.DueDate }}</td>
+      <td>{{ item.status }}</td>
+    </tr>
+  </tbody>
+</table>

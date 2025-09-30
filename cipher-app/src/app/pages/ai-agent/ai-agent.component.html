@@ -1,0 +1,26 @@
+<!-- ai-agent.component.html -->
+<div class="chat-popup" *ngIf="isChatOpen">
+  <div class="chat-header">
+    <span>Smart School Ai Chat</span>
+    <button (click)="toggleChat()">Close</button>
+  </div>
+
+  <div class="chat-messages" #chatMessagesContainer>
+    <div *ngFor="let msg of messages" [class.user]="msg.user">
+      <div [innerHTML]="msg.text"></div>
+    </div>
+
+    <div *ngIf="selectedFile" class="file-preview">
+      <!-- <span>{{ selectedFile?.name }}</span> -->
+      <button (click)="removeSelectedFile()">&times;</button>
+    </div>
+  </div>
+
+  <form (ngSubmit)="sendMessage()" class="chat-input">
+    <input type="text" [(ngModel)]="userInput" name="userInput" required placeholder="Type your message...">
+    <label for="fileInput" class="upload-label">+</label>
+    <input type="file" id="fileInput" (change)="handleFileInput($event)" style="display: none;">
+    <button type="submit">&#10148;</button>
+  </form>
+</div>
+<button *ngIf="!isChatOpen" (click)="toggleChat()" class="chat-open-button">Open Chat</button>

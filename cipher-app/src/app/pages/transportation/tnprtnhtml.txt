@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transportation Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #1a202c;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .header h1 {
+            font-size: 2.25rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 32px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .nav-tab {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            color: #4a5568;
+            font-size: 0.875rem;
+        }
+
+        .nav-tab:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-tab.active {
+            background: #3182ce;
+            color: white;
+            border-color: #3182ce;
+            box-shadow: 0 2px 4px rgba(49, 130, 206, 0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #3182ce;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #3182ce;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .stat-change {
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .stat-change.positive {
+            color: #38a169;
+        }
+
+        .stat-change.negative {
+            color: #e53e3e;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .data-panel {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .panel-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .data-table {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .table-header {
+            background: #f8fafc;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .search-input {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.875rem;
+            width: 200px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3182ce;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 16px 24px;
+            text-align: left;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            color: #1a202c;
+            font-size: 0.875rem;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-active { background: #c6f6d5; color: #22543d; }
+        .status-inactive {background: #f8bcbc; color: #e60101;}
+        .status-pending {background: #fdd599; color: #e4a701;}
+        .status-idle { background: #fef5e7; color: #744210; }
+        .status-rating { background: #d6e4ff; color: #1a3c87; }
+        .status-delayed { background: #fed7d7; color: #742a2a; }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sidebar-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 16px;
+        }
+
+        .action-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .insight-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.875rem;
+            color: #4a5568;
+        }
+
+        .insight-item {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 12px;
+            border-left: 4px solid #3182ce;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background: #3182ce;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: #2c5aa0;
+        }
+
+        .btn-secondary:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        .floating-action {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: #3182ce;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(49, 130, 206, 0.3);
+            transition: all 0.2s ease;
+            z-index: 1000;
+        }
+
+        .floating-action:hover {
+            transform: scale(1.05);
+            background: #2c5aa0;
+            box-shadow: 0 6px 20px rgba(49, 130, 206, 0.4);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-tabs {
+                justify-content: flex-start;
+            }
+
+            th, td {
+                padding: 12px 16px;
+            }
+
+            .search-input {
+                width: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 20px;
+            }
+
+            .data-panel, .data-table, .sidebar-card {
+                padding: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .data-panel, .data-table, .sidebar-card {
+            animation: fadeInUp 0.4s ease forwards;
+        }
+    </style>
+</head>
+<body *ngIf="transpotaion">
+    <div class="container">
+        <!-- Header -->
+       
+
+        <!-- Statistics Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ActiveVehicles }}</div>
+                <div class="stat-label">Active Vehicles</div>
+                <div class="stat-change positive">+2 today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">On-Time Rate</div>
+                <div class="stat-change positive">+1.5% this week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Drivers On Duty</div>
+                <div class="stat-change negative">1 on leave</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{AvgRating}}</div>
+                <div class="stat-label">Avg Rating</div>
+                <div class="stat-change positive">+0.2 this month</div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" (click)="switchTab('rfid')">RFID Tracking</button>
+            <button class="nav-tab" (click)="switchTab('routes')">Route History</button>
+            <button class="nav-tab" (click)="switchTab('drivers')">Driver Information</button>
+            <button class="nav-tab" (click)="switchTab('feedback')">Feedback & Ratings</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content-grid">
+            <!-- Data Panels and Tables -->
+            <div class="main-content">
+                <!-- RFID Tracking -->
+                <div class="data-panel" id="rfid-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">RFID Tracking Overview</div>
+                        <button class="btn btn-secondary">Export Data</button>
+                    </div>
+                    <div class="insight-list">
+                        <div class="insight-item">
+                            <h3>Real-Time Tracking</h3>
+                            <p>95% of vehicles are actively tracked with RFID, ensuring accurate location updates.</p>
+                        </div>
+                        <div class="insight-item">
+                            <h3>System Reliability</h3>
+                            <p>RFID system uptime is 99.9%, with minimal disruptions reported this month.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="data-table" id="rfid-table">
+                    <div class="table-header">
+                        <div class="table-title">RFID Tracking</div>
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        placeholder="Search RFID..."
+                        [(ngModel)]="searchTerm" 
+                        (keyup)="filterTable()" 
+>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>RFID Tag</th>
+                                <th>Vehicle</th>
+                                <th>Last Seen</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    <tr *ngFor="let record of filteredData">
+                     <td>{{ record.RFID_TAG }}</td>
+                     <td>{{ record.Vehicle }}</td>
+                     <td>{{ record.Last_Seen }}</td>
+                     <td>{{ record.Location }}</td>
+                     <td>
+                       <span 
+                         class="status-badge" 
+                         [ngClass]="{
+                           'status-active': record.Status === 'Active',
+                           'status-inactive': record.Status === 'Inactive',
+                           'status-pending': record.Status === 'Pending'
+                         }">
+                         {{ record.Status }}
+                       </span>
+                     </td>               
+                      <td>
+                  <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;">View</button>
+                </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;">View</button></td> -->
+
+                <!-- Route History -->
+                <div class="data-panel" id="routes-panel" style="display: none;">
+                    <div class="panel-header">
+                        <div class="panel-title">Route History Insights</div>
+                        <button class="btn btn-secondary">Export Routes</button>
+                    </div>
+                    <div class="insight-list">
+                        <div class="insight-item">
+                            <h3>Route Efficiency</h3>
+                            <p>Campus to Downtown route shows 10% faster travel time due to optimized paths.</p>
+                        </div>
+                        <div class="insight-item">
+                            <h3>Fuel Savings</h3>
+                            <p>Route optimization has reduced fuel consumption by 12% this month.</p>
+                        </div>
+                        <div class="insight-item">
+                            <h3>Traffic Analysis</h3>
+                            <p>Suburb routes experience 15% higher delays during peak hours.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Feedback & Ratings -->
+                <div class="data-panel" id="feedback-panel" style="display: none;">
+                    <div class="panel-header">
+                        <div class="panel-title">Feedback Insights</div>
+                        <button class="btn btn-secondary">Export Feedback</button>
+                    </div>
+                    <div class="insight-list">
+                        <div class="insight-item">
+                            <h3>User Satisfaction</h3>
+                            <p>85% of feedback indicates high satisfaction with punctuality.</p>
+                        </div>
+                        <div class="insight-item">
+                            <h3>Common Complaints</h3>
+                            <p>Delays reported in 10% of feedback, mainly on Suburb routes.</p>
+                        </div>
+                        <div class="insight-item">
+                            <h3>Improvement Suggestions</h3>
+                            <p>Users suggest adding more frequent stops on Campus routes.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="data-table" id="feedback-table" style="display: none;">
+                    <div class="table-header">
+                        <div class="table-title">Feedback & Ratings</div>
+                        <input type="text" class="search-input" placeholder="Search feedback..." onkeyup="filterTable(this.value, 'feedback-table')">
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Rating</th>
+                                <th>Comment</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Student A</td>
+                                <td><span class="status-badge status-rating">5</span></td>
+                                <td>Smooth ride, very punctual!</td>
+                                <td>Today</td>
+                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>Student B</td>
+                                <td><span class="status-badge status-rating">4</span></td>
+                                <td>Good service, but slight delay.</td>
+                                <td>Yesterday</td>
+                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>Student C</td>
+                                <td><span class="status-badge status-rating">4.5</span></td>
+                                <td>Comfortable ride, driver was friendly.</td>
+                                <td>Jul 28, 2025</td>
+                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>Student D</td>
+                                <td><span class="status-badge status-rating">3.5</span></td>
+                                <td>Bus was crowded, needs more capacity.</td>
+                                <td>Jul 27, 2025</td>
+                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;">View</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-title">Quick Actions</div>
+                    <div class="action-list">
+                        <button class="btn btn-primary">Track Vehicle</button>
+                        <button class="btn btn-secondary">Generate Report</button>
+                        <button class="btn btn-secondary">Assign Driver</button>
+                        <button class="btn btn-secondary">Add Feedback</button>
+                    </div>
+                </div>
+                <div class="sidebar-card">
+                    <div class="sidebar-title">System Insights</div>
+                    <div class="insight-list">
+                        <div class="insight-item">95% of vehicles are on schedule today.</div>
+                        <div class="insight-item">Driver ratings improved by 0.3 points this month.</div>
+                        <div class="insight-item">Route optimization saved 10% fuel last week.</div>
+                        <div class="insight-item">Feedback indicates high satisfaction on Downtown routes.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="floating-action">+</button>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            // Hide all panels and tables
+            document.getElementById('rfid-panel').style.display = 'none';
+            document.getElementById('rfid-table').style.display = 'none';
+            document.getElementById('routes-panel').style.display = 'none';
+            document.getElementById('routes-table').style.display = 'none';
+            document.getElementById('drivers-panel').style.display = 'none';
+            document.getElementById('drivers-table').style.display = 'none';
+            document.getElementById('feedback-panel').style.display = 'none';
+            document.getElementById('feedback-table').style.display = 'none';
+
+            // Show selected panel and table
+            document.getElementById(`${tab}-panel`).style.display = 'block';
+            document.getElementById(`${tab}-table`).style.display = 'block';
+
+            // Update active tab
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`button[onclick="switchTab('${tab}')"]`).classList.add('active');
+        }
+
+        function filterTable(query, tableId) {
+            const table = document.getElementById(tableId).querySelector('table');
+            const rows = table.getElementsByTagName('tr');
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let match = false;
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].textContent.toLowerCase().includes(query.toLowerCase())) {
+                        match = true;
+                        break;
+                    }
+                }
+                rows[i].style.display = match ? '' : 'none';
+            }
+        }
+    </script>
+</body>
+<body *ngIf="routes">
+    <div class="container">
+
+        <!-- Statistics Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ActiveVehicles }}</div>
+                <div class="stat-label">Active Vehicles</div>
+                <div class="stat-change positive">+2 today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">On-Time Rate</div>
+                <div class="stat-change positive">+1.5% this week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Drivers On Duty</div>
+                <div class="stat-change negative">1 on leave</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{AvgRating}}</div>
+                <div class="stat-label">Avg Rating</div>
+                <div class="stat-change positive">+0.2 this month</div>
+            </div>
+        </div>
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab" (click)="switchTab('rfid')">RFID Tracking</button>
+            <button class="nav-tab active" (click)="switchTab('routes')">Route History</button>
+            <button class="nav-tab" (click)="switchTab('drivers')">Driver Information</button>
+            <button class="nav-tab" (click)="switchTab('feedback')">Feedback & Ratings</button>
+        </div>
+
+        <!-- Main Content -->
+         <div class="data-panel" id="routes-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">Route History Insights</div>
+                        <button class="btn btn-secondary">Export Routes</button>
+                    </div>
+                    <div class="insight-list">
+                        <div class="insight-item">
+                            <h3>Route Efficiency</h3>
+                            <p>Campus to Downtown route shows 10% faster travel time due to optimized paths.</p>
+                        </div>
+                        <div class="insight-item">
+                            <h3>Fuel Savings</h3>
+                            <p>Route optimization has reduced fuel consumption by 12% this month.</p>
+                        </div>
+                        <div class="insight-item">
+                            <h3>Traffic Analysis</h3>
+                            <p>Suburb routes experience 15% higher delays during peak hours.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="data-table" id="routes-table">
+                    <div class="table-header">
+                        <div class="table-title">Route History</div>
+                        <input 
+                          type="text" 
+                          class="search-input" 
+                          placeholder="Search routes..."
+                          [(ngModel)]="RouteSearchTerm"
+                          (keyup)="filterRoute()"
+                        />                   
+                     </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Route</th>
+                                <th>Distance(KM)</th>
+                                <th>Duration</th>
+                                <th>Vehicle</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                         <tr *ngFor="let route of filteredRoutedata">
+                              <td>{{ route.Date }}</td>
+                              <td>{{ route.Route }}</td>
+                              <td>{{ route.Distance }}</td>
+                              <td>{{ route.Duration }}</td>
+                              <td>{{ route.Vehicle }}</td>
+                               <td>
+                                  <span 
+                                    class="status-badge" 
+                                    [ngClass]="{
+                                      'status-active': route.Status === 'Active',
+                                      'status-inactive': route.Status === 'Inactive',
+                                      'status-pending': route.Status === 'Pending'
+                                    }">
+                                    {{ route.Status }}
+                                  </span>
+                                </td>               
+                              <td>
+                                <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;">View</button>
+                              </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+        <!-- Floating Action Button -->
+        <button class="floating-action">+</button>
+    </div>
+</body>
+<body *ngIf="Driver">
+    <div class="container">
+        <!-- Header -->
+        
+        <!-- Statistics Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ActiveVehicles }}</div>
+                <div class="stat-label">Active Vehicles</div>
+                <div class="stat-change positive">+2 today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">On-Time Rate</div>
+                <div class="stat-change positive">+1.5% this week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Drivers On Duty</div>
+                <div class="stat-change negative">1 on leave</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{AvgRating}}</div>
+                <div class="stat-label">Avg Rating</div>
+                <div class="stat-change positive">+0.2 this month</div>
+            </div>
+        </div>
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab" (click)="switchTab('rfid')">RFID Tracking</button>
+            <button class="nav-tab" (click)="switchTab('routes')">Route History</button>
+            <button class="nav-tab active" (click)="switchTab('drivers')">Driver Information</button>
+            <button class="nav-tab" (click)="switchTab('feedback')">Feedback & Ratings</button>
+        </div>
+
+        <!-- Main Content -->
+       <div class="data-panel" id="drivers-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">Driver Performance Insights</div>
+                        <button class="btn btn-secondary">Export Driver Data</button>
+                    </div>
+                    <div class="insight-list">
+                        <div class="insight-item">
+                            <h3>Driver Ratings</h3>
+                            <p>Average driver rating is 4.6, with 80% of drivers above 4.5 stars.</p>
+                        </div>
+                        <div class="insight-item">
+                            <h3>Safety Records</h3>
+                            <p>No safety incidents reported for 95% of drivers this quarter.</p>
+                        </div>
+                        <div class="insight-item">
+                            <h3>Training Needs</h3>
+                            <p>3 drivers recommended for advanced navigation training.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="data-table" id="drivers-table">
+                    <div class="table-header">
+                        <div class="table-title">Driver Information</div>
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        placeholder="Search drivers..."
+                        [(ngModel)]="driverSearchTerm"
+                        (keyup)="filterDrivers()">
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Driver ID</th>
+                                <th>License</th>
+                                <th>Experience</th>
+                                <th>Rating</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let driver of filteredDriverData">
+                            <td>{{ driver.Name }}</td>
+                            <td>{{ driver.DriverID }} </td>
+                            <td>{{ driver.license_number }}</td>
+                            <td>{{ driver.Experience }}</td>
+                            <td><span class="status-badge status-rating">{{ driver.Rating }}</span></td>                        
+                            <td>
+                              <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;">View</button>
+                            </td>
+                         </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+        <!-- Floating Action Button -->
+        <button class="floating-action">+</button>
+    </div>
+
+</body>
+<body *ngIf="feedback">
+    <div class="container">
+        <!-- Header -->
+       
+
+        <!-- Statistics Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ActiveVehicles }}</div>
+                <div class="stat-label">Active Vehicles</div>
+                <div class="stat-change positive">+2 today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">On-Time Rate</div>
+                <div class="stat-change positive">+1.5% this week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Drivers On Duty</div>
+                <div class="stat-change negative">1 on leave</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{AvgRating}}</div>
+                <div class="stat-label">Avg Rating</div>
+                <div class="stat-change positive">+0.2 this month</div>
+            </div>
+        </div>
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab" (click)="switchTab('rfid')">RFID Tracking</button>
+            <button class="nav-tab" (click)="switchTab('routes')">Route History</button>
+            <button class="nav-tab" (click)="switchTab('drivers')">Driver Information</button>
+            <button class="nav-tab active" (click)="switchTab('feedback')">Feedback & Ratings</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content-grid">
+            <!-- Data Panels and Tables -->
+            <div class="data-panel" id="feedback-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">Feedback Insights</div>
+                        <button class="btn btn-secondary">Export Feedback</button>
+                    </div>
+                    <div class="insight-list">
+                        <div class="insight-item">
+                            <h3>User Satisfaction</h3>
+                            <p>85% of feedback indicates high satisfaction with punctuality.</p>
+                        </div>
+                        <div class="insight-item">
+                            <h3>Common Complaints</h3>
+                            <p>Delays reported in 10% of feedback, mainly on Suburb routes.</p>
+                        </div>
+                        <div class="insight-item">
+                            <h3>Improvement Suggestions</h3>
+                            <p>Users suggest adding more frequent stops on Campus routes.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="data-table" id="feedback-table">
+                    <div class="table-header">
+                        <div class="table-title">Feedback & Ratings</div>
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        placeholder="Search feedback..."
+                        [(ngModel)]="FeedbackSearchTerm"
+                        (keyup)="filterFeedback()">
+
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Driver</th>
+                                <th>Rating</th>
+                                <th>Comment</th>
+                                <th>User</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let feedback of filteredFeedbackdata">
+                           <td>{{ feedback.Name }}</td>
+                           <td><span class="status-badge status-rating">{{ feedback.rating }}</span></td>
+                           <td>{{ feedback.comment }}</td>
+                           <td>{{ feedback.username }}</td>
+                           <td>{{ feedback.date }}</td>
+                           <td>
+                             <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;">View</button>
+                           </td>
+                         </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+             <div class="data-panel" id="feedback-panel" style="display: none;">
+                    <div class="panel-header">
+                        <div class="panel-title">Feedback Insights</div>
+                        <button class="btn btn-secondary">Export Feedback</button>
+                    </div>
+                    <div class="insight-list">
+                        <div class="insight-item">
+                            <h3>User Satisfaction</h3>
+                            <p>85% of feedback indicates high satisfaction with punctuality.</p>
+                        </div>
+                        <div class="insight-item">
+                            <h3>Common Complaints</h3>
+                            <p>Delays reported in 10% of feedback, mainly on Suburb routes.</p>
+                        </div>
+                        <div class="insight-item">
+                            <h3>Improvement Suggestions</h3>
+                            <p>Users suggest adding more frequent stops on Campus routes.</p>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Sidebar -->
+           
+        
+        <!-- Floating Action Button -->
+        <button class="floating-action">+</button>
+    </div>
+
+</body>
+</html>

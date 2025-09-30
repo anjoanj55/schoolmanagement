@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\pages",
+    "\\src\\app\\pages\\ai-agent",
+    "\\src\\app\\pages\\login",
+    "\\src\\app\\pages\\profile",
+    "\\src\\app\\pages\\rule-builder",
+    "\\src\\app\\pages\\workflow",
+    "\\src\\environments"
+  ],
+  "PreviewInSolutionExplorer": false
+}

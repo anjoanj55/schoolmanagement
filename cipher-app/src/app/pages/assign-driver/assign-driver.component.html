@@ -1,0 +1,38 @@
+<div class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">Assign Driver</h2>
+    </div>
+
+    <div class="modal-body">
+      <label>Driver</label>
+      <select [(ngModel)]="selectedDriver">
+        <option value="">-- Select Driver --</option>
+        <option *ngFor="let d of drivers" [value]="d.Name">{{ d.Name }}</option>
+      </select>
+
+      <br><br>
+
+<label for="rfid">Select RFID:</label>
+<select id="rfid" [(ngModel)]="selectedRfid">
+  <option value="" disabled selected>-- Select RFID --</option>
+  <option *ngFor="let r of rfids" [value]="r.RFID_TAG">
+    {{ r.RFID_TAG }} - {{ r.Vehicle }}
+  </option>
+</select>
+
+    </div>
+
+    <div class="modal-footer">
+      <button mat-button (click)="assignDriver()"
+      class="assign-btn">
+    Assign</button>
+
+      <button mat-button (click)="closeDialog()" class="close-btn">
+    Close
+  </button>
+
+    </div>
+  </div>
+</div>
+

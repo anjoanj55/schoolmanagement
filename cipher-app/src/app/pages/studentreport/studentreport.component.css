@@ -1,0 +1,286 @@
+/* Global font reset */
+* {
+  font-family: Arial, sans-serif !important;
+  box-sizing: border-box;
+}
+
+/* Remove all borders and backgrounds globally */
+.report-container,
+.report-container *,
+#powerbi-container,
+#powerbi-container *,
+.responsive-container,
+.responsive-container * {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* Gradient Tabs */
+.gradient-tabs {
+  background: white;
+  border-radius: 12px;
+  padding: 0.5rem;
+  max-width: 100%;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.gradient-tabs .mat-tab-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.gradient-tabs .mat-tab-label {
+  background: #f0f4f8;
+  color: #6b7280;
+  border-radius: 12px;
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  font-size: clamp(14px, 2vw, 16px);
+  transition: 0.3s ease-in-out;
+  border: none !important;
+}
+
+.gradient-tabs .mat-tab-label:hover {
+  background: linear-gradient(to right, #085a96, #0ea5e9);
+  color: white;
+  transform: scale(1.05);
+}
+
+.gradient-tabs .mat-tab-label-active {
+  background: linear-gradient(to right, #085a96, #0ea5e9);
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 128, 255, 0.3);
+  transform: scale(1.08);
+}
+
+/* Animated Tab Group Styles */
+.animated-tab-group ::ng-deep .mat-tab-label {
+  text-transform: none;
+  font-weight: 700;
+  font-size: clamp(14px, 2vw, 15px);
+  padding: 0.75rem 1.5rem;
+  margin-right: 0.75rem;
+  border-radius: 12px;
+  color: #6b7280;
+  transition: all 0.3s ease;
+  border: none !important;
+  outline: none !important;
+}
+
+.animated-tab-group ::ng-deep .mat-tab-label:hover {
+  background: linear-gradient(90deg, #085a96 0%, #0ea5e9 100%);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.animated-tab-group ::ng-deep .mat-tab-label.mat-tab-label-active {
+  background-color: #085a96;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(8, 90, 150, 0.4);
+  transform: scale(1.1);
+}
+
+/* Remove Angular Material default borders */
+::ng-deep .mat-tab-group,
+::ng-deep .mat-tab-header,
+::ng-deep .mat-tab-body-wrapper,
+::ng-deep .mat-tab-body,
+::ng-deep .mat-tab-body-content {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* Spinner */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Error Message */
+.error-message {
+  text-align: center;
+  color: red;
+  margin-top: 20px;
+  font-weight: bold;
+  background: transparent !important;
+  border: none !important;
+}
+
+/* PowerBI Container - Complete border removal */
+.report-container {
+  width: 100%;
+  height: calc(100vh - 120px);
+  position: relative;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Dynamic Power BI container - Enhanced border removal */
+.responsive-container {
+  width: 100%;
+  height: 100%;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  margin: 0 !important;
+}
+
+/* Remove ALL borders from Power BI iframe and its contents */
+.responsive-container iframe,
+.responsive-container iframe *,
+#powerbi-container iframe,
+#powerbi-container iframe * {
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Target Power BI specific elements that might have borders */
+::ng-deep iframe[src*="powerbi"],
+::ng-deep iframe[src*="app.powerbi.com"],
+::ng-deep .powerbi-embed-wrapper,
+::ng-deep .embed-container {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* Shared Container Styling */
+.spinner-container,
+.error-message,
+.tab-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 120px);
+  border: none !important;
+  background: transparent !important;
+}
+
+/* Tab content wrapper */
+.tab-content {
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Blur Effect */
+.blurred {
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+/* Loading Animation */
+.loading-line {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  z-index: 9999;
+  background: linear-gradient(90deg, #0ea5e9, #085a96);
+  background-size: 200% 100%;
+  animation: loading-animation 1s linear infinite;
+}
+
+@keyframes loading-animation {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* Overlay Loader */
+.overlay {
+  position: fixed;
+  top: 0.5%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  backdrop-filter: blur(2px);
+}
+
+.alert-message {
+  visibility: visible;
+  opacity: 1;
+  background-color: #0a68ae;
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+  text-align: center;
+  position: absolute;
+}
+
+.show-alert {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .gradient-tabs .mat-tab-label,
+  .animated-tab-group ::ng-deep .mat-tab-label {
+    padding: 0.5rem 1rem;
+    font-size: 14px;
+  }
+  .report-container {
+    height: calc(100vh - 100px);
+  }
+}
+
+@media (max-width: 480px) {
+  .gradient-tabs .mat-tab-label,
+  .animated-tab-group ::ng-deep .mat-tab-label {
+    padding: 0.4rem 0.8rem;
+    font-size: 13px;
+  }
+}
+
+/* Additional Power BI border fixes */
+::ng-deep powerbi-report,
+::ng-deep .powerbi-report-container,
+::ng-deep [data-module="powerbi-client"] {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Force remove any remaining borders on embedded content */
+* [class*="powerbi"],
+* [id*="powerbi"],
+* [class*="embed"],
+* [id*="embed"] {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}

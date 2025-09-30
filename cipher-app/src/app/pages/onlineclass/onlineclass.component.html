@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Classes - EduPro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #1a202c;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .header h1 {
+            font-size: 2.25rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 32px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .nav-tab {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            color: #4a5568;
+            font-size: 0.875rem;
+        }
+
+        .nav-tab:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-tab.active {
+            background: #3182ce;
+            color: white;
+            border-color: #3182ce;
+            box-shadow: 0 2px 4px rgba(49, 130, 206, 0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #3182ce;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #3182ce;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .stat-change {
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .stat-change.positive {
+            color: #38a169;
+        }
+
+        .stat-change.negative {
+            color: #e53e3e;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .class-panel {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .class-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .class-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .class-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .class-item {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 16px;
+            border-left: 4px solid #3182ce;
+        }
+
+        .class-item h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .class-item p {
+            font-size: 0.875rem;
+            color: #4a5568;
+            line-height: 1.5;
+        }
+/* your-component.css */
+#zoom-container {
+  width: 100%;
+  height: 100vh; /* Zoom needs full height */
+  background: #000; /* fallback */
+}
+
+#zmmtg-root {
+  width: 100%;
+  height: 100%;
+}
+
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sidebar-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 16px;
+        }
+
+        .participant-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .participant-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .participant-item:hover {
+            background: #e2e8f0;
+        }
+
+        .participant-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .participant-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #3182ce;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .participant-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #1a202c;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-active { background: #c6f6d5; color: #22543d; }
+        .status-idle { background: #fef5e7; color: #744210; }
+        .status-offline { background: #fed7d7; color: #742a2a; }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background: #3182ce;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: #2c5aa0;
+        }
+
+        .btn-secondary:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        .classes-table {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .table-header {
+            background: #f8fafc;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .search-input {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.875rem;
+            width: 200px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3182ce;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 16px 24px;
+            text-align: left;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            color: #1a202c;
+            font-size: 0.875rem;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .class-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-live { background: #c6f6d5; color: #22543d; }
+        .status-scheduled { background: #fef5e7; color: #744210; }
+        .status-ended { background: #fed7d7; color: #742a2a; }
+
+        .floating-action {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: #3182ce;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(49, 130, 206, 0.3);
+            transition: all 0.2s ease;
+            z-index: 1000;
+        }
+
+        .floating-action:hover {
+            transform: scale(1.05);
+            background: #2c5aa0;
+            box-shadow: 0 6px 20px rgba(49, 130, 206, 0.4);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-tabs {
+                justify-content: flex-start;
+            }
+
+            th, td {
+                padding: 12px 16px;
+            }
+
+            .search-input {
+                width: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 20px;
+            }
+
+            .class-panel, .sidebar-card {
+                padding: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .class-panel, .sidebar-card {
+            animation: fadeInUp 0.4s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Online Classes</h1>
+            <p>Manage and monitor live online classes with AI-powered interaction analytics and participant tracking</p>
+        </div>
+
+        <!-- Statistics Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+    <div class="stat-number">{{ classDatastats.ActiveClass }}</div>
+    <div class="stat-label">Active Classes</div>
+    <!-- <div class="stat-change positive">+2 today</div> -->
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">{{ classDatastats.AttendanceRatePercent }}%</div>
+    <div class="stat-label">Attendance Rate</div>
+    <!-- <div class="stat-change positive">+3.1% this week</div> -->
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">{{ classDatastats.InteractionPer }}%</div>
+    <div class="stat-label">Interaction Rate</div>
+    <!-- <div class="stat-change negative">-2.5% from yesterday</div> -->
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">{{ classDatastats.Scheduled }}</div>
+    <div class="stat-label">Scheduled Classes</div>
+    <!-- <div class="stat-change positive">For this week</div> -->
+  </div>
+        </div>
+<!-- <div id="zoom-container">
+  <div id="zmmtg-root"></div>
+  <div id="aria-notify-area"></div>
+</div> -->
+        <!-- Navigation Tabs -->
+        <!-- <div class="nav-tabs">
+            <button class="nav-tab" onclick="switchTab('live')">Live Analysis</button>
+            <button class="nav-tab" onclick="switchTab('recordings')">Performance</button>
+            <button class="nav-tab" onclick="switchTab('behavior')">Time Table</button>  
+            <button class="nav-tab active" onclick="switchTab('classes')">Online Classes</button>
+                   <button class="nav-tab" onclick="switchTab('predictions')">Attendance</button>
+            <button class="nav-tab" onclick="switchTab('assessments')">Exam and Dates</button>
+            <button class="nav-tab" onclick="switchTab('settings')">Settings</button>
+        </div> -->
+
+        <!-- Main Content -->
+        <div class="content-grid">
+            <!-- Class Panel -->
+            <div class="main-content">
+                <div class="class-panel" *ngIf="insights.length > 0">
+  <div class="class-header">
+    <div class="class-title">Live Class Insights</div>
+    <button class="btn btn-secondary" (click)="exportInsightsExcel()">Export Insights</button>
+  </div>
+
+  <div class="class-list">
+    <div class="class-item" *ngFor="let insight of insights">
+      <h3>{{ insight.title }}</h3>
+      <p>{{ insight.message }}</p>
+    </div>
+  </div>
+</div>
+
+
+                <!-- Classes History Table -->
+                <div class="classes-table">
+                    <div class="table-header">
+                        <div class="table-title">Class History</div>
+                        <input type="text" 
+       class="search-input" 
+       placeholder="Search records..."  
+       [(ngModel)]="searchTerm"
+       (keyup)="filteronline(searchTerm)">
+                    </div>
+                    
+                    <table id="classesTable">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Subject</th>
+      <th>Participants</th>
+      <th>Duration</th>
+      <th>Interaction</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let classItem of filteredclassData">
+      <td>{{ classItem.datetime }}</td>
+      <td>{{ classItem.subject }}</td>
+      <td>{{ classItem.Participants }}</td>
+      <td>{{ classItem.Duration }}</td>
+      <td>{{ classItem.Interaction }}</td>
+      <td>
+        <span 
+          class="class-status" 
+          [ngClass]="{
+            'status-live': classItem.status === 'Live',
+            'status-ended': classItem.status === 'Ended',
+            'status-scheduled': classItem.status === 'Scheduled'
+          }">
+          {{ classItem.status }}
+        </span>
+      </td>
+      <td>
+        <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"
+        >
+          {{ classItem.Actions }}
+        </button>
+        <!-- (click)="joinClass()" -->
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+                </div>
+            </div>
+            
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+               
+
+                <!-- Quick Actions -->
+                <div class="sidebar-card">
+                    <div class="sidebar-title">Quick Actions</div>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <!-- <button class="btn btn-primary">Start Class</button> -->
+                        <!-- <button class="btn btn-secondary">Schedule Class</button> -->
+                        
+                        <button class="btn btn-secondary"(click)="exportData()">Export Analytics</button>
+                    </div>
+                </div>
+
+                <!-- AI Insights -->
+                <div class="sidebar-card">
+                    <div class="sidebar-title">AI Insights</div>
+                    <div style="display: flex; flex-direction: column; gap: 12px; font-size: 0.875rem; color: #4a5568;">
+                        <div>Interactive segments increase engagement by 20% in online sessions.</div>
+                        <div>Technical issues reduced participation for 10% of students in recent classes.</div>
+                        <div>Schedule shorter sessions to maintain high interaction levels.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="floating-action">+</button>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            // Placeholder for tab switching logic
+            console.log(`Switching to ${tab} tab`);
+        }
+
+        function filterClasses(query) {
+            const table = document.getElementById('classesTable');
+            const rows = table.getElementsByTagName('tr');
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let match = false;
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].textContent.toLowerCase().includes(query.toLowerCase())) {
+                        match = true;
+                        break;
+                    }
+                }
+                rows[i].style.display = match ? '' : 'none';
+            }
+        }
+    </script>
+</body>
+</html>

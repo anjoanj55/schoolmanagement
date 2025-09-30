@@ -1,0 +1,160 @@
+<div class="container">
+  <div class="header">
+    <h1>Track a Person</h1>
+      <p>Real-time tracking of a person is the continuous monitoring and updating of an individual’s location and movement</p>
+  </div>
+
+        <div class="content-grid">
+            <!-- Data Panels and Tables -->
+            <div class="main-content">
+                <!-- RFID Tracking -->
+                    <div class="insight-list">
+                        <div class="insight-item">
+                            <h3>Real-Time Tracking</h3>
+                            <p>95% of Peoples are actively tracked and ensuring accurate details updates.</p>
+                        </div>
+ <!-- Category DROPDOWN -->
+<div class="filters-row"> 
+  <mat-form-field appearance="outline"> 
+  <mat-label>Category</mat-label> 
+  <mat-select [(ngModel)]="selectedCategory" (selectionChange)="onCategoryChange($event.value)"> 
+    <mat-option *ngFor="let element of categories" [value]="element.CategoryName"> 
+      <span *ngIf="element.CategoryName; else noCategory"> {{ element.CategoryName }} </span> 
+      <ng-template #noCategory>No Category</ng-template> </mat-option> </mat-select> 
+      <button *ngIf="selectedCategory" matSuffix mat-icon-button aria-label="Clear" 
+      (click)="selectedCategory = null; names=[]; selectedName=null"> 
+      <mat-icon>close</mat-icon> 
+    </button> 
+</mat-form-field>
+
+  <!-- NAME DROPDOWN -->
+<mat-form-field appearance="outline"> 
+  <mat-label>Name</mat-label> <mat-select [(ngModel)]="selectedPerson" (selectionChange)="onFiltersChanged()">
+   <mat-option *ngIf="names.length === 0" disabled> No names available </mat-option>
+    <mat-option *ngFor="let person of names" [value]="person"> {{ person.Name }} 
+  </mat-option> </mat-select>
+  <!-- Clear button for Name -->
+  <button *ngIf="selectedPerson" 
+          matSuffix mat-icon-button 
+          aria-label="Clear"
+          (click)="selectedPerson = null; onFiltersChanged()">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
+
+ <!-- Start Date -->
+<mat-form-field appearance="outline">
+  <mat-label>Start Date</mat-label>
+  <input matInput 
+         [matDatepicker]="picker1" 
+         [(ngModel)]="startDate"
+         placeholder="Select date">
+
+  <!-- Suffix with both icons -->
+  <div matSuffix class="suffix-icons">
+    <!-- Show close only if date selected -->
+    <button *ngIf="startDate" mat-icon-button (click)="clearStartDate()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <!-- Calendar icon always visible -->
+    <mat-datepicker-toggle [for]="picker1"></mat-datepicker-toggle>
+  </div>
+
+  <mat-datepicker #picker1></mat-datepicker>
+</mat-form-field>
+<!-- End Date -->
+<mat-form-field appearance="outline">
+  <mat-label>End Date</mat-label>
+  <input 
+    matInput 
+    [matDatepicker]="picker2" 
+    [(ngModel)]="end_Date" 
+    (dateChange)="onEndDateChanged($event.value)"
+    placeholder="Select date">
+  
+  <div matSuffix class="suffix-icons">
+    <button *ngIf="endDate" mat-icon-button (click)="clearEndDate()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <mat-datepicker-toggle [for]="picker2"></mat-datepicker-toggle>
+  </div>
+
+  <mat-datepicker #picker2></mat-datepicker>
+</mat-form-field>
+
+
+  <div class="start-tracking-btn-wrapper">
+    <button mat-raised-button color="primary" (click)="onStartTracking()">
+      Start Tracking
+    </button>
+  </div>
+  <div class="History-btn-wrapper">
+    <button mat-raised-button color="primary" (click)="onHistory()">
+      History
+    </button>
+  </div>
+</div>
+
+
+<table mat-table [dataSource]="displayedPeople" class="mat-elevation-z2 full-width-table">
+
+  <!-- Photo Column -->
+  <ng-container matColumnDef="photo">
+    <th mat-header-cell *matHeaderCellDef> PHOTO </th>
+    <td mat-cell *matCellDef="let element">
+      <img *ngIf="element.Photo && element.Photo !== 'No Photo'" 
+           [src]="element.Photo" 
+           alt="{{element.Name}}" 
+           width="50" height="50">
+      <span *ngIf="!element.Photo || element.Photo === 'No Photo'">No Photo</span>
+    </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> NAME </th>
+    <td mat-cell *matCellDef="let element"> {{ element.Name }} </td>
+  </ng-container>
+
+  <!-- Gender Column -->
+  <ng-container matColumnDef="gender">
+    <th mat-header-cell *matHeaderCellDef> GENDER </th>
+    <td mat-cell *matCellDef="let element"> {{ element.Gender }} </td>
+  </ng-container>
+
+  <!-- Age Column -->
+  <ng-container matColumnDef="age">
+    <th mat-header-cell *matHeaderCellDef> AGE </th>
+    <td mat-cell *matCellDef="let element"> {{ element.Age }} </td>
+  </ng-container>
+
+  <!-- Detail Profile Column -->
+<ng-container matColumnDef="detailProfile">
+  <th mat-header-cell *matHeaderCellDef> DETAIL PROFILE </th>
+  <td mat-cell *matCellDef="let element">
+    <button mat-button color="primary" (click)="showDetailProfile(element)">Detail</button>
+  </td>
+</ng-container>
+
+  <!-- Tracking Details Column -->
+  <ng-container matColumnDef="trackingDetails">
+    <th mat-header-cell *matHeaderCellDef> TRACKING DETAILS </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-button color="accent" (click)="showDetail(element)">Detail</button>
+    </td>
+  </ng-container>
+
+  <!-- Stop Tracking Column -->
+  <!-- <ng-container matColumnDef="stopTracking">
+    <th mat-header-cell *matHeaderCellDef> Stop </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-button color="warn" (click)="onStopTracking()">Stop</button>
+    </td>
+  </ng-container> -->
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+
+

@@ -1,0 +1,38 @@
+.dialog-header {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.fees-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.fees-table th,
+.fees-table td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.fees-table th {
+  background: #3182ce;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.fees-table tr {
+  transition: all 0.2s ease;
+}
+
+.fees-table tr:hover {
+  background: #f7fafc;
+}
