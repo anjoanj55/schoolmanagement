@@ -394,7 +394,7 @@
           <mat-icon class="nav-icon feedback-icon">live_tv</mat-icon>
           <span *ngIf="!isCollapsed" class="nav-label">Feedback and Rating</span>
         </a>
-        <a mat-list-item>
+        <a mat-list-item routerLink="/home/ParkingManagementComponent" routerLinkActive="active-item" class="nav-item">
           <mat-icon class="nav-icon">local_parking</mat-icon>
           <span *ngIf="!isCollapsed" class="nav-label">Parking Management</span>
         </a>
@@ -435,11 +435,11 @@
           <span *ngIf="!isCollapsed" class="nav-label">Inventory list</span>
         </a>
         
-      <a mat-list-item>
+      <a mat-list-item routerLink="/home/KitchenManagementComponent" routerLinkActive="active-item" class="nav-item">
                      <mat-icon class="nav-icon">kitchen</mat-icon>
           <span *ngIf="!isCollapsed" class="nav-label">Kitchen Management</span>
         </a>
-      <a mat-list-item>
+      <a mat-list-item routerLink="/home/LaundryManagementComponent" routerLinkActive="active-item" class="nav-item">
                      <mat-icon class="nav-icon">local_laundry_service</mat-icon>
           <span *ngIf="!isCollapsed" class="nav-label">Laundry Management</span>
         </a>

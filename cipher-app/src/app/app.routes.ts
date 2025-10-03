@@ -40,6 +40,9 @@ import { SyllabusprogressComponent } from './pages/syllabusprogress/syllabusprog
 import { AcademicprogressComponent } from './pages/academicprogress/academicprogress.component';
 import { HostelInventoryDashboardComponent } from './pages/hostel-inventory-dashboard/hostel-inventory-dashboard.component';
 import { KitchenInventoryDashboardComponent } from './pages/kitchen-inventory-dashboard/kitchen-inventory-dashboard.component';
+import { ParkingManagementComponent } from './pages/parking-management/parking-management.component';
+import { KitchenManagementComponent } from './pages/kitchen-management/kitchen-management.component';
+import { LaundryManagementComponent } from './pages/laundry-management/laundry-management.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -86,8 +89,9 @@ export const routes: Routes = [
            { path: 'AcademicProgress', component: AcademicprogressComponent },
            { path: 'HostelInventoryDashboard', component: HostelInventoryDashboardComponent},
           { path: 'KitchenInventoryDashboard', component: KitchenInventoryDashboardComponent },
-
-
+          { path: 'ParkingManagementComponent', component: ParkingManagementComponent },
+          { path: 'KitchenManagementComponent', component: KitchenManagementComponent },
+          { path: 'LaundryManagementComponent', component: LaundryManagementComponent }
     ]
   },
   { path: '**', redirectTo: '' }
