@@ -209,6 +209,20 @@
         .panel-title i {
             color: #3182ce;
         }
+        .search-container {
+              display: flex;
+              align-items: center;
+              border: 1px solid #dddedf;
+              border-radius: 6px;
+              padding: 5px 10px;
+              background: #fff;
+              height: 32px;
+            }
+
+            .search-container:hover  {
+              border: 1px solid #3babec;
+            }
+
 
         .data-table {
             background: #ffffff;
@@ -240,7 +254,6 @@
             padding: 8px 12px;
             font-size: 0.875rem;
             width: 200px;
-            transition: all 0.2s ease;
         }
 
         .search-input:focus {
@@ -248,6 +261,14 @@
             border-color: #3182ce;
             box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
         }
+
+        .search-input {
+  border: none;
+  outline: none;
+  flex: 1; /* makes it grow to fill space */
+  min-width: 150px; /* responsive min width */
+  font-size: 12px;
+}
 
         table {
             width: 100%;
@@ -382,6 +403,20 @@
             align-items: center;
             gap: 8px;
         }
+
+        .clear-btn {
+      cursor: pointer;
+    font-size: 25px;
+    margin-top: -5px;
+  color: #666;
+  margin-left: 5px;
+  user-select: none;
+}
+
+
+        .clear-btn:hover {
+        color: #000;
+            }
 
         .btn-primary {
             background: #3182ce;
@@ -627,18 +662,31 @@
         </div>
 
         <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('inventory')"><i class="fas fa-warehouse"></i> Inventory</button>
-            <button class="nav-tab" onclick="switchTab('orders')"><i class="fas fa-utensils"></i> Meal Orders</button>
-            <button class="nav-tab" onclick="switchTab('menu')"><i class="fas fa-book"></i> Menu Planning</button>
-            <button class="nav-tab" onclick="switchTab('feedback')"><i class="fas fa-comment"></i> Feedback</button>
+            <button class="nav-tab " (click)="switchTab('inventory')" 
+            [ngClass]="{ 'active': activeTab === 'inventory' }" >Inventory</button>
+
+            <button class="nav-tab " (click)="switchTab('orders')" 
+            [ngClass]="{ 'active': activeTab === 'orders' }" >Meal Orders</button>
+
+            <button class="nav-tab" (click)="switchTab('mp')"
+            [ngClass]="{ 'active': activeTab === 'mp' }">Menu Planning</button>
+
+            <button class="nav-tab" (click)="switchTab('feed')" 
+            [ngClass]="{ 'active': activeTab === 'feed' }">Feedback</button>
         </div>
 
-        <div class="content-grid">
-            <div class="main-content">
-                <div class="data-panel" id="inventory-panel">
+
+
+
+
+      <div class="content-grid"  *ngIf="inventory">
+            <div class="main-content" >
+                <div class="data-panel"  id="inventory-panel">
                     <div class="panel-header">
                         <div class="panel-title"><i class="fas fa-warehouse"></i> Inventory Overview</div>
-                        <button class="btn btn-secondary"><i class="fas fa-download"></i> Export Inventory</button>
+                        <button class="btn btn-secondary"
+                        (click)="exportKitchenInventorydata()">
+                       Export Inventory</button>
                     </div>
                     <div class="insight-list">
                         <div class="insight-item">
@@ -654,7 +702,21 @@
                 <div class="data-table" id="inventory-table">
                     <div class="table-header">
                         <div class="table-title">Inventory Stock</div>
-                        <input type="text" class="search-input" placeholder="Search items..." onkeyup="filterTable(this.value, 'inventory-table')">
+                       <div class="search-container">
+                          <input 
+                            type="text" 
+                            class="search-input" 
+                            placeholder="Search Inventory..."
+                            [(ngModel)]="KitchenInventorySearchTerm" 
+                            (keyup)="filterTable()"
+                          />
+                           <span class="clear-btn"
+                            (click)="KitchenInventorySearchTerm=''; filterTable();"
+                            aria-label="Clear search">
+                            ×
+                          </span>
+                        </div>
+
                     </div>
                     <table>
                         <thead>
@@ -667,35 +729,60 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>ING001</td>
-                                <td>Rice</td>
-                                <td>50 kg</td>
-                                <td><span class="status-badge status-sufficient">Sufficient</span></td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-edit"></i> Update</button></td>
-                            </tr>
-                            <tr>
-                                <td>ING002</td>
-                                <td>Vegetables</td>
-                                <td>10 kg</td>
-                                <td><span class="status-badge status-low">Low</span></td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-redo"></i> Reorder</button></td>
-                            </tr>
-                            <tr>
-                                <td>ING003</td>
-                                <td>Chicken</td>
-                                <td>20 kg</td>
-                                <td><span class="status-badge status-sufficient">Sufficient</span></td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-edit"></i> Update</button></td>
+                            <tr *ngFor="let ki of KitchenInventory">
+                                <td>{{ki.ItemID}}</td>
+                                <td>{{ki.ItemName}}</td>
+                                <td>{{ki.Quantity}}</td>
+                                <td>{{ki.Status}}</td>
+                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"
+                                (click) = "openEditInventory(ki)">Action
+                            </button>
+                            </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
-                <div class="data-panel" id="orders-panel" style="display: none;">
+             </div>
+              <div class="sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-title"><i class="fas fa-bolt"></i> Quick Actions</div>
+                    <div class="action-list">
+                        <div class="action-item">
+                            <button class="btn btn-primary" 
+                            (click)="openAddInventory()">
+                            Add Inventory</button>
+                        </div>
+                        <!-- <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-file-alt"></i> Generate Report</button>
+                        </div> -->
+                        <!-- <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-user-plus"></i> Assign Staff</button>
+                        </div>
+                        <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-bell"></i> Send Notification</button>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="sidebar-card">
+                    <div class="sidebar-title"><i class="fas fa-lightbulb"></i> Kitchen Insights</div>
+                    <div class="insight-list">
+                        <!-- <div class="insight-item">90% of meals served within 10 minutes.</div> -->
+                        <!-- <div class="insight-item">Veggie Combo is the most ordered meal.</div> -->
+                        <div class="insight-item">Inventory turnover improved by 10%.</div>
+                        <!-- <div class="insight-item">Feedback suggests adding dessert options.</div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- Meal Order -->
+           <div class="content-grid" *ngIf="orders">
+               <div class="main-content"  >
+                <div class="data-panel" id="orders-panel" >
                     <div class="panel-header">
                         <div class="panel-title"><i class="fas fa-utensils"></i> Meal Orders Overview</div>
-                        <button class="btn btn-secondary"><i class="fas fa-download"></i> Export Orders</button>
+                        <button class="btn btn-secondary"
+                        (click) = "exportMealOrderdata()">
+                        Export Orders</button>
                     </div>
                     <div class="insight-list">
                         <div class="insight-item">
@@ -708,50 +795,92 @@
                         </div>
                     </div>
                 </div>
-                <div class="data-table" id="orders-table" style="display: none;">
+                <div class="data-table" id="orders-table" >
                     <div class="table-header">
                         <div class="table-title">Meal Orders</div>
-                        <input type="text" class="search-input" placeholder="Search orders..." onkeyup="filterTable(this.value, 'orders-table')">
+                        
+                       <div class="search-container">
+                          <input 
+                            type="text" 
+                            class="search-input" 
+                            placeholder="Search Orders..."
+                            [(ngModel)]="MealOrdersSearchTerm" 
+                            (keyup)="filterMealOrders()"
+                          />
+                           <span class="clear-btn"
+                            (click)="MealOrdersSearchTerm=''; filterMealOrders();"
+                            aria-label="Clear search">
+                            ×
+                          </span>
+                        </div>
+
+
                     </div>
                     <table>
                         <thead>
                             <tr>
                                 <th>Order ID</th>
-                                <th>Student</th>
+                                <th>Name</th>
                                 <th>Meal</th>
-                                <th>Time</th>
+                                <th>Date</th>
                                 <th>Status</th>
-                                <th>Progress</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>ORD001</td>
-                                <td>John Doe</td>
-                                <td>Chicken Curry</td>
-                                <td>12:15 PM</td>
-                                <td><span class="status-badge status-preparing">Preparing</span></td>
-                                <td><div class="progress-bar"><div class="progress-fill" style="width: 60%;"></div></div></td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-edit"></i> Update</button></td>
-                            </tr>
-                            <tr>
-                                <td>ORD002</td>
-                                <td>Jane Smith</td>
-                                <td>Veggie Combo</td>
-                                <td>12:10 PM</td>
-                                <td><span class="status-badge status-ordered">Ordered</span></td>
-                                <td><div class="progress-bar"><div class="progress-fill" style="width: 20%;"></div></div></td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-eye"></i> View</button></td>
+                            <tr *ngFor="let mo of MealOrders">
+                                <td>{{mo.ID}}</td>
+                                <td>{{mo.Name}}</td>
+                                <td>{{mo.MealType}}</td>
+                                <td>{{mo.MealDateTime}}</td>
+                                <td>{{mo.Status}}</td>
+                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"
+                                (click)="openEditOrder(mo)">Action</button></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
-                <div class="data-panel" id="menu-panel" style="display: none;">
+                </div>
+                 <div class="sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-title"><i class="fas fa-bolt"></i> Quick Actions</div>
+                    <div class="action-list">
+                        <div class="action-item">
+                            <button class="btn btn-primary" 
+                            (click)="openAddOrder()">
+                            Add Order</button>
+                        </div>
+                        <!-- <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-file-alt"></i> Generate Report</button>
+                        </div> -->
+                        <!-- <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-user-plus"></i> Add Feedback </button>
+                        </div>
+                        <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-bell"></i> Send Notification</button>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="sidebar-card">
+                    <div class="sidebar-title"><i class="fas fa-lightbulb"></i> Kitchen Insights</div>
+                    <div class="insight-list">
+                        <div class="insight-item">90% of meals served within 10 minutes.</div>
+                        <!-- <div class="insight-item">Veggie Combo is the most ordered meal.</div> -->
+                        <!-- <div class="insight-item">Inventory turnover improved by 10%.</div> -->
+                        <!-- <div class="insight-item">Feedback suggests adding dessert options.</div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+  <!-- Menu Planning -->
+     <div class="content-grid"  *ngIf="mp">
+     <div class="main-content"  >
+                <div class="data-panel" id="menu-panel">
                     <div class="panel-header">
                         <div class="panel-title"><i class="fas fa-book"></i> Menu Planning Overview</div>
-                        <button class="btn btn-secondary"><i class="fas fa-download"></i> Export Menu</button>
+                        <button class="btn btn-secondary"
+                        (click) = "exportMenuPlanningdata()">
+                        Export Menu</button>
                     </div>
                     <div class="insight-list">
                         <div class="insight-item">
@@ -764,44 +893,92 @@
                         </div>
                     </div>
                 </div>
-                <div class="data-table" id="menu-table" style="display: none;">
+                <div class="data-table" id="menu-table">
                     <div class="table-header">
                         <div class="table-title">Weekly Menu</div>
-                        <input type="text" class="search-input" placeholder="Search meals..." onkeyup="filterTable(this.value, 'menu-table')">
+                        
+                       <div class="search-container">
+                          <input 
+                            type="text" 
+                            class="search-input" 
+                            placeholder="Search Meal..."
+                            [(ngModel)]="MenuPlanningSearchTerm" 
+                            (keyup)="filterMenuPlanning()"
+                          />
+                           <span class="clear-btn"
+                            (click)="MenuPlanningSearchTerm=''; filterMenuPlanning();"
+                            aria-label="Clear search">
+                            ×
+                          </span>
+                        </div>
                     </div>
+
                     <table>
                         <thead>
                             <tr>
                                 <th>Day</th>
                                 <th>Meal</th>
                                 <th>Type</th>
-                                <th>Ingredients</th>
+                                <th>Menu Items</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Monday</td>
-                                <td>Chicken Curry</td>
-                                <td>Non-Veg</td>
-                                <td>Chicken, Spices, Rice</td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-edit"></i> Edit</button></td>
-                            </tr>
-                            <tr>
-                                <td>Tuesday</td>
-                                <td>Veggie Combo</td>
-                                <td>Veg</td>
-                                <td>Vegetables, Rice, Dal</td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-edit"></i> Edit</button></td>
+                            <tr *ngFor="let mp of MenuPlanning">
+                                <td>{{mp.DayOfWeek}}</td>
+                                <td>{{mp.Meal}}</td>
+                                <td>{{mp.Type}}</td>
+                                <td>{{mp.Ingredients}}</td>
+                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"
+                                (click)="openEditMenu(mp)">Edit</button>
+                            </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
-                <div class="data-panel" id="feedback-panel" style="display: none;">
+          </div>
+           <div class="sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-title"><i class="fas fa-bolt"></i> Quick Actions</div>
+                    <div class="action-list">
+                        <!-- <div class="action-item">
+                            <button class="btn btn-primary" 
+                            (click) ="openMOAddFeedback()">
+                            Add Feedback</button>
+                        </div> -->
+                        <div class="action-item">
+                            <button class="btn btn-primary" 
+                            (click) ="openAddMenu()">
+                            Add Menu Plan</button>                        
+                        </div>
+                        <!-- <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-user-plus"></i> Assign Staff</button>
+                        </div>
+                        <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-bell"></i> Send Notification</button>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="sidebar-card">
+                    <div class="sidebar-title"><i class="fas fa-lightbulb"></i> Kitchen Insights</div>
+                    <div class="insight-list">
+                        <!-- <div class="insight-item">90% of meals served within 10 minutes.</div> -->
+                        <div class="insight-item">Veggie Combo is the most ordered meal.</div>
+                        <!-- <div class="insight-item">Inventory turnover improved by 10%.</div> -->
+                        <!-- <div class="insight-item">Feedback suggests adding dessert options.</div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- Feedback -->
+       <div class="content-grid" *ngIf="feed" >
+            <div class="main-content"  >
+                <div class="data-panel" id="feedback-panel">
                     <div class="panel-header">
                         <div class="panel-title"><i class="fas fa-comment"></i> Feedback Insights</div>
-                        <button class="btn btn-secondary"><i class="fas fa-download"></i> Export Feedback</button>
+                        <button class="btn btn-secondary"
+                        (click) = "exportKitManFeedbackdata()">
+                        Export Feedback</button>
                     </div>
                     <div class="insight-list">
                         <div class="insight-item">
@@ -814,63 +991,71 @@
                         </div>
                     </div>
                 </div>
-                <div class="data-table" id="feedback-table" style="display: none;">
+                <div class="data-table" id="feedback-table">
                     <div class="table-header">
                         <div class="table-title">Student Feedback</div>
-                        <input type="text" class="search-input" placeholder="Search feedback..." onkeyup="filterTable(this.value, 'feedback-table')">
+
+                       <div class="search-container">
+                          <input 
+                            type="text" 
+                            class="search-input" 
+                            placeholder="Search Feedback..."
+                            [(ngModel)]="MealFeedbackSearchTerm" 
+                            (keyup)="filterFeedback()"
+                          />
+                           <span class="clear-btn"
+                            (click)="MealFeedbackSearchTerm=''; filterFeedback();"
+                            aria-label="Clear search">
+                            ×
+                          </span>
+                        </div>
+
                     </div>
                     <table>
                         <thead>
                             <tr>
-                                <th>Student</th>
                                 <th>Meal</th>
                                 <th>Rating</th>
                                 <th>Comment</th>
                                 <th>Date</th>
-                                <th>Actions</th>
+                                <th>Submitted By</th>
+                                <!-- <th>Actions</th> -->
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>John Doe</td>
-                                <td>Chicken Curry</td>
-                                <td><span class="status-badge status-sufficient">4.5</span></td>
-                                <td>Tasty but could use more spices.</td>
-                                <td>Oct 2, 2025</td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-eye"></i> View</button></td>
-                            </tr>
-                            <tr>
-                                <td>Jane Smith</td>
-                                <td>Veggie Combo</td>
-                                <td><span class="status-badge status-sufficient">5</span></td>
-                                <td>Really fresh and well-prepared!</td>
-                                <td>Oct 1, 2025</td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-eye"></i> View</button></td>
+                            <tr *ngFor="let mf of MealFeedback">
+                                <td>{{mf.Meal}}</td>
+                                <td>{{mf.Rating}}</td>
+                                <td>{{mf.Comments}}</td>
+                                <td>{{mf.SubmittedDate}}</td>
+                                <td>{{mf.SubmittedBy}}</td>
+                                <!-- <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-eye"></i> View</button></td> -->
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
-
-            <div class="sidebar">
+           </div>
+        <div class="sidebar">
                 <div class="sidebar-card">
                     <div class="sidebar-title"><i class="fas fa-bolt"></i> Quick Actions</div>
                     <div class="action-list">
                         <div class="action-item">
-                            <button class="btn btn-primary" onclick="openModal()"><i class="fas fa-plus"></i> Add Inventory</button>
+                            <button class="btn btn-primary" 
+                            (click) ="openMOAddFeedback()">
+                            Add Feedback</button>
                         </div>
-                        <div class="action-item">
+                        <!-- <div class="action-item">
                             <button class="btn btn-secondary"><i class="fas fa-file-alt"></i> Generate Report</button>
-                        </div>
-                        <div class="action-item">
+                        </div> -->
+                        <!-- <div class="action-item">
                             <button class="btn btn-secondary"><i class="fas fa-user-plus"></i> Assign Staff</button>
-                        </div>
-                        <div class="action-item">
-                            <button class="btn btn-secondary"><i class="fas fa-bell"></i> Send Notification</button>
+                        </div>  -->
+                        <!-- <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-bell"></i> Send Notification</button> -->
                         </div>
                     </div>
                 </div>
-                <div class="sidebar-card">
+                <!-- <div class="sidebar-card">
                     <div class="sidebar-title"><i class="fas fa-lightbulb"></i> Kitchen Insights</div>
                     <div class="insight-list">
                         <div class="insight-item">90% of meals served within 10 minutes.</div>
@@ -878,10 +1063,11 @@
                         <div class="insight-item">Inventory turnover improved by 10%.</div>
                         <div class="insight-item">Feedback suggests adding dessert options.</div>
                     </div>
-                </div>
-            </div>
+                </div> -->
+            <!-- </div>  -->
         </div>
-
+           
+        
         <button class="floating-action" onclick="openModal()"><i class="fas fa-plus"></i></button>
 
         <div class="modal" id="add-inventory-modal">
@@ -916,7 +1102,7 @@
         </div>
     </div>
 
-    <script>
+    <!-- <script>
         function switchTab(tab) {
             document.getElementById('inventory-panel').style.display = 'none';
             document.getElementById('inventory-table').style.display = 'none';
@@ -949,6 +1135,7 @@
                     }
                 }
                 rows[i].style.display = match ? '' : 'none';
+
             }
         }
 
@@ -977,6 +1164,6 @@
                 alert('Please fill in all fields.');
             }
         }
-    </script>
+    </script> -->
 </body>
 </html>

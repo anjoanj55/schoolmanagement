@@ -1,0 +1,108 @@
+<h2 mat-dialog-title 
+    style="font-size: 22px; font-weight: 600; margin: 0 0 20px 0; color: #2c3e50; text-align:center;">
+  Bed Details
+</h2>
+
+<mat-dialog-content 
+    style="font-size: 15px; line-height: 1.6; color: #444; padding: 0 20px; max-height: none; overflow: hidden;">
+  
+  <div style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Name</label>
+      <input type="text" [value]="bed.Name && bed.Name.trim() !== '' ? bed.Name : 'No Data'" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Room Number</label>
+      <input type="text" value="{{ bed.RoomNumber }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Hostel Name</label>
+      <input type="text" value="{{ bed.HostelName }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">BedID</label>
+      <input type="text" value="{{ bed.BedID }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Status</label>
+      <input type="text" value="{{ bed.Status }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Occupied from</label>
+      <input type="text" [value]="bed.occupied_from && bed.occupied_from.trim() !== '' ? 
+        (bed.occupied_from | date:'dd-MM-yyyy'): 'No Data'"  readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Occupied to</label>
+      <input type="text" [value]="bed.occupied_to && bed.occupied_to.trim() !== '' ? 
+        (bed.occupied_to | date:'dd-MM-yyyy'): 'Not Vacated'" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <!-- <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Joining Date</label>
+      <input type="text" value="{{ bed.JoiningDate }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">License Number</label>
+      <input type="text" value="{{ bed.license_number }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">License Expiry</label>
+      <input type="text" value="{{ bed.license_expiry }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Avg Rating</label>
+      <input type="text" value="{{ bed.Rating }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Address</label>
+      <input type="text" value="{{ bed.address }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">State</label>
+      <input type="text" value="{{ bed.State }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <label style="font-weight: 600; margin-bottom: 4px; color:#2c3e50;">Nationality</label>
+      <input type="text" value="{{ bed.Nationality }}" readonly
+             style="padding: 10px; border: none; border-bottom: 2px solid #1976d2; background: #f9f9f9; border-radius: 4px; font-size: 14px; width: 100%;">
+    </div>  -->
+
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" 
+    style="margin-top: 20px; padding: 10px; text-align: right; border-top: 1px solid #eee;">
+  <button mat-button mat-dialog-close 
+          style="background:#1976d2; color:#fff; padding:8px 18px; border-radius:6px; font-size:14px; min-width: 80px;">
+    Close
+  </button>
+</mat-dialog-actions>
+
+

@@ -43,6 +43,8 @@ import { KitchenInventoryDashboardComponent } from './pages/kitchen-inventory-da
 import { ParkingManagementComponent } from './pages/parking-management/parking-management.component';
 import { KitchenManagementComponent } from './pages/kitchen-management/kitchen-management.component';
 import { LaundryManagementComponent } from './pages/laundry-management/laundry-management.component';
+import {BedManagementComponent} from './pages/bed-management/bed-management.component';
+// import { ChatWithFacultyComponent } from './pages/chat-with-faculty/chat-with-faculty.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -89,9 +91,11 @@ export const routes: Routes = [
            { path: 'AcademicProgress', component: AcademicprogressComponent },
            { path: 'HostelInventoryDashboard', component: HostelInventoryDashboardComponent},
           { path: 'KitchenInventoryDashboard', component: KitchenInventoryDashboardComponent },
-          { path: 'ParkingManagementComponent', component: ParkingManagementComponent },
-          { path: 'KitchenManagementComponent', component: KitchenManagementComponent },
-          { path: 'LaundryManagementComponent', component: LaundryManagementComponent }
+          { path: 'ParkingManagement', component: ParkingManagementComponent },
+          { path: 'KitchenManagement', component: KitchenManagementComponent },
+          { path: 'LaundryManagement', component: LaundryManagementComponent },
+          {path: 'BedManagement', component: BedManagementComponent},
+          // {path: 'ChatWithFaculty', component: ChatWithFacultyComponent}
     ]
   },
   { path: '**', redirectTo: '' }

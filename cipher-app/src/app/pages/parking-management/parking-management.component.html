@@ -12,7 +12,7 @@
         <span class="stat-label">Total Spots</span>
         <div class="stat-icon icon-blue">🅿️</div>
       </div>
-      <div class="stat-value">50</div>
+      <div class="stat-value">{{totalspot}}</div>
     </div>
 
     <div class="stat-card">
@@ -20,7 +20,7 @@
         <span class="stat-label">Available</span>
         <div class="stat-icon icon-green">✅</div>
       </div>
-      <div class="stat-value stat-green">23</div>
+      <div class="stat-value stat-green">{{available}}</div>
     </div>
 
     <div class="stat-card">
@@ -28,7 +28,7 @@
         <span class="stat-label">Occupied</span>
         <div class="stat-icon icon-red">❌</div>
       </div>
-      <div class="stat-value stat-red">22</div>
+      <div class="stat-value stat-red">{{occupied}}</div>
     </div>
 
     <div class="stat-card">
@@ -36,7 +36,7 @@
         <span class="stat-label">Occupancy Rate</span>
         <div class="stat-icon icon-cyan">📊</div>
       </div>
-      <div class="stat-value stat-cyan">44%</div>
+      <div class="stat-value stat-cyan">{{Occupancypercentage}}%</div>
     </div>
   </div>
 
@@ -54,12 +54,11 @@
   <div class="tabs">
     <button class="tab-button active">Parking Layout</button>
         <!-- <label for="location">Select Location</label> -->
-    <select id="location" class="location-dropdown">
-      <option value="MainGate">Main Gate Parking</option>
-      <option value="NearGround">Near Ground Parking</option>
-      <option value="GardenParking">Garden Parking</option>
-    </select>
-
+<select id="location" class="location-dropdown">
+  <option *ngFor="let area of ParkingArea" [value]="area">
+    {{ area }}
+  </option>
+</select>
     <!-- <button class="tab-button">History</button> -->
   </div>
 
@@ -73,8 +72,9 @@
           <h2>Parking Layout</h2>
         </div>
         <div class="section-actions">
-          <button class="btn-secondary">Export Data</button>
-          <button class="btn-primary">Refresh</button>
+          <!-- <button class="btn-secondary">Export Data</button> -->
+          <!-- <button class="btn-primary" (click)="refreshData()">Refresh</button> -->
+          <button class="btn-primary" (click)="refreshPage()">Refresh</button>
         </div>
       </div>
 
@@ -98,327 +98,26 @@
         </div>
       </div>
 
-      <!-- Hardcoded Parking Grid -->
-      <div class="parking-grid">
-        
-        <!-- Available Spots -->
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P01</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-occupied">
-          <div class="spot-icon">🚙</div>
-          <div class="spot-id">P02</div>
-          <div class="spot-status">occupied</div>
-          <div class="spot-vehicle">ABC123<br>2:30 PM</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P03</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-reserved">
-          <div class="spot-icon">🔒</div>
-          <div class="spot-id">P04</div>
-          <div class="spot-status">reserved</div>
-        </div>
-
-        <div class="parking-spot spot-occupied">
-          <div class="spot-icon">🚙</div>
-          <div class="spot-id">P05</div>
-          <div class="spot-status">occupied</div>
-          <div class="spot-vehicle">XYZ789<br>1:45 PM</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P06</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-maintenance">
-          <div class="spot-icon">🔧</div>
-          <div class="spot-id">P07</div>
-          <div class="spot-status">maintenance</div>
-        </div>
-
-        <div class="parking-spot spot-occupied">
-          <div class="spot-icon">🚙</div>
-          <div class="spot-id">P08</div>
-          <div class="spot-status">occupied</div>
-          <div class="spot-vehicle">DEF456<br>3:15 PM</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P09</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P10</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-occupied">
-          <div class="spot-icon">🚙</div>
-          <div class="spot-id">P11</div>
-          <div class="spot-status">occupied</div>
-          <div class="spot-vehicle">GHI012<br>12:30 PM</div>
-        </div>
-
-        <div class="parking-spot spot-reserved">
-          <div class="spot-icon">🔒</div>
-          <div class="spot-id">P12</div>
-          <div class="spot-status">reserved</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P13</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-occupied">
-          <div class="spot-icon">🚙</div>
-          <div class="spot-id">P14</div>
-          <div class="spot-status">occupied</div>
-          <div class="spot-vehicle">JKL345<br>2:00 PM</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P15</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P16</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-occupied">
-          <div class="spot-icon">🚙</div>
-          <div class="spot-id">P17</div>
-          <div class="spot-status">occupied</div>
-          <div class="spot-vehicle">MNO678<br>11:45 AM</div>
-        </div>
-
-        <div class="parking-spot spot-maintenance">
-          <div class="spot-icon">🔧</div>
-          <div class="spot-id">P18</div>
-          <div class="spot-status">maintenance</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P19</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-occupied">
-          <div class="spot-icon">🚙</div>
-          <div class="spot-id">P20</div>
-          <div class="spot-status">occupied</div>
-          <div class="spot-vehicle">PQR901<br>1:20 PM</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P21</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-reserved">
-          <div class="spot-icon">🔒</div>
-          <div class="spot-id">P22</div>
-          <div class="spot-status">reserved</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P23</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-occupied">
-          <div class="spot-icon">🚙</div>
-          <div class="spot-id">P24</div>
-          <div class="spot-status">occupied</div>
-          <div class="spot-vehicle">STU234<br>3:00 PM</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P25</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P26</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-occupied">
-          <div class="spot-icon">🚙</div>
-          <div class="spot-id">P27</div>
-          <div class="spot-status">occupied</div>
-          <div class="spot-vehicle">VWX567<br>10:30 AM</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P28</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P29</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-occupied">
-          <div class="spot-icon">🚙</div>
-          <div class="spot-id">P30</div>
-          <div class="spot-status">occupied</div>
-          <div class="spot-vehicle">YZA890<br>2:45 PM</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P31</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P32</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-occupied">
-          <div class="spot-icon">🚙</div>
-          <div class="spot-id">P33</div>
-          <div class="spot-status">occupied</div>
-          <div class="spot-vehicle">BCD123<br>1:10 PM</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P34</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P35</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-occupied">
-          <div class="spot-icon">🚙</div>
-          <div class="spot-id">P36</div>
-          <div class="spot-status">occupied</div>
-          <div class="spot-vehicle">EFG456<br>11:20 AM</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P37</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P38</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-occupied">
-          <div class="spot-icon">🚙</div>
-          <div class="spot-id">P39</div>
-          <div class="spot-status">occupied</div>
-          <div class="spot-vehicle">HIJ789<br>9:45 AM</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P40</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P41</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-occupied">
-          <div class="spot-icon">🚙</div>
-          <div class="spot-id">P42</div>
-          <div class="spot-status">occupied</div>
-          <div class="spot-vehicle">KLM012<br>8:30 AM</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P43</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P44</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-occupied">
-          <div class="spot-icon">🚙</div>
-          <div class="spot-id">P45</div>
-          <div class="spot-status">occupied</div>
-          <div class="spot-vehicle">NOP345<br>7:15 AM</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P46</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P47</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-occupied">
-          <div class="spot-icon">🚙</div>
-          <div class="spot-id">P48</div>
-          <div class="spot-status">occupied</div>
-          <div class="spot-vehicle">QRS678<br>6:45 AM</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P49</div>
-          <div class="spot-status">available</div>
-        </div>
-
-        <div class="parking-spot spot-available">
-          <div class="spot-icon">🚗</div>
-          <div class="spot-id">P50</div>
-          <div class="spot-status">available</div>
-        </div>
-
-      </div>
+<div class="parking-grid">
+  <div 
+    class="parking-spot" 
+    *ngFor="let spot of ParkingManagement"
+    [ngClass]="{
+      'spot-available': spot.Status.toLowerCase() === 'available',
+      'spot-occupied': spot.Status.toLowerCase() === 'occupied',
+      'spot-reserved': spot.Status.toLowerCase() === 'reserved',
+      'spot-maintenance': spot.Status.toLowerCase() === 'maintenance'
+    }"
+  >
+    <div class="spot-icon">
+      {{ getSpotIcon(spot.Status) }}
+    </div>
+    <div class="spot-id">{{ spot.SlotNumber }}</div>
+    <div class="spot-status">{{ spot.Status }}</div>
+    <div class="spot-vehicle" *ngIf="spot.IsOccupied == '1' || spot.Status.toLowerCase() === 'occupied'">
+      {{ spot.VehicleNumber }}<br>
+      {{ spot.EntryTime | date:'shortTime' }}
+    </div>
     </div>
 
   </div>

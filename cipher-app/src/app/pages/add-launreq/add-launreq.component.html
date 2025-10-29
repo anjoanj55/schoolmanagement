@@ -1,0 +1,65 @@
+<div class="modal">
+  <div class="modal-content">
+     <div class="modal-header">
+      <h2 class="modal-title" *ngIf="!isEditMode">Add Request</h2>
+      <h2 class="modal-title" *ngIf="isEditMode">Edit Request</h2>
+    </div>
+
+<div class="modal-body">
+
+<label for="Items">Items</label>
+<input
+  id="Items"
+  [(ngModel)]="Items"
+  name="Items"
+   type="text"
+  class="form-control"
+ type="text"/>
+
+ <label *ngIf="isEditMode" for="Status">Status</label>
+<input *ngIf="isEditMode"
+  id="Status"
+  [(ngModel)]="Status"
+  name="Status"
+   type="text"
+  class="form-control"
+ type="text"/>
+
+<label for="Remarks">Remarks</label>
+<textarea
+  id="Remarks"
+  [(ngModel)]="Remarks"
+  name="Remarks"
+  rows="4"
+  placeholder="Write your Remarks..."
+></textarea>
+  
+</div>
+
+<!-- <div class="modal-footer">
+  <button
+    (click)="submitFeedback()"
+    class="submit-btn">
+    Submit
+  </button>
+
+  <button mat-button (click)="closeDialog()" class="close-btn">
+    Close
+  </button>
+</div> -->
+ <div class="modal-footer">
+      <!-- Show Submit only when adding -->
+      <button *ngIf="!isEditMode" (click)="submitFeedback()" class="submit-btn">
+        Submit
+      </button>
+
+      <!-- Show Update only when editing -->
+      <button *ngIf="isEditMode" (click)="updateRequest()" class="submit-btn">
+        Update
+      </button>
+
+      <button mat-button (click)="closeDialog()" class="close-btn">
+        Close
+      </button>
+    </div>
+</div>

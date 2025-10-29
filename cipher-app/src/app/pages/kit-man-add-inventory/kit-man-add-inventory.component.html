@@ -1,0 +1,87 @@
+<div class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title" *ngIf="!isEditMode">Add Inventory</h2>
+      <h2 class="modal-title" *ngIf="isEditMode">Edit Inventory</h2>
+    </div>
+
+    <div class="modal-body">
+      
+      <!-- Comment Box -->
+      <label for="ItemName">Item Name</label>
+      <textarea
+        id="ItemName"
+        [(ngModel)]="ItemName"
+        name="ItemName"
+        rows="1"
+        class="form-control"
+        type="text">
+      </textarea>
+            <!-- Suggestion Box -->
+      <label for="Category">Category</label>
+      <textarea
+        id="Category"
+        [(ngModel)]="Category"
+        name="Category"
+        rows="1"
+        class="form-control"
+        type="text">
+      </textarea>
+
+       <label for="Quantity">Quantity</label>
+      <textarea
+        id="Quantity"
+        [(ngModel)]="Quantity"
+        name="Quantity"
+        rows="1"
+        class="form-control"
+        type="text">
+      </textarea>
+
+      <label for="Unit">Unit</label>
+      <textarea
+        id="Unit"
+        [(ngModel)]="Unit"
+        name="Unit"
+        rows="1"
+        class="form-control"
+        type="text">
+      </textarea>
+
+      <label for="ReorderLevel">Reorder Level</label>
+      <textarea
+        id="ReorderLevel"
+        [(ngModel)]="ReorderLevel"
+        name="ReorderLevel"
+        rows="1"
+        class="form-control"
+        type="text">
+      </textarea>
+
+      <label for="Supplier">Supplier</label>
+      <textarea
+        id="Supplier"
+        [(ngModel)]="Supplier"
+        name="Supplier"
+        rows="1"
+        class="form-control"
+        type="text">
+      </textarea>
+    </div>
+
+
+
+<div class="modal-footer">
+<button *ngIf="!isEditMode" (click)="submitFeedback()" class="submit-btn">
+Submit
+</button>
+
+<button *ngIf="isEditMode" (click)="UpdateInven()" class="submit-btn">
+  Update
+</button>
+
+<button mat-button (click)="closeDialog()" class="close-btn">
+  Close
+</button>
+</div>
+</div>

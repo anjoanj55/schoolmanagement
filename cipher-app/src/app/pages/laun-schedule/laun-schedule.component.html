@@ -1,0 +1,60 @@
+<div class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title" *ngIf="!isEditMode">Schedule Machine</h2>
+      <h2 class="modal-title" *ngIf="isEditMode">Edit Schedule</h2>
+    </div>
+
+    <div class="modal-body">
+      <!-- Machine Dropdown -->
+<label for="Machine">Select a Machine</label>
+<select id="Machine" [(ngModel)]="selectedMachineID" name="Machine" required>
+  <option value="" disabled selected hidden>-- Choose a Machine --</option>
+  <option *ngFor="let m of Machine" [value]="m.ID">
+    {{ m.Machine }}
+  </option>
+</select>
+
+<label for="StartTime">Start Time</label>
+<input
+  id="StartTime"
+  [(ngModel)]="StartTime"
+  name="StartTime"
+  type="datetime-local"
+  class="form-control"
+  type="datetime-local"/>
+
+<label for="EndTime">End Time</label>
+<input
+  id="EndTime"
+  [(ngModel)]="EndTime"
+  name="EndTime"
+  type="datetime-local"
+    class="form-control"
+  type="datetime-local"/>
+
+ <label *ngIf="isEditMode" for="Status">Status</label>
+<input *ngIf="isEditMode"
+  id="Status"
+  [(ngModel)]="Status"
+  name="Status"
+   type="text"
+  class="form-control"
+ type="text"/>
+</div>
+
+<div class="modal-footer">
+<button *ngIf="!isEditMode" (click)="submitFeedback()" class="submit-btn">
+Submit
+</button>
+
+      <!-- Show Update only when editing -->
+<button *ngIf="isEditMode" (click)="    UpdateSchedule()" class="submit-btn">
+  Update
+</button>
+
+<button mat-button (click)="closeDialog()" class="close-btn">
+  Close
+</button>
+</div>
+</div>

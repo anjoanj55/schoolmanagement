@@ -1,123 +1,485 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+import { KitManAddInventoryComponent } from '../kit-man-add-inventory/kit-man-add-inventory.component';
+import { MealOrdAddFdbckComponent } from '../meal-ord-add-fdbck/meal-ord-add-fdbck.component'; 
+import { KitManAddOrderComponent } from '../kit-man-add-order/kit-man-add-order.component';
+import { KitmanAddmenuComponent } from '../kitman-addmenu/kitman-addmenu.component';
 
-interface InventoryItem {
-  id: string;
-  name: string;
-  quantity: string;
-  status: string;
+interface KitchenItem {
+  ItemID: number;
+  ItemName: string;
+  Category : string;
+  Quantity: number;
+  Status : string;
+  Unit: string;
+  ReorderLevel : number;
+  Supplier : string;
+  PurchaseDate: string
+  ExpiryDate: string;
 }
 
-interface Order {
-  id: string;
-  student: string;
-  meal: string;
-  time: string;
-  status: string;
-  progress: number;
+interface MealOrders {
+ID: number;
+Name: string;
+MealType: string;
+MealDateTime: string;
+OrderTime: string;
+ Quantity: number;
+ Status: string;
+ Remarks: string;
+ InsertedBy: string;
+ InsertedDate: string;
+ UpdatedBy: string;
+ UpdatedDate: string;
+ 
 }
 
-interface MenuItem {
-  day: string;
-  meal: string;
-  type: string;
-  ingredients: string;
+interface MenuPlanning {
+ID: number;
+DayOfWeek: string;
+Meal: string;
+Type: string;
+Ingredients: string;
+Comment: string;
+UpdatedBy: string;
+UpdatedDate: string;
+InsertedBy: string;
+InsertedDate: string;
 }
 
-interface Feedback {
-  student: string;
-  meal: string;
-  rating: number;
-  comment: string;
-  date: string;
+interface MealFeedback {
+FeedbackID: number;
+Meal: string;
+Rating: string;
+Comments: string;
+Suggestions: string;
+SubmittedBy: string;
+SubmittedDate: string;
+UpdatedBy: string;
+UpdatedDate: string;
 }
 
 @Component({
   selector: 'app-kitchen-management',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [
+    FormsModule,
+    CommonModule,
+    HttpClientModule,  // << add this
+    MatDialogModule
+  ],
   templateUrl: './kitchen-management.component.html',
   styleUrls: ['./kitchen-management.component.css']
 })
-export class KitchenManagementComponent {
-  activeTab: string = 'inventory';
-  isModalOpen: boolean = false;
+export class KitchenManagementComponent implements OnInit {
 
-  inventorySearchQuery: string = '';
-  ordersSearchQuery: string = '';
-  menuSearchQuery: string = '';
-  feedbackSearchQuery: string = '';
+  KitchenInventory : KitchenItem[] = [];
+  KitchenInventoryfil: KitchenItem[] = [];
+  KitchenInventorySearchTerm: string = '';
+  filteredKitchenInventory: KitchenItem[] = [];
 
-  inventory: InventoryItem[] = [
-    { id: 'ING001', name: 'Rice', quantity: '50 kg', status: 'Sufficient' },
-    { id: 'ING002', name: 'Vegetables', quantity: '10 kg', status: 'Low' },
-    { id: 'ING003', name: 'Chicken', quantity: '20 kg', status: 'Sufficient' }
-  ];
+  MealOrders :MealOrders[] = [];
+  MealOrdersfil :MealOrders[] = [];
+  MealOrdersSearchTerm: string = '';
 
-  orders: Order[] = [
-    { id: 'ORD001', student: 'John Doe', meal: 'Chicken Curry', time: '12:15 PM', status: 'Preparing', progress: 60 },
-    { id: 'ORD002', student: 'Jane Smith', meal: 'Veggie Combo', time: '12:10 PM', status: 'Ordered', progress: 20 }
-  ];
+  MenuPlanning :MenuPlanning[] = [];
+  MenuPlanningfil :MenuPlanning[] = [];
+  MenuPlanningSearchTerm: string = '';
 
-  menu: MenuItem[] = [
-    { day: 'Monday', meal: 'Chicken Curry', type: 'Non-Veg', ingredients: 'Chicken, Spices, Rice' },
-    { day: 'Tuesday', meal: 'Veggie Combo', type: 'Veg', ingredients: 'Vegetables, Rice, Dal' }
-  ];
+  MealFeedback :MealFeedback[] = [];
+  MealFeedbackfil :MealFeedback[] = [];
+  MealFeedbackSearchTerm: string = '';
 
-  feedback: Feedback[] = [
-    { student: 'John Doe', meal: 'Chicken Curry', rating: 4.5, comment: 'Tasty but could use more spices.', date: 'Oct 2, 2025' },
-    { student: 'Jane Smith', meal: 'Veggie Combo', rating: 5, comment: 'Really fresh and well-prepared!', date: 'Oct 1, 2025' }
-  ];
+ inventory:boolean=true;
+ orders:boolean=false;
+  feed:boolean=false;
+  mp:boolean=false;
+ activeTab: string = 'inventory'; 
+ 
+  constructor(private http: HttpClient, private dialog: MatDialog) {}
+switchTab(userdata:string){
+if(userdata=="inventory"){
+  this.inventory=true;
+  this.orders=false;
+  this.feed=false;
+  this.mp=false;
+ this.activeTab = 'inventory';}
+ else if(userdata=="orders"){
+  this.inventory=false;
+  this.orders=true;
+  this.feed=false;
+  this.mp=false; 
+  this.activeTab = 'orders';}
+   else if(userdata=="feed"){
+  this.inventory=false;
+  this.orders=false;
+  this.feed=true;
+  this.mp=false; 
+  this.activeTab = 'feed';}
+   else if(userdata=="mp"){
+  this.inventory=false;
+  this.orders=false;
+  this.feed=false;
+  this.mp=true; 
+  this.activeTab = 'mp';}
+}
+ngOnInit(): void {
+  this.loadKitchenInventory().subscribe((KitchenItem: any) => {
+    console.log("API Raw Response:", KitchenItem);
+    this.KitchenInventory = KitchenItem;
+    this.KitchenInventoryfil = KitchenItem;
+     // assign the full array
+    console.warn("KitchenInventory", this.KitchenInventory);
+  });
 
-  filteredInventory: InventoryItem[] = [...this.inventory];
-  filteredOrders: Order[] = [...this.orders];
-  filteredMenu: MenuItem[] = [...this.menu];
-  filteredFeedback: Feedback[] = [...this.feedback];
+    this.loadMealOrders().subscribe((res: any) => {
+    console.log("API Raw Response:", res);
+    this.MealOrders = res; 
+    this.MealOrdersfil = res; // assign the full array
+    console.warn("MealOrders", this.MealOrders);
+  });
 
-  newItem: InventoryItem = { id: '', name: '', quantity: '', status: 'Sufficient' };
+    this.loadMenuPlanning().subscribe((res: any) => {
+    console.log("API Raw Response:", res);
+    this.MenuPlanning = res; 
+    this.MenuPlanningfil = res;// assign the full array
+    console.warn("MenuPlanning", this.MenuPlanning);
+  });
 
-  switchTab(tab: string): void {
-    this.activeTab = tab;
+    this.loadMealFeedback().subscribe((res: any) => {
+    console.log("API Raw Response:", res);
+    this.MealFeedback = res;
+    this.MealFeedbackfil = res; // assign the full array
+    console.warn("MealFeedback", this.MealFeedback);
+  });
+
+}
+
+  loadKitchenInventory() {
+    let params1 = new HttpParams().set(
+      'spname', '[dbo].[sp_select_KitchenInventory]'
+    );
+    return this.http.get(
+      "https://103.199.163.162/Smartschoolwebservices/api/Service/SQLLOADEXEC",
+      { params: params1 }
+    );
   }
 
-  filterTable(tab: string): void {
-    if (tab === 'inventory') {
-      this.filteredInventory = this.inventory.filter(item =>
-        Object.values(item).some(val => val.toLowerCase().includes(this.inventorySearchQuery.toLowerCase()))
-      );
-    } else if (tab === 'orders') {
-      this.filteredOrders = this.orders.filter(order =>
-        Object.values(order).some(val => val.toString().toLowerCase().includes(this.ordersSearchQuery.toLowerCase()))
-      );
-    } else if (tab === 'menu') {
-      this.filteredMenu = this.menu.filter(menuItem =>
-        Object.values(menuItem).some(val => val.toLowerCase().includes(this.menuSearchQuery.toLowerCase()))
-      );
-    } else if (tab === 'feedback') {
-      this.filteredFeedback = this.feedback.filter(feedback =>
-        Object.values(feedback).some(val => val.toString().toLowerCase().includes(this.feedbackSearchQuery.toLowerCase()))
-      );
+    loadMealOrders() {
+    let params1 = new HttpParams().set(
+      'spname', '[dbo].[sp_select_MealOrders]'
+    );
+    return this.http.get(
+      "https://103.199.163.162/Smartschoolwebservices/api/Service/SQLLOADEXEC",
+      { params: params1 }
+    );
+  }
+
+      loadMenuPlanning() {
+    let params1 = new HttpParams().set(
+      'spname', '[dbo].[sp_Select_MenuPlanning]'
+    );
+    return this.http.get(
+      "https://103.199.163.162/Smartschoolwebservices/api/Service/SQLLOADEXEC",
+      { params: params1 }
+    );
+  }
+
+      loadMealFeedback() {
+    let params1 = new HttpParams().set(
+      'spname', '[dbo].[sp_Select_MealFeedback]'
+    );
+    return this.http.get(
+      "https://103.199.163.162/Smartschoolwebservices/api/Service/SQLLOADEXEC",
+      { params: params1 }
+    );
+  }
+
+
+  filterTable() {
+    const term = this.KitchenInventorySearchTerm.toLowerCase();
+    this.KitchenInventory = this.KitchenInventoryfil.filter((item: KitchenItem) =>
+      item.ItemName.toLowerCase().includes(term) ||
+      item.Category?.toLowerCase().includes(term) 
+      // item.Location?.toLowerCase().includes(term) 
+      // item.Status?.toLowerCase().includes(term)
+    );
+  }
+
+    filterMealOrders() {
+    const term = this.MealOrdersSearchTerm.toLowerCase();
+    this.MealOrders = this.MealOrdersfil.filter((item: MealOrders) =>
+      item.Name.toLowerCase().includes(term) ||
+      item.MealType?.toLowerCase().includes(term) 
+    );
+  }
+
+    filterMenuPlanning() {
+    const term = this.MenuPlanningSearchTerm.toLowerCase();
+    this.MenuPlanning = this.MenuPlanningfil.filter((item: MenuPlanning) =>
+      item.DayOfWeek.toLowerCase().includes(term) ||
+      item.Meal?.toLowerCase().includes(term) ||
+      item.Type?.toLowerCase().includes(term) 
+      // item.Status?.toLowerCase().includes(term)
+    );
+  }
+
+    filterFeedback() {
+    const term = this.MealFeedbackSearchTerm.toLowerCase();
+    this.MealFeedback = this.MealFeedbackfil.filter((item: MealFeedback) =>
+      item.Meal.toLowerCase().includes(term) ||
+      String(item.Rating)?.toLowerCase().includes(term) ||
+      item.Comments.toLowerCase().includes(term) ||
+      item.Suggestions.toLowerCase().includes(term) ||
+      item.SubmittedBy.toLowerCase().includes(term)
+    );
+  }
+
+
+  exportKitchenInventorydata(): void {
+    console.log("💾 Exporting Kitchen Inventory data...");
+   
+    if (!this.KitchenInventory || !this.KitchenInventory.length) {
+      console.warn("⚠️ No Kitchen Inventory data available.");
+      alert("No Kitchen Inventory data to export.");
+      return;
     }
+   
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.KitchenInventory);
+   
+    // Create workbook
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Kitchen Inventory Data");
+   
+    // Write workbook
+    const wbout: ArrayBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const blob: Blob = new Blob([wbout], { type: "application/octet-stream" });
+   
+    saveAs(blob, "KitchenInventory_data.xlsx");
+    console.log("✅ Data export complete");
   }
 
-  openModal(): void {
-    this.isModalOpen = true;
-  }
-
-  closeModal(): void {
-    this.isModalOpen = false;
-    this.newItem = { id: '', name: '', quantity: '', status: 'Sufficient' };
-  }
-
-  addInventoryItem(): void {
-    if (this.newItem.id && this.newItem.name && this.newItem.quantity) {
-      this.inventory.push({ ...this.newItem });
-      this.filteredInventory = [...this.inventory];
-      alert(`Added ${this.newItem.name} (${this.newItem.id}) with quantity ${this.newItem.quantity} and status ${this.newItem.status}.`);
-      this.closeModal();
-    } else {
-      alert('Please fill in all fields.');
+  
+    exportMealOrderdata(): void {
+    console.log("💾 Exporting Meal Orders data...");
+   
+    if (!this.MealOrders || !this.MealOrders.length) {
+      console.warn("⚠️ No Meal Orders data available.");
+      alert("No Meal Orders data to export.");
+      return;
     }
+   
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.MealOrders);
+   
+    // Create workbook
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Meal Orders Data");
+   
+    // Write workbook
+    const wbout: ArrayBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const blob: Blob = new Blob([wbout], { type: "application/octet-stream" });
+   
+    saveAs(blob, "MealOrders_data.xlsx");
+    console.log("✅ Data export complete");
   }
+
+      exportMenuPlanningdata(): void {
+    console.log("💾 Exporting Menu Planning data...");
+   
+    if (!this.MenuPlanning || !this.MenuPlanning.length) {
+      console.warn("⚠️ No Menu Planning data available.");
+      alert("No Menu Planning data to export.");
+      return;
+    }
+   
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.MenuPlanning);
+   
+    // Create workbook
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Menu Planning Data");
+   
+    // Write workbook
+    const wbout: ArrayBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const blob: Blob = new Blob([wbout], { type: "application/octet-stream" });
+   
+    saveAs(blob, "MenuPlanning_data.xlsx");
+    console.log("✅ Data export complete");
+  }
+
+   exportKitManFeedbackdata(): void {
+    console.log("💾 Exporting Menu Planning data...");
+   
+    if (!this.MealFeedback || !this.MealFeedback.length) {
+      console.warn("⚠️ No Meal Feedback data available.");
+      alert("No Meal Feedback data to export.");
+      return;
+    }
+   
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.MealFeedback);
+   
+    // Create workbook
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Meal Feedback Data");
+   
+    // Write workbook
+    const wbout: ArrayBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const blob: Blob = new Blob([wbout], { type: "application/octet-stream" });
+   
+    saveAs(blob, "MealFeedback_data.xlsx");
+    console.log("✅ Data export complete");
+  }
+
+      openAddInventory() {
+     console.log('Opening dialog with subject:');
+      const dialogRef = this.dialog.open(KitManAddInventoryComponent, {
+        width: '450px',
+        height: '100vh',    
+        position: { right: '0px', top: '0px' },
+        panelClass: 'custom-dialog-container'
+      });
+   dialogRef.afterClosed().subscribe((result) => {
+    if (result === 'added' || result === true) {
+      console.log('added call')// call your function to refresh data
+      this.loadKitchenInventory().subscribe((KitchenItem: any) => {
+    console.log("API Raw Response:", KitchenItem);
+    this.KitchenInventory = KitchenItem;
+    this.KitchenInventoryfil = KitchenItem;
+     // assign the full array
+    console.warn("KitchenInventory", this.KitchenInventory);
+  });
+    }
+  });
+    }
+
+     openEditInventory(KitchenItem :any) {
+     console.log('Opening dialog with subject:');
+      const dialogRef = this.dialog.open(KitManAddInventoryComponent, {
+    width: '450px',
+    height: '100vh',
+    position: { right: '0px', top: '0px' },
+    panelClass: 'custom-dialog-container',
+    data: KitchenItem || null
+  });
+
+   dialogRef.afterClosed().subscribe((result) => {
+    if (result === 'updated' || result === true) {
+      console.log('updated call')// call your function to refresh data
+      this.loadKitchenInventory().subscribe((KitchenItem: any) => {
+    console.log("API Raw Response:", KitchenItem);
+    this.KitchenInventory = KitchenItem;
+    this.KitchenInventoryfil = KitchenItem;
+     // assign the full array
+    console.warn("KitchenInventory", this.KitchenInventory);
+  });
+    }
+  });
+    }
+
+  
+      openMOAddFeedback() {
+     console.log('Opening dialog with subject:');
+      this.dialog.open(MealOrdAddFdbckComponent, {
+        width: '450px',
+        height: '100vh',    
+        position: { right: '0px', top: '0px' },
+        panelClass: 'custom-dialog-container'
+      });
+    }
+
+      openAddOrder() {
+     console.log('Opening dialog with subject:');
+      const dialogRef = this.dialog.open(KitManAddOrderComponent, {
+        width: '450px',
+        height: '100vh',    
+        position: { right: '0px', top: '0px' },
+        panelClass: 'custom-dialog-container'
+      });
+       dialogRef.afterClosed().subscribe((result) => {
+    if (result === 'added' || result === true) { 
+    this.loadMealOrders().subscribe((res: any) => {
+    console.log("API Raw Response:", res);
+    this.MealOrders = res; 
+    this.MealOrdersfil = res; // assign the full array
+    console.warn("MealOrders", this.MealOrders);
+  });      
+    }
+  });
+    }
+    
+
+      openEditOrder(MealOrders:any) {
+     console.log('Opening dialog with subject:');
+  const dialogRef = this.dialog.open(KitManAddOrderComponent, {
+    width: '450px',
+    height: '100vh',
+    position: { right: '0px', top: '0px' },
+    panelClass: 'custom-dialog-container',
+    data: MealOrders || null
+  });
+
+       dialogRef.afterClosed().subscribe((result) => {
+    if (result === 'updated' || result === true) { 
+    this.loadMealOrders().subscribe((res: any) => {
+    console.log("API Raw Response:", res);
+    this.MealOrders = res; 
+    this.MealOrdersfil = res; // assign the full array
+    console.warn("MealOrders", this.MealOrders);
+  });      
+    }
+  });
+    }
+
+    openAddMenu() {
+     console.log('Opening dialog with subject:');
+    const dialogRef = this.dialog.open(KitmanAddmenuComponent, {
+        width: '450px',
+        height: '100vh',    
+        position: { right: '0px', top: '0px' },
+        panelClass: 'custom-dialog-container'
+      });
+        dialogRef.afterClosed().subscribe((result) => { 
+    if (result == 'added' || result == true) {
+      console.log('added call')
+    this.loadMenuPlanning().subscribe((res: any) => {
+    console.log("API Raw Response:", res);
+    this.MenuPlanning = res; 
+    this.MenuPlanningfil = res;// assign the full array
+    console.warn("MenuPlanning", this.MenuPlanning);
+  });
+} 
+  });
+    }
+    
+      openEditMenu(MenuPlanning:any) {
+     console.log('Opening dialog with subject:');
+    const dialogRef = this.dialog.open(KitmanAddmenuComponent, {
+        width: '450px',
+        height: '100vh',    
+        position: { right: '0px', top: '0px' },
+        panelClass: 'custom-dialog-container',
+        data: MenuPlanning
+      });
+        dialogRef.afterClosed().subscribe((result) => { 
+    if (result === 'updated' || result === true) {
+      console.log('updated call')// call your function to refresh data
+    this.loadMenuPlanning().subscribe((res: any) => {
+    console.log("API Raw Response:", res);
+    this.MenuPlanning = res; 
+    this.MenuPlanningfil = res;// assign the full array
+    console.warn("MenuPlanning", this.MenuPlanning);
+  });
+} 
+  });
+    }
+    
+
 }

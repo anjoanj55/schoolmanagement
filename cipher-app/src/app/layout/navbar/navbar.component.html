@@ -296,7 +296,8 @@
           <span *ngIf="!isCollapsed" class="nav-label">Curriculum</span>
         </a>
 
-         <a mat-list-item routerLink="/home/Curriculumfaculty" routerLinkActive="active-item" class="nav-item">
+         <a mat-list-item>
+          <!-- routerLink="/home/Curriculumfaculty" routerLinkActive="active-item" class="nav-item"> -->
           <mat-icon class="nav-icon">chat</mat-icon>
           <span *ngIf="!isCollapsed" class="nav-label">Chat With Parents</span>
         </a>
@@ -322,11 +323,11 @@
           <span *ngIf="!isCollapsed" class="nav-label">Alert Parents</span>
         </a> -->
       </mat-expansion-panel>
+
    <!-- Parent -->
-    
-      <mat-expansion-panel class="nav-panel" *ngIf="Parentmenu"  hideToggle>
-  <mat-expansion-panel-header class="panel-header">
-    <mat-panel-title>
+  <mat-expansion-panel class="nav-panel" *ngIf="Parentmenu"  hideToggle>
+    <mat-expansion-panel-header class="panel-header">
+      <mat-panel-title>
       <div class="nav-item-content">
         <mat-icon class="nav-icon customer-icon">supervisor_account</mat-icon>
         <span *ngIf="!isCollapsed" class="nav-label">Parents</span>
@@ -338,7 +339,7 @@
           <span *ngIf="!isCollapsed" class="nav-label">Fee Payments</span>
         </a>
 
-    <a mat-list-item  routerLink="/home/Parents" routerLinkActive="active-item" class="nav-item">
+    <a mat-list-item routerLink="/home/ChatWithFaculty" routerLinkActive="active-item" class="nav-item"> 
                    <mat-icon class="nav-icon feedback-icon">chat</mat-icon>
           <span *ngIf="!isCollapsed" class="nav-label">Chat with Faculty</span>
         </a>
@@ -382,7 +383,7 @@
           <mat-icon class="nav-icon rfid-icon">local_shipping</mat-icon>
           <span *ngIf="!isCollapsed" class="nav-label">RFID Tags Data</span>
         </a>
-        <a mat-list-item routerLink="/home/Transportation" routerLinkActive="active-item" class="nav-item">
+        <!-- <a mat-list-item routerLink="/home/Transportation" routerLinkActive="active-item" class="nav-item">
           <mat-icon class="nav-icon history-icon">location_on</mat-icon>
           <span *ngIf="!isCollapsed" class="nav-label">History of Routes</span>
         </a>
@@ -393,8 +394,8 @@
         <a mat-list-item routerLink="/home/Transportation" routerLinkActive="active-item" class="nav-item">
           <mat-icon class="nav-icon feedback-icon">live_tv</mat-icon>
           <span *ngIf="!isCollapsed" class="nav-label">Feedback and Rating</span>
-        </a>
-        <a mat-list-item routerLink="/home/ParkingManagementComponent" routerLinkActive="active-item" class="nav-item">
+        </a> -->
+        <a mat-list-item routerLink="/home/ParkingManagement" routerLinkActive="active-item" class="nav-item">
           <mat-icon class="nav-icon">local_parking</mat-icon>
           <span *ngIf="!isCollapsed" class="nav-label">Parking Management</span>
         </a>
@@ -435,18 +436,23 @@
           <span *ngIf="!isCollapsed" class="nav-label">Inventory list</span>
         </a>
         
-      <a mat-list-item routerLink="/home/KitchenManagementComponent" routerLinkActive="active-item" class="nav-item">
+      <a mat-list-item routerLink="/home/KitchenManagement" routerLinkActive="active-item" class="nav-item">
                      <mat-icon class="nav-icon">kitchen</mat-icon>
           <span *ngIf="!isCollapsed" class="nav-label">Kitchen Management</span>
         </a>
-      <a mat-list-item routerLink="/home/LaundryManagementComponent" routerLinkActive="active-item" class="nav-item">
+      <a mat-list-item routerLink="/home/LaundryManagement" routerLinkActive="active-item" class="nav-item">
                      <mat-icon class="nav-icon">local_laundry_service</mat-icon>
           <span *ngIf="!isCollapsed" class="nav-label">Laundry Management</span>
         </a>
-      <a mat-list-item>
+      <!-- <a mat-list-item>
                      <mat-icon class="nav-icon">food_bank</mat-icon>
           <span *ngIf="!isCollapsed" class="nav-label">Mess Management</span>
+        </a> -->
+            <a mat-list-item routerLink="/home/BedManagement" routerLinkActive="active-item" class="nav-item">
+                     <mat-icon class="nav-icon">bed</mat-icon>
+          <span *ngIf="!isCollapsed" class="nav-label">Bed Management</span>
         </a>
+  
         
 </mat-expansion-panel>
  

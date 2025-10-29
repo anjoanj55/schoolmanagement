@@ -1,0 +1,89 @@
+<div class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title" *ngIf="!isEditMode">Add Menu</h2>
+      <h2 class="modal-title" *ngIf="isEditMode">Edit Menu</h2>
+    </div>
+
+    <div class="modal-body">
+
+<label for="DayOfWeek">Day</label>
+<!-- <input
+  id="DayOfWeek"
+  [(ngModel)]="DayOfWeek"
+  name="DayOfWeek"
+  type="text"
+  class="form-control"
+  type="text"/> -->
+<select [disabled]="isEditMode" id="DayOfWeek" [(ngModel)]="DayOfWeek" name="DayOfWeek" required>
+  <option value="" disabled>-- Select Day Of Week --</option>
+  
+  <option>Monday</option> 
+  <option>Tuesday</option> 
+  <option>Wednesday</option> 
+  <option>Thursday</option> 
+  <option>Friday</option> 
+  <option>Saturday</option> 
+  <option>Sunday</option> 
+</select>
+<label for="Meal">Meal</label>
+<select [disabled]="isEditMode" id="Meal" [(ngModel)]="Meal" name="Meal" required>
+  <option value="" disabled>-- Select Meal --</option>
+ <option>Breakfast</option> 
+  <option>Lunch</option> 
+  <option>Snacks</option> 
+  <option>Dinner</option> 
+</select>
+<!-- <input
+  id="Meal"
+  [(ngModel)]="Meal"
+  name="Meal"
+  type="text"
+  class="form-control"
+  type="text"/> -->
+
+<label for="Type">Type</label>
+<!-- <input
+  id="Type"
+  [(ngModel)]="Type"
+  name="Type"
+  type="text"
+  class="form-control"
+  type="text"/> -->
+<select [disabled]="isEditMode" id="Type" [(ngModel)]="Type" name="Type" required>
+  <option value="" disabled>-- Select Meal Type --</option>
+ <option>Veg</option> 
+  <option>Non-Veg</option> 
+</select>
+<label for="Ingredients">Menu Items</label>
+<textarea
+  id="Ingredients"
+  [(ngModel)]="Ingredients"
+  name="Ingredients"
+  rows="3"
+  class="form-control"
+  type="text"></textarea>
+ 
+<label for="Comment">Comment</label>
+<textarea
+  id="Comment"
+  [(ngModel)]="Comment"
+  name="Comment"
+  rows="4"
+  placeholder="Write your Comment..."></textarea>
+</div>
+
+<div class="modal-footer">
+<button *ngIf="!isEditMode" (click)="submitMenu()" class="submit-btn">
+Submit
+</button>
+
+<button *ngIf="isEditMode" (click)="UpdateMenu()" class="submit-btn">
+  Update
+</button>
+
+<button mat-button (click)="closeDialog()" class="close-btn">
+  Close
+</button>
+</div>
+</div>

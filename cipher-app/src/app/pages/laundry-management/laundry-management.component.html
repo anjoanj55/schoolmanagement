@@ -218,6 +218,21 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
+        .search-container {
+              display: flex;
+              align-items: center;
+              border: 1px solid #dddedf;
+              border-radius: 6px;
+              padding: 5px 10px;
+              background: #fff;
+              height: 32px;
+            }
+
+            .search-container:hover  {
+              border: 1px solid #3babec;
+            }
+        
+
         .table-header {
             background: #f8fafc;
             padding: 20px 24px;
@@ -240,7 +255,6 @@
             padding: 8px 12px;
             font-size: 0.875rem;
             width: 200px;
-            transition: all 0.2s ease;
         }
 
         .search-input:focus {
@@ -248,6 +262,15 @@
             border-color: #3182ce;
             box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
         }
+
+        .search-input {
+  border: none;
+  outline: none;
+  flex: 1; /* makes it grow to fill space */
+  min-width: 150px; /* responsive min width */
+  font-size: 12px;
+}
+
 
         table {
             width: 100%;
@@ -382,6 +405,21 @@
             align-items: center;
             gap: 8px;
         }
+
+        .clear-btn {
+          cursor: pointer;
+        font-size: 25px;
+        margin-top: -5px;
+       color: #666;
+       margin-left: 5px;
+       user-select: none;
+     }
+
+
+        .clear-btn:hover {
+        color: #000;
+        }
+
 
         .btn-primary {
             background: #3182ce;
@@ -627,19 +665,26 @@
         </div>
 
         <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('requests')"><i class="fas fa-tshirt"></i> Laundry Requests</button>
-            <button class="nav-tab" onclick="switchTab('machines')"><i class="fas fa-washing-machine"></i> Machine Status</button>
-            <button class="nav-tab" onclick="switchTab('schedule')"><i class="fas fa-calendar"></i> Schedule</button>
-            <button class="nav-tab" onclick="switchTab('feedback')"><i class="fas fa-comment"></i> Feedback</button>
+            <button class="nav-tab active" (click)="switchTab('laundryrequest')" 
+            [ngClass]="{ 'active': activeTab === 'laundryrequest' }" >Laundry Requests</button>
+            <button class="nav-tab" (click)="switchTab('machinestatus')" 
+            [ngClass]="{ 'active': activeTab === 'machinestatus' }" >Machine Status</button>
+            <button class="nav-tab" (click)="switchTab('schedule')" 
+            [ngClass]="{ 'active': activeTab === 'schedule' }" >Schedule</button>
+            <button class="nav-tab" (click)="switchTab('feedback')" 
+            [ngClass]="{ 'active': activeTab === 'feedback' }" >Feedback</button>
         </div>
-
-        <div class="content-grid">
+    <!-- Laundry Request -->
+        <div class="content-grid" *ngIf="activeTab === 'laundryrequest'">
             <div class="main-content">
                 <div class="data-panel" id="requests-panel">
                     <div class="panel-header">
                         <div class="panel-title"><i class="fas fa-tshirt"></i> Laundry Requests Overview</div>
-                        <button class="btn btn-secondary"><i class="fas fa-download"></i> Export Requests</button>
+                        <button class="btn btn-secondary"
+                        (click) = "exportLaundryRequestsdata()">
+                        Export Requests</button>
                     </div>
+
                     <div class="insight-list">
                         <div class="insight-item">
                             <h3>Request Volume</h3>
@@ -654,47 +699,90 @@
                 <div class="data-table" id="requests-table">
                     <div class="table-header">
                         <div class="table-title">Laundry Requests</div>
-                        <input type="text" class="search-input" placeholder="Search requests..." onkeyup="filterTable(this.value, 'requests-table')">
+                       <div class="search-container">
+                          <input 
+                            type="text" 
+                            class="search-input" 
+                            placeholder="Search Requests..."
+                            [(ngModel)]="LaundryRequestsSearchTerm" 
+                            (keyup)="filterLaundryRequests()"
+                          />
+                           <span class="clear-btn"
+                            (click)="LaundryRequestsSearchTerm=''; filterLaundryRequests();"
+                            aria-label="Clear search">
+                            ×
+                          </span>
+                        </div>
                     </div>
                     <table>
                         <thead>
                             <tr>
-                                <th>Request ID</th>
-                                <th>Student</th>
+                                <!-- <th>Request ID</th> -->
+                                <th>Name</th>
                                 <th>Items</th>
                                 <th>Time</th>
                                 <th>Status</th>
-                                <th>Progress</th>
+                                <!-- <th>Progress</th> -->
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>LR001</td>
-                                <td>John Doe</td>
-                                <td>5 Shirts, 2 Pants</td>
-                                <td>9:15 AM</td>
-                                <td><span class="status-badge status-pending">Pending</span></td>
-                                <td><div class="progress-bar"><div class="progress-fill" style="width: 60%;"></div></div></td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-edit"></i> Update</button></td>
-                            </tr>
-                            <tr>
-                                <td>LR002</td>
-                                <td>Jane Smith</td>
-                                <td>3 Shirts, 1 Bed Sheet</td>
-                                <td>9:30 AM</td>
-                                <td><span class="status-badge status-pending">Pending</span></td>
-                                <td><div class="progress-bar"><div class="progress-fill" style="width: 20%;"></div></div></td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-eye"></i> View</button></td>
+                            <tr *ngFor="let lr of LaundryRequests">
+                                <!-- <td>{{lr.RequestID}}</td> -->
+                                <td>{{lr.Name}}</td>
+                                <td>{{lr.Items}}</td>
+                                <td>{{ lr.RequestTime | date: 'dd/mm/yyyy hh:mm a' }}</td>
+                                <td>{{lr.Status}}</td>
+                                <!-- <td><div class="progress-bar"><div class="progress-fill" style="width: 60%;"></div></div></td> -->
+                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"
+                                    (click) = "openEditLaunreq(lr)">View</button></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+            </div>
+              <div class="sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-title"><i class="fas fa-bolt"></i> Quick Actions</div>
+                    <div class="action-list">
+                        <div class="action-item">
+                            <button class="btn btn-primary" (click) = "openAddLaunreq()">
+                            Add Laundry Request</button>
+                        </div>
+                        <!-- <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-file-alt"></i> Generate Report</button>
+                        </div> -->
+                        <!-- <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-user-plus"></i> Assign Staff</button>
+                        </div> -->
+                        <!-- <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-bell"></i> Send Notification</button>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="sidebar-card">
+                    <div class="sidebar-title"><i class="fas fa-lightbulb"></i> Laundry Insights</div>
+                    <div class="insight-list">
+                        <div class="insight-item">85% of laundry requests completed within 24 hours.</div>
+                        <!-- <div class="insight-item">Washing machines are used more than dryers.</div> -->
+                        <!-- <div class="insight-item">Morning slots are most popular.</div>
+                        <div class="insight-item">Feedback suggests adding express service options.</div> -->
+                    </div>
+                </div>
+            </div>
+        </div>    
 
-                <div class="data-panel" id="machines-panel" style="display: none;">
+    <!-- Machine Status -->    
+
+        <div class="content-grid" *ngIf="activeTab === 'machinestatus'">
+            <div class="main-content">
+                <div class="data-panel" id="machines-panel">
                     <div class="panel-header">
                         <div class="panel-title"><i class="fas fa-washing-machine"></i> Machine Status Overview</div>
-                        <button class="btn btn-secondary"><i class="fas fa-download"></i> Export Machine Data</button>
+                        <button class="btn btn-secondary"
+                        (click) = "exportMachineStatus()">
+                        Export Machine Data</button>
+                        
                     </div>
                     <div class="insight-list">
                         <div class="insight-item">
@@ -707,44 +795,91 @@
                         </div>
                     </div>
                 </div>
-                <div class="data-table" id="machines-table" style="display: none;">
+                <div class="data-table" id="machines-table">
                     <div class="table-header">
                         <div class="table-title">Machine Status</div>
-                        <input type="text" class="search-input" placeholder="Search machines..." onkeyup="filterTable(this.value, 'machines-table')">
+                       <div class="search-container">
+                          <input 
+                            type="text" 
+                            class="search-input" 
+                            placeholder="Search Machine..."
+                            [(ngModel)]="MachineStatusSearchTerm" 
+                            (keyup)="filterMachineStatus()"
+                          />
+                           <span class="clear-btn"
+                            (click)="MachineStatusSearchTerm=''; filterMachineStatus();"
+                            aria-label="Clear search">
+                            ×
+                          </span>
+                        </div>
                     </div>
                     <table>
                         <thead>
                             <tr>
-                                <th>Machine ID</th>
+                                <th>Machine Name</th>
                                 <th>Type</th>
                                 <th>Status</th>
                                 <th>Last Maintenance</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
+                        
                         <tbody>
-                            <tr>
-                                <td>WM001</td>
-                                <td>Washing Machine</td>
-                                <td><span class="status-badge status-completed">Available</span></td>
-                                <td>Sep 25, 2025</td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-tools"></i> Schedule Maintenance</button></td>
-                            </tr>
-                            <tr>
-                                <td>WM002</td>
-                                <td>Dryer</td>
-                                <td><span class="status-badge status-in-progress">In Use</span></td>
-                                <td>Sep 20, 2025</td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-eye"></i> View</button></td>
+                            <tr *ngFor="let ms of MachineStatus">
+                                <td>{{ms.MachineName}}</td>
+                                <td>{{ms.MachineType}}</td>
+                                <td>{{ms.Status}}</td>
+                                <td>{{ms.LastServicedDate}}</td>
+                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"
+                                  (click)="openEditmachine(ms)">View</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+              </div>
+                <div class="sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-title"><i class="fas fa-bolt"></i> Quick Actions</div>
+                    <div class="action-list">
+                        <div class="action-item">
+                            <button class="btn btn-primary"
+                            (click) = "openAddmachine()">Add Machine
+                        </button>
+                        </div>
+                        <!-- <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-file-alt"></i> Generate Report</button>
+                        </div> -->
+                        <!-- <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-user-plus"></i> Assign Staff</button>
+                        </div> -->
+                        <!-- <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-bell"></i> Send Notification</button>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="sidebar-card">
+                    <div class="sidebar-title"><i class="fas fa-lightbulb"></i> Laundry Insights</div>
+                    <div class="insight-list">
+                        <!-- <div class="insight-item">85% of laundry requests completed within 24 hours.</div> -->
+                        <div class="insight-item">Washing machines are used more than dryers.</div>
+                        <!-- <div class="insight-item">Morning slots are most popular.</div>
+                        <div class="insight-item">Feedback suggests adding express service options.</div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                <div class="data-panel" id="schedule-panel" style="display: none;">
+    <!-- Schedule -->
+        <div class="content-grid" *ngIf="activeTab === 'schedule'">
+            <div class="main-content">
+                <div class="data-panel" id="schedule-panel">
                     <div class="panel-header">
                         <div class="panel-title"><i class="fas fa-calendar"></i> Laundry Schedule Overview</div>
-                        <button class="btn btn-secondary"><i class="fas fa-download"></i> Export Schedule</button>
+                        <button class="btn btn-secondary"
+                        (click) = "exportLaundrySchedule()">
+                        Export Schedule</button>
+
                     </div>
                     <div class="insight-list">
                         <div class="insight-item">
@@ -757,44 +892,91 @@
                         </div>
                     </div>
                 </div>
-                <div class="data-table" id="schedule-table" style="display: none;">
+                <div class="data-table" id="schedule-table">
                     <div class="table-header">
                         <div class="table-title">Laundry Schedule</div>
-                        <input type="text" class="search-input" placeholder="Search schedule..." onkeyup="filterTable(this.value, 'schedule-table')">
+
+                       <div class="search-container">
+                          <input 
+                            type="text" 
+                            class="search-input" 
+                            placeholder="Search Requests..."
+                            [(ngModel)]="LaundryScheduleSearchTerm" 
+                            (keyup)="filterLaundrySchedule()"
+                          />
+                           <span class="clear-btn"
+                            (click)="LaundryScheduleSearchTerm=''; filterLaundrySchedule();"
+                            aria-label="Clear search">
+                            ×
+                          </span>
+                        </div>
                     </div>
                     <table>
                         <thead>
                             <tr>
                                 <th>Time Slot</th>
                                 <th>Machine</th>
-                                <th>Student</th>
+                                <th>Name</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>10:00 AM - 11:00 AM</td>
-                                <td>WM001</td>
-                                <td>John Doe</td>
-                                <td><span class="status-badge status-completed">Booked</span></td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-edit"></i> Edit</button></td>
-                            </tr>
-                            <tr>
-                                <td>11:00 AM - 12:00 PM</td>
-                                <td>WM002</td>
-                                <td>Jane Smith</td>
-                                <td><span class="status-badge status-pending">Pending</span></td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-edit"></i> Edit</button></td>
+                            <tr *ngFor="let ls of LaundrySchedule">
+                                <td>{{ls.Slot}}</td>
+                                <td>{{ls.MachineName}}</td>
+                                <td>{{ls.Name}}</td>
+                                <td>{{ls.Status}}</td>
+                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"
+                                (click) = "openEditSchedule(ls)">View</button>
+                            </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                </div>
+                 <div class="sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-title"><i class="fas fa-bolt"></i> Quick Actions</div>
+                    <div class="action-list">
+                        <div class="action-item">
+                            <button class="btn btn-primary" 
+                            (click) = "openSchedule()">
+                            Schedule Machine
+                        </button>
+                        </div>
+                        <!-- <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-file-alt"></i> Generate Report</button>
+                        </div> -->
+                        <!-- <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-user-plus"></i> Assign Staff</button>
+                        </div>
+                        <div class="action-item">
+                            <button class="btn btn-secondary"><i class="fas fa-bell"></i> Send Notification</button>
+                        </div> -->
+                    </div>
+                </div>
+                <!-- <div class="sidebar-card">
+                    <div class="sidebar-title"><i class="fas fa-lightbulb"></i> Laundry Insights</div>
+                    <div class="insight-list">
+                        <div class="insight-item">85% of laundry requests completed within 24 hours.</div>
+                        <div class="insight-item">Washing machines are used more than dryers.</div>
+                        <div class="insight-item">Morning slots are most popular.</div>
+                        <div class="insight-item">Feedback suggests adding express service options.</div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
 
-                <div class="data-panel" id="feedback-panel" style="display: none;">
+    <!-- Feedback -->
+        <div class="content-grid" *ngIf="activeTab === 'feedback'">
+            <div class="main-content">    
+                <div class="data-panel" id="feedback-panel">
                     <div class="panel-header">
                         <div class="panel-title"><i class="fas fa-comment"></i> Feedback Insights</div>
-                        <button class="btn btn-secondary"><i class="fas fa-download"></i> Export Feedback</button>
+                        <button class="btn btn-secondary"
+                        (click) = "exportFeedbackdata()">
+                        Export Feedback</button>
                     </div>
                     <div class="insight-list">
                         <div class="insight-item">
@@ -807,52 +989,58 @@
                         </div>
                     </div>
                 </div>
-                <div class="data-table" id="feedback-table" style="display: none;">
+                <div class="data-table" id="feedback-table">
                     <div class="table-header">
                         <div class="table-title">Student Feedback</div>
-                        <input type="text" class="search-input" placeholder="Search feedback..." onkeyup="filterTable(this.value, 'feedback-table')">
+                       <div class="search-container">
+                          <input 
+                            type="text" 
+                            class="search-input" 
+                            placeholder="Search Feedback..."
+                            [(ngModel)]="FeedbackSearchTerm" 
+                            (keyup)="filterFeedback()"/>
+                           <span class="clear-btn"
+                            (click)="FeedbackSearchTerm=''; filterFeedback();"
+                            aria-label="Clear search">
+                            ×
+                          </span>
+                        </div>
                     </div>
                     <table>
                         <thead>
                             <tr>
-                                <th>Student</th>
+                                <th>Name</th>
                                 <th>Service</th>
                                 <th>Rating</th>
                                 <th>Comment</th>
                                 <th>Date</th>
-                                <th>Actions</th>
+                                <!-- <th>Actions</th> -->
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>John Doe</td>
-                                <td>Washing</td>
-                                <td><span class="status-badge status-completed">4.5</span></td>
-                                <td>Quick service but some stains remained.</td>
-                                <td>Oct 2, 2025</td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-eye"></i> View</button></td>
-                            </tr>
-                            <tr>
-                                <td>Jane Smith</td>
-                                <td>Drying</td>
-                                <td><span class="status-badge status-completed">5</span></td>
-                                <td>Clothes were perfectly dried!</td>
-                                <td>Oct 1, 2025</td>
-                                <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-eye"></i> View</button></td>
+                            <tr *ngFor="let fb of Feedback">
+                                <td>{{fb.Name}}</td>
+                                <td>{{fb.Service}}</td>
+                                <td>{{fb.Rating}}</td>
+                                <td>{{fb.Comment}}</td>
+                                <td>{{fb.FeedbackDate | date: 'dd/mm/yyyy hh:mm a' }}</td>
+                                <!-- <td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;"><i class="fas fa-eye"></i> View</button></td> -->
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
+
             <div class="sidebar">
                 <div class="sidebar-card">
                     <div class="sidebar-title"><i class="fas fa-bolt"></i> Quick Actions</div>
                     <div class="action-list">
                         <div class="action-item">
-                            <button class="btn btn-primary" onclick="openModal()"><i class="fas fa-plus"></i> Add Laundry Request</button>
+                            <button class="btn btn-primary" (click) ="openMOAddFeedback()">
+                            Add Feedback</button>
                         </div>
-                        <div class="action-item">
+                        <!-- <div class="action-item">
                             <button class="btn btn-secondary"><i class="fas fa-file-alt"></i> Generate Report</button>
                         </div>
                         <div class="action-item">
@@ -860,10 +1048,10 @@
                         </div>
                         <div class="action-item">
                             <button class="btn btn-secondary"><i class="fas fa-bell"></i> Send Notification</button>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
-                <div class="sidebar-card">
+                <!-- <div class="sidebar-card">
                     <div class="sidebar-title"><i class="fas fa-lightbulb"></i> Laundry Insights</div>
                     <div class="insight-list">
                         <div class="insight-item">85% of laundry requests completed within 24 hours.</div>
@@ -871,7 +1059,7 @@
                         <div class="insight-item">Morning slots are most popular.</div>
                         <div class="insight-item">Feedback suggests adding express service options.</div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -910,5 +1098,67 @@
         </div>
     </div>
 
+    <!-- <script>
+        function switchTab(tab) {
+            document.getElementById('requests-panel').style.display = 'none';
+            document.getElementById('requests-table').style.display = 'none';
+            document.getElementById('machines-panel').style.display = 'none';
+            document.getElementById('machines-table').style.display = 'none';
+            document.getElementById('schedule-panel').style.display = 'none';
+            document.getElementById('schedule-table').style.display = 'none';
+            document.getElementById('feedback-panel').style.display = 'none';
+            document.getElementById('feedback-table').style.display = 'none';
+
+            document.getElementById(`${tab}-panel`).style.display = 'block';
+            document.getElementById(`${tab}-table`).style.display = 'block';
+
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`button[onclick="switchTab('${tab}')"]`).classList.add('active');
+        }
+
+        function filterTable(query, tableId) {
+            const table = document.getElementById(tableId).querySelector('table');
+            const rows = table.getElementsByTagName('tr');
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let match = false;
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].textContent.toLowerCase().includes(query.toLowerCase())) {
+                        match = true;
+                        break;
+                    }
+                }
+                rows[i].style.display = match ? '' : 'none';
+            }
+        }
+
+        function openModal() {
+            document.getElementById('add-request-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('add-request-modal').style.display = 'none';
+            document.getElementById('request-id').value = '';
+            document.getElementById('student-name').value = '';
+            document.getElementById('items').value = '';
+            document.getElementById('request-status').value = 'pending';
+        }
+
+        function addLaundryRequest() {
+            const requestId = document.getElementById('request-id').value;
+            const studentName = document.getElementById('student-name').value;
+            const items = document.getElementById('items').value;
+            const requestStatus = document.getElementById('request-status').value;
+
+            if (requestId && studentName && items) {
+                alert(`Added laundry request ${requestId} for ${studentName} with items ${items} and status ${requestStatus}.`);
+                closeModal();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+    </script> -->
 </body>
 </html>

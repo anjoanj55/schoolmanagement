@@ -1,0 +1,91 @@
+<div class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title" *ngIf="!isEditMode">Add Machine</h2>
+      <h2 class="modal-title" *ngIf="isEditMode">Edit Machine</h2>
+    </div>
+
+<div class="modal-body">
+
+<label for="MachineName">Machine Name</label>
+<input
+  id="MachineName"
+  [(ngModel)]="MachineName"
+  name="MachineName"
+  type="text"
+  class="form-control"
+  type="text"/>
+
+<label for="MachineType">Machine Type</label>
+<input
+  id="MachineType"
+  [(ngModel)]="MachineType"
+  name="MachineType"
+  type="text"
+  class="form-control"
+  type="text"/>
+
+<label for="Location">Location</label>
+<input
+  id="Location"
+  [(ngModel)]="Location"
+  name="Location"
+  type="text"
+  class="form-control"
+  type="text"/>
+
+<label for="Status">Status</label>
+<input
+  id="Status"
+  [(ngModel)]="Status"
+  name="Status"
+  type="text"
+  class="form-control"
+  type="text"/>
+
+<label for="CapacityKG">Capacity(KG)</label>
+<input
+  id="CapacityKG"
+  [(ngModel)]="CapacityKG"
+  name="CapacityKG"
+  type="number"
+  class="form-control"
+  type="number"/>
+
+<label for="LastServicedDate">Last Serviced Date</label>
+<input
+  id="LastServicedDate"
+  [(ngModel)]="LastServicedDate"
+  name="LastServicedDate"
+  type="text"
+  class="form-control"
+  type="text"/> 
+
+</div>
+
+<div class="modal-footer">
+  <!-- <button
+    (click)="submitFeedback()"
+    class="submit-btn">
+    Submit
+  </button>
+
+  <button mat-button (click)="closeDialog()" class="close-btn">
+    Close
+  </button> -->
+
+<button *ngIf="!isEditMode" (click)="submitFeedback()" class="submit-btn">
+Submit
+</button>
+
+      <!-- Show Update only when editing -->
+<button *ngIf="isEditMode" (click)="UpdateMachine()" class="submit-btn">
+  Update
+</button>
+
+<button mat-button (click)="closeDialog()" class="close-btn">
+  Close
+</button>
+
+</div>
+</div>

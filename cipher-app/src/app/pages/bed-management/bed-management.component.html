@@ -1,0 +1,124 @@
+<div class="parking-management-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>Bed Management</h1>
+  </div>
+
+
+  <!-- Statistics Row -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Total Beds</span>
+        <div class="stat-icon icon-blue">🛏️</div>
+      </div>
+      <div class="stat-value">{{totalbed}}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Available</span>
+        <div class="stat-icon icon-green">✅</div>
+      </div>
+      <div class="stat-value stat-green">{{available}}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Occupied</span>
+        <div class="stat-icon icon-red">❌</div>
+      </div>
+      <div class="stat-value stat-red">{{occupied}}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Occupancy Rate</span>
+        <div class="stat-icon icon-cyan">📊</div>
+      </div>
+      <div class="stat-value stat-cyan">{{Occupancypercentage}}%</div>
+    </div>
+  </div>
+
+    <!-- Location Selector -->
+  <!-- <div class="location-selector">
+    <label for="location">Select Location</label>
+    <select id="location" class="location-dropdown">
+      <option value="MainGate">Main Gate Parking</option>
+      <option value="NearGround">Near Ground Parking</option>
+      <option value="GardenParking">Garden Parking</option>
+    </select>
+  </div> -->
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-button active">Parking Layout</button>
+        <!-- <label for="location">Select Location</label> -->
+<!-- <select id="location" class="location-dropdown">
+  <option *ngFor="let area of ParkingArea" [value]="area">
+    {{ area }}
+  </option>
+</select> -->
+    <!-- <button class="tab-button">History</button> -->
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="content-wrapper">
+    
+    <!-- Left Section - Parking Layout -->
+    <div class="parking-section">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>Parking Layout</h2>
+        </div>
+        <div class="section-actions">
+          <!-- <button class="btn-secondary">Export Data</button> -->
+          <!-- <button class="btn-primary" (click)="refreshData()">Refresh</button> -->
+          <button class="btn-primary" (click)="refreshPage()">Refresh</button>
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div class="legend">
+        <div class="legend-item">
+          <span class="legend-color available"></span>
+          <span>Available</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color occupied"></span>
+          <span>Occupied</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color reserved"></span>
+          <span>Reserved</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color maintenance"></span>
+          <span>Maintenance</span>
+        </div>
+      </div>
+
+<div class="parking-grid">
+  <div 
+    class="parking-spot" 
+    *ngFor="let bm of BedManagement"
+    [ngClass]="{
+      'spot-available': bm.Status.toLowerCase() === 'available',
+      'spot-occupied': bm.Status.toLowerCase() === 'occupied',
+      'spot-reserved': bm.Status.toLowerCase() === 'reserved',
+      'spot-maintenance': bm.Status.toLowerCase() === 'maintenance'}"
+      (click)="openBedDetails(bm)">
+    <div class="spot-icon">
+      {{ getSpotIcon(bm.Status) }}
+    </div>
+    <div class="spot-id">{{ bm.BedID }}</div>
+    <div class="spot-status">{{ bm.Status }}</div>
+    <div class="spot-vehicle" *ngIf="bm.IsOccupied == '1' || bm.Status.toLowerCase() === 'occupied'">
+      {{ bm.Name }}<br>
+      {{ bm.occupied_from | date: 'dd-MM-yyyy' }}
+    </div>
+    </div>
+
+  </div>
+
+</div>
